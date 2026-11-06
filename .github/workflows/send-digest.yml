@@ -1,0 +1,25 @@
+name: Send daily digest
+on:
+  schedule:
+    - cron: "30 3 * * *"   # 09:00 on the Mac's clock (UTC+05:30). GitHub may start it a few minutes late.
+  workflow_dispatch: {}
+permissions:
+  contents: write
+concurrency: send-digest
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Send
+        run: python3 .github/send_digest.py
+        env:
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+      - name: Remember it was sent
+        run: |
+          git config user.name "Knowledge Updater"
+          git config user.email "knowledge-updater@users.noreply.github.com"
+          git add mail/sent.json
+          git diff --cached --quiet || (git commit -m "Digest sent" && git pull --rebase && git push)
