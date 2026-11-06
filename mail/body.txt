@@ -3,30 +3,30 @@ Knowledge Updater · Fri 06 Nov 2026
 Full page (all tabs & filters): https://eth-developer03.github.io/ku-a6244260/
 
 BUSINESS IDEAS
-1. Vendor payout reconciliation for Indian marketplaces and agencies (score 4.2; effort 3, cost 2, fit 5)
-   A payouts layer for marketplaces, creator platforms and agencies that pay many vendors each month: validates bank accounts, batches payouts, tracks failures and produces TDS-ready ledgers. Sold as a flat monthly fee per payout volume, with no payment-licence needed because it routes through existing partner banks or gateways.
-   Why now: Stripe reports moving $1B of vendor payments to a new payouts system, cutting new-market setup to a week, which makes the pattern concrete for small Indian platforms that still reconcile by spreadsheet.
-   First step: Interview three Indian marketplace or agency operators about how they pay vendors each month, and map each step from invoice to bank credit to ledger, noting where they spend hours.
+1. Per-feature LLM cost attribution for AI product teams (score 4.8; effort 2, cost 1, fit 5)
+   A small SDK and dashboard that tags token spend by customer and feature, then suggests cheaper model routes for each task based on measured quality. Sold to Indian SaaS teams whose LLM bills are growing faster than revenue.
+   Why now: Shopify describes token-heavy workloads driving it to post-train smaller task-specific models, and new fast model variants are landing, so teams now need per-task cost data to choose between them.
+   First step: Tag every LLM call in one of your own pipelines with feature and tenant IDs, then compare cost per completed task across two models for a week.
 
-2. Scoped, revocable and logged access for AI agents calling SaaS APIs (score 4.0; effort 3, cost 1, fit 4)
-   A hosted proxy that sits between a company's AI agents and its SaaS integrations (MCP servers, Google Workspace, payments), enforcing per-agent scopes, a kill switch and an audit log. Sold per agent or per month to Indian SaaS teams shipping agent features who need to show what their agents did.
-   Why now: An open-source OAuth2 broker for scoped, revocable agent access has just appeared, and a Fowler piece describes teams hesitating to run agents because they cannot account for production behaviour.
-   First step: Build a one-week spike that wraps one MCP server behind a proxy that logs every tool call with its scope and lets you revoke an agent's token, then show it to two founders in your network.
+2. DischargeDraft: discharge summary drafting for small Indian hospitals (score 4.2; effort 3, cost 2, fit 5)
+   A tool that drafts discharge summaries from exported EMR notes and lab PDFs, which the treating doctor reviews and signs. Sold per bed per month to 20 to 100 bed private hospitals that currently spend staff hours on summaries.
+   Why now: A new study shows AI can improve discharge summaries for long, complex stays, so hospitals now have evidence that drafting help is safe to try.
+   First step: Interview five staff members from your internship sites about their current discharge summary template, turnaround time, and what they copy-paste most.
 
-3. Discharge summary drafter for small Indian hospitals (score 3.8; effort 3, cost 2, fit 4)
-   A per-bed SaaS that turns admission notes, lab results and ward progress entries into a draft discharge summary, which the treating doctor reviews, edits and signs. Sold to 20-100 bed private hospitals and nursing homes that still write these by hand.
-   Why now: A new study shows AI can improve discharge summaries for long, complex stays, so hospitals now have evidence that drafting help is worth paying for.
-   First step: Message three hospital doctors or medical records staff you already know from your internship and ask them to share an anonymised discharge summary template and the top three fields they rewrite most.
+3. Scoped, revocable permissions and audit logs for AI agents (score 3.8; effort 3, cost 2, fit 4)
+   A hosted proxy that gives each AI agent narrow, revocable access to third-party APIs, with a kill switch and exportable audit logs. Sold monthly to small Indian startups running agents against payment, CRM, or accounting APIs.
+   Why now: An open-source OAuth broker for agents just launched, and Fowler notes that the gap between building and running agents in production is what makes teams hesitate.
+   First step: Set up the open-source agent identity broker locally, then write down the three operational gaps you hit, such as audit export, per-team policies, or alerting.
 
-4. AI test writer for Indian SaaS teams with small QA headcount (score 3.5; effort 3, cost 1, fit 3)
-   A GitHub app that reads a pull request, generates targeted regression tests for the changed code, runs them in CI and comments only on failures that look real. Priced per repository per month from day one, aimed at 5-30 engineer product companies in India without a dedicated QA team.
-   Why now: Momentic's YC launch and Meta's just-in-time testing results show AI-generated tests moving from research into products, but the mid-sized teams that want this are still underserved.
-   First step: Run a manual version for one friend's startup: take five recent merged PRs, have an LLM draft tests for each, and count how many catch a bug you seeded.
+4. Regression QA agent for Indian checkout and payment flows (score 3.8; effort 3, cost 2, fit 4)
+   A GitHub Action that runs an AI agent through a SaaS app's signup, checkout, and payment pages, including UPI intent and net banking redirects, and reports regressions on each pull request. Sold per repo per month to small Indian SaaS and D2C teams without QA staff.
+   Why now: Momentic's agents now explore apps to find bugs, and Meta reports LLM-generated tests catching bugs before code lands, so the approach is being validated at both startup and big-company scale.
+   First step: Pick one open-source Indian e-commerce demo app, write an agent script for its checkout, and measure how many breaking changes it catches across ten commits.
 
-5. On-prem document summariser for clinics that cannot send data to the cloud (score 3.2; effort 4, cost 3, fit 4)
-   A Docker-packaged, self-hosted pipeline that runs a small open model locally to OCR and summarise scanned lab reports and referral letters, with no patient data leaving the premises. Sold as a one-time licence plus support to clinics and diagnostic centres with strict data-residency rules.
-   Why now: YC is now actively calling for on-prem frontier AI for hospitals and banks because those buyers cannot use hosted APIs, which opens a gap for a small vendor serving clinics below enterprise scale.
-   First step: Benchmark a quantised open OCR and summarisation model on 30 anonymised report scans you already have from your internship, and record accuracy and hardware needs.
+5. On-prem report digitiser for diagnostic labs and nursing homes (score 3.0; effort 4, cost 4, fit 4)
+   A single-box appliance that runs OCR and a small open-weight model locally to turn lab and scan reports into structured records, with no data leaving the premises. Sold as a one-time hardware plus annual support package to diagnostic labs and nursing homes worried about data protection.
+   Why now: YC is actively calling for on-prem frontier AI for air-gapped sectors like hospitals, which signals buyers will pay for local deployment.
+   First step: Benchmark one open OCR model plus one small open LLM on a laptop against 20 anonymised reports you are permitted to use, and record accuracy and latency.
 
 TECH
 -- AI & ML
@@ -43,9 +43,9 @@ TECH
 [4] Inside GitHub’s new Git storage architecture
     GitHub explains its new Git storage architecture designed to let thousands of agents push to one repository concurrently.
     https://github.blog/engineering/architecture-optimization/inside-githubs-new-git-storage-architecture/
-[3] We've built an open-source feature flag server for 11 years
-    An open-source feature flag server that has been maintained for over a decade, relevant to backend release practices.
-    https://github.com/Unleash/unleash
+[3] Scriptable GeoDNS: Leaving AWS for Bunny
+    Account of moving DNS routing from AWS to Bunny using scriptable GeoDNS, with cost and control tradeoffs for infrastructure teams.
+    https://vincent.bernat.ch/en/blog/2026-bunny-geodns
 [3] Article: Identity as an Architectural Concern: Enterprise IAM Beyond Authentication
     Argues enterprise IAM is an architectural concern, covering graph vs RBAC models, external vaults, and bounded revocation latency.
     https://www.infoq.com/articles/identity-as-architecture/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
@@ -53,24 +53,27 @@ TECH
 [4] Binance hackers had 8 weeks of access before $6.3B exploit, Security Alliance estimates
     Security Alliance estimates attackers had eight weeks of access before the $6.3B Binance exploit, a multi-stage intrusion lesson.
     https://cointelegraph.com/news/binance-hackers-8-weeks-access-63b-exploit-security-alliance?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound
+[3] Thailand SEC Files Criminal Complaint Against Bitget Ahead of Dec. 5 Access Block
+    Thailand's SEC filed a criminal complaint against Bitget's operator for unlicensed trading, ahead of a Dec 5 access block.
+    https://bitcoinmagazine.com/news/thailand-sec-bitget-criminal-dec-5
 [3] Rule to Allow Crypto in 401(k)s Arrives at White House for Final Review
     A final Labor Department rule allowing private equity, real estate and crypto in 401(k) menus has reached White House review.
     https://bitcoinmagazine.com/news/dol-rule-crypto-401k-white-house-review
-[3] Binance Hackers Swap About $50 Million of Stolen XRP Mostly Into Bitcoin, Elliptic Says
-    Elliptic says hackers swapped about 42M stolen XRP (~$50M) mostly into bitcoin via THORChain, converting roughly 1,650 BTC.
-    https://bitcoinmagazine.com/news/binance-hackers-swap-50m-xrp-bitcoin
 -- Everything else
 [4] Claude Code sends your email address to websites
     Claude Code reportedly shares users' email addresses with websites, raising privacy concerns for developers using the tool.
     https://github.com/anthropics/claude-code/issues/107757
+[3] First steps in bare-metal programming using UEFI
+    Tutorial on writing bare-metal programs that boot via UEFI firmware, covering the fundamentals of low-level systems programming.
+    https://kevinboone.me/efitest_index.html
 [3] Crypto Card Provider Gnosis Pay Says Hackers Accessed Customer Data
     Gnosis Pay says hackers accessed customer data from a legacy card system, while funds and its enterprise platform were unaffected.
     https://decrypt.co/382718/crypto-card-provider-gnosis-pay-hackers-customer-data
-[3] Ask HN: What in the world is taking Ubuntu so long?
-    Users question Ubuntu's slow fix for a critical 9.8 CVE, with only a mitigation listed so far.
-    https://news.ycombinator.com/item?id=50393105
 
 FINANCE
+[4] The AI ‘credit card’ is getting costlier as CoreWeave bond yield tops 16%
+    CoreWeave bond yields topping 16% signal stress in AI debt markets amid worries about a data center slowdown.
+    https://www.cnbc.com/2026/11/06/coreweave-bond-yield-tops-16percent-as-ai-credit-stress-rises.html
 [4] SEBI proposes mandatory AML certification for intermediaries’ principal officers
     SEBI proposes mandatory AML certification for intermediaries' principal officers, to be obtained within six months of the rule.
     https://www.thehindubusinessline.com/markets/sebi-proposes-mandatory-aml-certification-for-intermediaries-principal-officers/article71675333.ece
@@ -83,9 +86,6 @@ FINANCE
 [4] Angel One overtakes Zerodha to become 2nd-largest broker by active clients
     Angel One overtook Zerodha as second-largest broker by NSE active clients in October, while Groww stays first; relevant fintech competition.
     https://www.business-standard.com/companies/news/angel-one-overtakes-zerodha-to-become-2nd-largest-broker-by-active-clients-126110601754_1.html
-[4] India's 10-year bond posts best week in 7 years, leads emerging Asia as oil slides
-    Indian government bonds had their best week in seven years as falling crude drew foreign buying, easing pressure on RBI yields.
-    https://economictimes.indiatimes.com/markets/bonds/indias-10-year-bond-posts-best-week-in-7-years-leads-emerging-asia-as-oil-slides/articleshow/135606792.cms
 
 GENERAL KNOWLEDGE
 [4] Less than 4 minutes of vigorous exercise a day could halve your dementia risk
@@ -94,17 +94,20 @@ GENERAL KNOWLEDGE
 [4] AI Companies Really, Really Want to Buy Your Work Files and Emails
     Data brokers are buying companies' internal work files and emails to train AI models, raising confidentiality and consent concerns.
     https://www.wired.com/story/ai-companies-really-really-want-to-buy-your-work-files-and-emails/
+[3] Strange Gas in Mars' Atmosphere Hints the Red Planet Is Still Volcanically Active—and Points to Places to Search for Alien Life
+    Study finds gases in Mars' atmosphere may come from volcanic fissures, suggesting hydrothermal-like habitats worth searching for life.
+    https://www.smithsonianmag.com/smart-news/strange-gas-in-mars-atmosphere-hints-the-red-planet-is-still-volcanically-active-and-points-to-places-to-search-for-alien-life-180989817/
 [3] AI stocks climb after trillions wiped from market values
     AI stocks rebound after a sell-off that wiped trillions from market values, with fears about slower AI development after the election.
     https://www.bbc.co.uk/news/articles/c35ynnpzdq51o?at_medium=RSS&at_campaign=rss
-[3] What did the Republicans lose in the US midterms?
-    Democrats won control of the US Senate and House in the midterms, and this explainer maps the scale of the shift.
-    https://www.aljazeera.com/video/by-the-numbers-3/2026/11/6/what-did-the-republicans-lose-in-the-us-midterms?traffic_source=rss
-[3] Millions fleeing Sudan’s war risk losing shelter as funds run low, UN warns
-    The UN warns that funding shortfalls leave millions displaced by Sudan's war at risk of losing shelter, with fewer than 1 million reached.
-    https://www.aljazeera.com/news/2026/11/6/millions-fleeing-sudans-war-risk-losing-shelter-as-funds-run-low-un-warns?traffic_source=rss
+[3] Paraguay resumes Pena impeachment proceedings as financial crisis deepens
+    Paraguay resumes impeachment proceedings against President Pena amid a financial crisis after a digital bank failure.
+    https://www.aljazeera.com/news/2026/11/6/paraguay-resumes-pena-impeachment-proceedings-as-financial-crisis-deepens?traffic_source=rss
 
 ENTREPRENEURSHIP
+[4] Show HN: Agentic Identity Broker, OAuth Delegation for AI Agents
+    Agentic Identity Broker is an open-source OAuth2 broker letting users grant AI agents scoped, revocable access to MCP services.
+    https://github.com/zalando-incubator/agentic-identity-broker
 [4] VeloDB’s Nitin Waghulde on why AI agents break down after the demo
     VeloDB executive says AI agents fail in production and the database layer is often the fix.
     https://yourstory.com/2026/11/velodbs-nitin-waghulde-on-why-ai-agents-break-down-after-the-demo
@@ -117,9 +120,6 @@ ENTREPRENEURSHIP
 [4] Launch HN: Momentic (YC W24) – Agents that catch bugs by using your app
     Launch of Momentic, AI QA agents that explore web and mobile apps autonomously to find bugs.
     https://momentic.ai/
-[4] AI for the Air-Gapped Economy
-    YC call for startups bringing on-prem frontier AI to air-gapped sectors like hospitals, banks, and defense, with accreditation and hardware.
-    https://www.youtube.com/shorts/x21EgQzfZaM
 
 HEALTH-TECH
 [4] The Big Challenge for AI in Healthcare Comes After Approval
