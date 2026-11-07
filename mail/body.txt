@@ -1,139 +1,130 @@
-Knowledge Updater · Fri 06 Nov 2026
+Knowledge Updater · Sat 07 Nov 2026
 
 Full page (all tabs & filters): https://eth-developer03.github.io/ku-a6244260/
 
 BUSINESS IDEAS
-1. Per-feature LLM cost attribution for AI product teams (score 4.8; effort 2, cost 1, fit 5)
-   A small SDK and dashboard that tags token spend by customer and feature, then suggests cheaper model routes for each task based on measured quality. Sold to Indian SaaS teams whose LLM bills are growing faster than revenue.
-   Why now: Shopify describes token-heavy workloads driving it to post-train smaller task-specific models, and new fast model variants are landing, so teams now need per-task cost data to choose between them.
-   First step: Tag every LLM call in one of your own pipelines with feature and tenant IDs, then compare cost per completed task across two models for a week.
+1. Discharge summary drafter for Indian private hospitals (score 4.2; effort 3, cost 2, fit 5)
+   A web tool and API that drafts discharge summaries for long inpatient stays from the EMR notes, labs and medication orders, with every line linked to its source entry. The treating doctor reviews, edits and signs; the tool never adds clinical content of its own. Sold per bed or per discharge to mid-size private hospitals and their HIS vendors.
+   Why now: A new npj Digital Medicine study finds AI can help write discharge summaries for long, complex stays, so hospital buyers now have evidence to justify a pilot.
+   First step: Using your internship contacts, interview two clinicians and one records officer to list the 10 fields their discharge summary template requires and where each one comes from in the EMR.
 
-2. DischargeDraft: discharge summary drafting for small Indian hospitals (score 4.2; effort 3, cost 2, fit 5)
-   A tool that drafts discharge summaries from exported EMR notes and lab PDFs, which the treating doctor reviews and signs. Sold per bed per month to 20 to 100 bed private hospitals that currently spend staff hours on summaries.
-   Why now: A new study shows AI can improve discharge summaries for long, complex stays, so hospitals now have evidence that drafting help is safe to try.
-   First step: Interview five staff members from your internship sites about their current discharge summary template, turnaround time, and what they copy-paste most.
+2. Longitudinal visit-history digest for clinic doctors (score 4.0; effort 3, cost 1, fit 4)
+   A tool that turns a patient's past visit notes, prescriptions and lab values into a dated timeline before each follow-up, so the doctor sees what changed and when. It flags missing or conflicting entries for the doctor to resolve. Sold as a monthly plan to single-specialty clinics using a basic EMR or WhatsApp-based record keeping.
+   Why now: MedGraph shows that a patient-state graph with dated, per-patient facts is a workable pattern for LLM medical assistants, and it names outdated state and cross-patient leakage as the failure modes to design against.
+   First step: Take 20 anonymised visit notes from a clinic you know, hand-label the dated medication and diagnosis changes, and check whether a simple per-patient timeline table gets them right before adding any LLM.
 
-3. Scoped, revocable permissions and audit logs for AI agents (score 3.8; effort 3, cost 2, fit 4)
-   A hosted proxy that gives each AI agent narrow, revocable access to third-party APIs, with a kill switch and exportable audit logs. Sold monthly to small Indian startups running agents against payment, CRM, or accounting APIs.
-   Why now: An open-source OAuth broker for agents just launched, and Fowler notes that the gap between building and running agents in production is what makes teams hesitate.
-   First step: Set up the open-source agent identity broker locally, then write down the three operational gaps you hit, such as audit export, per-team policies, or alerting.
+3. Vendor credential sweeper for small Indian fintechs (score 4.0; effort 3, cost 1, fit 4)
+   A scanner that inventories a fintech's third-party API keys, OAuth tokens and service accounts, then flags stale or over-scoped ones and tracks rotation with an audit log. Sold to Indian payments, lending and wealth startups that need a DPDP-ready answer to 'who holds our keys'. Priced per vendor integration per month.
+   Why now: Chainalysis reported that attackers took credentials and tokens for all its customers, and Gnosis Pay's breach exposed card, identity and wallet data together, so vendor credential exposure is now a board-level question.
+   First step: Write a checklist of the 15 credential types a typical Spring Boot fintech backend holds, then scan one personal or open-source project against it to test whether detection works.
 
-4. Regression QA agent for Indian checkout and payment flows (score 3.8; effort 3, cost 2, fit 4)
-   A GitHub Action that runs an AI agent through a SaaS app's signup, checkout, and payment pages, including UPI intent and net banking redirects, and reports regressions on each pull request. Sold per repo per month to small Indian SaaS and D2C teams without QA staff.
-   Why now: Momentic's agents now explore apps to find bugs, and Meta reports LLM-generated tests catching bugs before code lands, so the approach is being validated at both startup and big-company scale.
-   First step: Pick one open-source Indian e-commerce demo app, write an agent script for its checkout, and measure how many breaking changes it catches across ten commits.
+4. Confidence-based model cascade proxy for LLM apps (score 4.0; effort 3, cost 1, fit 4)
+   A drop-in OpenAI-compatible proxy that sends each request to a small model first and escalates to a large model only when a confidence or self-check fails, with per-route cost and quality logs. Sold as a hosted gateway with a self-hosted option to SaaS teams in India running high-volume chat or document pipelines.
+   Why now: A Hacker News report says a small model that can call Opus for help matches Opus accuracy at about a quarter of the cost, which makes cascade routing a practical cost lever for teams running agents at volume.
+   First step: Run the cascade pattern on a 200-item eval set from one of your own GenAI pipelines and measure accuracy and cost against single-model baselines before writing any product code.
 
-5. On-prem report digitiser for diagnostic labs and nursing homes (score 3.0; effort 4, cost 4, fit 4)
-   A single-box appliance that runs OCR and a small open-weight model locally to turn lab and scan reports into structured records, with no data leaving the premises. Sold as a one-time hardware plus annual support package to diagnostic labs and nursing homes worried about data protection.
-   Why now: YC is actively calling for on-prem frontier AI for air-gapped sectors like hospitals, which signals buyers will pay for local deployment.
-   First step: Benchmark one open OCR model plus one small open LLM on a laptop against 20 anonymised reports you are permitted to use, and record accuracy and latency.
+5. Omission checker for AI-generated clinical summaries (score 3.8; effort 3, cost 2, fit 4)
+   A regression harness that compares AI-generated discharge or visit summaries against their source records and reports dropped medications, dates and allergies for the reviewing doctor. It runs in CI for hospital AI vendors and as an on-demand audit for hospital quality teams. Sold as a per-summary-batch or annual licence.
+   Why now: Momentic's QA agents show demand for automated bug-hunting before release, and healthcare leaders at the YourStory roundtable said observability has to be built in from the start, which is a gap for clinical AI vendors.
+   First step: Build a 30-case fixture set from de-identified or synthetic records with planted omissions, then check whether a simple field-level diff catches all of them before trying an LLM-based judge.
 
 TECH
 -- AI & ML
-[5] MedGraph: Maintaining Patient State with Graph Memory for Long-Term Medical Dialogue
-    Graph-based memory for LLM medical assistants that keeps patient state correct across visits, fixing outdated, misattributed, or missing safety facts.
-    https://arxiv.org/abs/2611.08433v1
-[4] Show HN: Agentic Identity Broker, OAuth Delegation for AI Agents
-    Agentic Identity Broker is an open-source OAuth2 broker letting users grant AI agents scoped, revocable access to MCP services.
-    https://github.com/zalando-incubator/agentic-identity-broker
-[4] Yelp Combines Native and Server-Driven UI for Its AI Assistant
-    Yelp combines native controls with server-driven rendering in its AI Assistant via the CHAOS framework, enabling faster UI updates.
-    https://www.infoq.com/news/2026/11/yelp-assistant-hybrid-ui/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
+[4] Why a new report on Anthropic automating AI development is alarming researchers
+    METR reports that Anthropic is using AI to accelerate AI development, with its models improving about twice as fast as a year ago, based on an 11-week investigation. The finding suggests faster model iteration and raises safety concerns about automated R&D.
+    https://www.theverge.com/ai-artificial-intelligence/1029126/anthropic-metr-report-accelerating-ai-development
+[4] The Components of Agent Memory
+    An overview of the components that make up memory in AI agents, such as how state is stored and recalled. It is relevant to designing agent memory and RAG-style retrieval.
+    https://www.anthropic.com/research/components-of-agent-memory
+[4] A Jev that can ask Opus for help gives Opus accuracy at 4x lower cost
+    A smaller model that can call Claude Opus for help reportedly matches Opus accuracy at about a quarter of the cost. The pattern of routing hard queries to a large model is relevant to cost-aware GenAI pipelines. The title is the only source, so the benchmark details are unverified.
+    https://hightouch.com/blog/llm-judges-identity-resolution
 -- System Design
-[4] Inside GitHub’s new Git storage architecture
-    GitHub explains its new Git storage architecture designed to let thousands of agents push to one repository concurrently.
-    https://github.blog/engineering/architecture-optimization/inside-githubs-new-git-storage-architecture/
-[3] Scriptable GeoDNS: Leaving AWS for Bunny
-    Account of moving DNS routing from AWS to Bunny using scriptable GeoDNS, with cost and control tradeoffs for infrastructure teams.
-    https://vincent.bernat.ch/en/blog/2026-bunny-geodns
-[3] Article: Identity as an Architectural Concern: Enterprise IAM Beyond Authentication
-    Argues enterprise IAM is an architectural concern, covering graph vs RBAC models, external vaults, and bounded revocation latency.
-    https://www.infoq.com/articles/identity-as-architecture/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
+[4] Just how far can the FOR UPDATE SKIP LOCKED Postgres queue go?
+    A Lobsters post asks how far a Postgres queue built on FOR UPDATE SKIP LOCKED can scale. It is directly relevant to choosing between a database-backed queue and brokers like Kafka or RabbitMQ.
+    https://garbagecollected.io/posts/postgres-task-queue-where-it-breaks/
+[4] Open Source pg_vectorsearch Brings More Scalable Vector Search to PostgreSQL
+    Tiger Data released pg_vectorsearch, an alpha open-source PostgreSQL extension for vector search. Its PRISM index uses partitioning and compression instead of pgvector's HNSW graph, reducing memory use and index build times.
+    https://www.infoq.com/news/2026/11/postgresql-vector-search/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
 -- Crypto & Blockchain
-[4] Binance hackers had 8 weeks of access before $6.3B exploit, Security Alliance estimates
-    Security Alliance estimates attackers had eight weeks of access before the $6.3B Binance exploit, a multi-stage intrusion lesson.
-    https://cointelegraph.com/news/binance-hackers-8-weeks-access-63b-exploit-security-alliance?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound
-[3] Thailand SEC Files Criminal Complaint Against Bitget Ahead of Dec. 5 Access Block
-    Thailand's SEC filed a criminal complaint against Bitget's operator for unlicensed trading, ahead of a Dec 5 access block.
-    https://bitcoinmagazine.com/news/thailand-sec-bitget-criminal-dec-5
-[3] Rule to Allow Crypto in 401(k)s Arrives at White House for Final Review
-    A final Labor Department rule allowing private equity, real estate and crypto in 401(k) menus has reached White House review.
-    https://bitcoinmagazine.com/news/dol-rule-crypto-401k-white-house-review
+[4] Binance CFO is leaving to ‘pursue a new venture’ after $6.3 billion hack
+    Binance's CFO is leaving to pursue a new venture, barely a week after hackers stole $6.3 billion in cryptocurrency from Binance users. The departure puts executive accountability in focus after a major exchange breach. Relevant as a signal on custody and security risk in fintech.
+    https://techcrunch.com/2026/11/07/binance-cfo-is-leaving-to-pursue-a-new-venture-after-6-3-billion-hack/
+[4] Gnosis Pay breach exposes card numbers, home addresses and linked crypto wallets
+    A breach at Gnosis Pay exposed card numbers, home addresses and linked crypto wallets. For a fintech team, it is a clear example of how card data and customer identity data can be compromised together.
+    https://www.coindesk.com/business/2026/11/07/gnosis-pay-breach-exposes-card-numbers-home-addresses-and-linked-crypto-wallets
+[4] Chainalysis says hackers stole credentials and tokens for all of its customers
+    Chainalysis says hackers stole credentials and tokens for all of its customers in a multifront cyberattack that included AI agents and an on-path data theft. The breach hits a major crypto compliance and analytics vendor. Relevant to fintech security teams on credential rotation and third-party vendor risk.
+    https://arstechnica.com/security/2026/11/chainalysis-says-hackers-stole-credentials-and-tokens-for-all-of-its-customers/
 -- Everything else
-[4] Claude Code sends your email address to websites
-    Claude Code reportedly shares users' email addresses with websites, raising privacy concerns for developers using the tool.
-    https://github.com/anthropics/claude-code/issues/107757
-[3] First steps in bare-metal programming using UEFI
-    Tutorial on writing bare-metal programs that boot via UEFI firmware, covering the fundamentals of low-level systems programming.
-    https://kevinboone.me/efitest_index.html
-[3] Crypto Card Provider Gnosis Pay Says Hackers Accessed Customer Data
-    Gnosis Pay says hackers accessed customer data from a legacy card system, while funds and its enterprise platform were unaffected.
-    https://decrypt.co/382718/crypto-card-provider-gnosis-pay-hackers-customer-data
+[4] Forwarded Without Question: How Web Frameworks Overtrust the Forwarded Header
+    A post argues that web frameworks overtrust the Forwarded header, which can let clients spoof origin information. The issue directly affects backend services that rely on proxy headers for IP or host logic.
+    https://www.lkoskela.fi/blog/2026-11-05-forwarded-without-question/
+[3] Show HN: Coldframe, a honeypot that poses as a supermarket fridge controller
+    Coldframe is a single-file Python honeypot that imitates Danfoss AK-SM 800A and Dixell XWEB refrigeration controllers, matched to real Shodan records. It was built after recent attacks on industrial fridge installations. It is relevant to OT and IoT security.
+    https://github.com/hedgerow-dev/coldframe
+[3] AI broke the cybersecurity world. What’s next?
+    An interview with Alex Stamos, chief security officer at Cognition, on how AI has disrupted cybersecurity. It is part one of a series on AI in real life, and Stamos gives a direct assessment of the field's current state.
+    https://www.theverge.com/podcast/1029038/ai-cybersecurity-hackers-data-breach-dark-age-alex-stamos
 
 FINANCE
-[4] The AI ‘credit card’ is getting costlier as CoreWeave bond yield tops 16%
-    CoreWeave bond yields topping 16% signal stress in AI debt markets amid worries about a data center slowdown.
-    https://www.cnbc.com/2026/11/06/coreweave-bond-yield-tops-16percent-as-ai-credit-stress-rises.html
-[4] SEBI proposes mandatory AML certification for intermediaries’ principal officers
-    SEBI proposes mandatory AML certification for intermediaries' principal officers, to be obtained within six months of the rule.
-    https://www.thehindubusinessline.com/markets/sebi-proposes-mandatory-aml-certification-for-intermediaries-principal-officers/article71675333.ece
-[4] Record FII selling of ₹4.55 trillion meets record DII buying in Samvat 2082
-    FIIs sold a record ₹4.55 trillion of Indian equities in Samvat 2082 while DIIs bought ₹8.55 trillion, cushioning the market.
-    https://www.business-standard.com/markets/news/record-fii-selling-of-4-55-trillion-meets-record-dii-buying-in-samvat-2082-126110601834_1.html
-[4] Pressure on rupee continues in Samvat 2082; 10-year bond yields harden
-    Rupee depreciated 6.37% against the dollar in Samvat 2082 on FPI outflows, while the 10-year bond yield rose 69 basis points.
-    https://www.business-standard.com/markets/news/pressure-on-rupee-continues-in-samvat-2082-10-year-bond-yields-harden-126110601774_1.html
-[4] Angel One overtakes Zerodha to become 2nd-largest broker by active clients
-    Angel One overtook Zerodha as second-largest broker by NSE active clients in October, while Groww stays first; relevant fintech competition.
-    https://www.business-standard.com/companies/news/angel-one-overtakes-zerodha-to-become-2nd-largest-broker-by-active-clients-126110601754_1.html
+[4] Looking to invest in international funds? Only one scheme remains open for new investors amid fresh subscription curbs
+    Only one international mutual fund scheme is accepting fresh SIPs from Indian investors. Three others have suspended new investments and paused existing SIP instalments. Investors seeking overseas exposure have few options for now.
+    https://www.livemint.com/money/personal-finance/looking-to-invest-in-international-funds-only-one-scheme-remains-open-for-new-investors-amid-fresh-subscription-curbs-11794052868670.html
+[4] SEBI settlement rules from November 7: Who can apply online, how much to pay and the 90-day deadline explained
+    SEBI's revised settlement rules took effect on November 7, 2026, changing application fees, minimum settlement amounts, and filing deadlines. Fast-track options are introduced for eligible cases. The changes matter for anyone facing SEBI proceedings.
+    https://www.livemint.com/money/personal-finance/sebi-settlement-rules-from-november-7-who-can-apply-online-how-much-to-pay-and-the-90-day-deadline-explained-11794046408426.html
+[4] NSE overhauls key trading rules: CAS, F&O expiry trading hours revised - What changes from December 7?
+    From December 7, the NSE will shorten the Closing Auction Session to 10 minutes and revise closing-price discovery. F&O expiry trading hours are also being changed.
+    https://www.livemint.com/market/stock-market-news/nse-overhauls-key-trading-rules-closing-auction-session-f-o-expiry-trading-hours-revised-what-changes-from-dec-7-11794047384672.html
+[3] Sold property but received money in instalments? ITAT explains when you must pay income tax on capital gains
+    ITAT Surat deleted a ₹2.45 crore capital gains addition after a landowner showed he received only ₹25 lakh that year, despite ₹2.86 crore in Form 26AS. The tribunal considered later returns and co-owners' cases.
+    https://www.livemint.com/money/personal-finance/sold-property-but-received-money-in-instalments-itat-explains-when-you-must-pay-income-tax-on-capital-gains-11794065759266.html
+[3] Exchanging old gold for new jewellery this Diwali? 6 things to check before accepting your jeweller’s valuation | Guide
+    A guide lists six checks before accepting a jeweller's valuation when exchanging old gold this Diwali. They cover purity, net weight, market rates, melting deductions, making charges and exchange terms.
+    https://www.livemint.com/money/personal-finance/exchanging-old-gold-for-new-jewellery-this-diwali-6-things-to-check-before-accepting-your-jeweller-s-valuation-guide-11794066226811.html
 
 GENERAL KNOWLEDGE
-[4] Less than 4 minutes of vigorous exercise a day could halve your dementia risk
-    Brief bursts of vigorous activity, like rushing for a bus, may substantially reduce dementia risk, according to new research.
-    https://www.newscientist.com/article/2597936-less-than-4-minutes-of-vigorous-exercise-a-day-could-half-your-dementia-risk/?utm_campaign=RSS|NSNS&utm_content=home&utm_medium=RSS&utm_source=NSNS
-[4] AI Companies Really, Really Want to Buy Your Work Files and Emails
-    Data brokers are buying companies' internal work files and emails to train AI models, raising confidentiality and consent concerns.
-    https://www.wired.com/story/ai-companies-really-really-want-to-buy-your-work-files-and-emails/
-[3] Strange Gas in Mars' Atmosphere Hints the Red Planet Is Still Volcanically Active—and Points to Places to Search for Alien Life
-    Study finds gases in Mars' atmosphere may come from volcanic fissures, suggesting hydrothermal-like habitats worth searching for life.
-    https://www.smithsonianmag.com/smart-news/strange-gas-in-mars-atmosphere-hints-the-red-planet-is-still-volcanically-active-and-points-to-places-to-search-for-alien-life-180989817/
-[3] AI stocks climb after trillions wiped from market values
-    AI stocks rebound after a sell-off that wiped trillions from market values, with fears about slower AI development after the election.
-    https://www.bbc.co.uk/news/articles/c35ynnpzdq51o?at_medium=RSS&at_campaign=rss
-[3] Paraguay resumes Pena impeachment proceedings as financial crisis deepens
-    Paraguay resumes impeachment proceedings against President Pena amid a financial crisis after a digital bank failure.
-    https://www.aljazeera.com/news/2026/11/6/paraguay-resumes-pena-impeachment-proceedings-as-financial-crisis-deepens?traffic_source=rss
+[4] Ousted Paraguayan president appears before prosecutors
+    Paraguay's Senate impeached President Santiago Peña after a state-affiliated bank collapsed. He was removed from office and placed under house arrest, and has now appeared before prosecutors. The case raises questions about banking oversight and state-linked financial institutions.
+    https://www.npr.org/2026/11/07/nx-s1-6033373/paraguay-president-ousted-bank-collapse
+[4] Iran’s IRGC says building underground sites for weapons production, storage
+    Iran's Revolutionary Guard says it is building underground military complexes for weapons production and storage. It claims these sites let missile output continue under heavy bombardment. This signals Iran is hardening its arsenal against strikes, which matters for regional escalation risk.
+    https://www.aljazeera.com/news/2026/11/7/irans-irgc-says-building-underground-sites-for-weapons-production-storage?traffic_source=rss
+[4] A promising new medicine against heart disease fails unexpectedly
+    An experimental drug that lowers a common heart-attack risk factor failed to improve outcomes in a trial, despite doctors expecting it would save lives. The medicine made no difference. The result is a useful caution for cardiovascular drug development and trial design.
+    https://www.npr.org/2026/11/07/nx-s1-6026379/lpa-drug-lipoproteina-heart-attack
+[4] Iraq’s FM says external parties using Iraqi soil to attack neighbours
+    Iraq's foreign minister told Al Jazeera that external parties are using Iraqi territory to attack neighbouring states. Baghdad says it is investigating attacks on the Gulf launched from its soil. This raises the risk of regional spillover and Iraq-Gulf tensions.
+    https://www.aljazeera.com/news/2026/11/7/iraqs-fm-says-external-parties-using-iraqi-soil-to-attack-neighbours?traffic_source=rss
+[4] The Fridge-Hacking Spree Is an Internet-of-Things Wake-Up Call
+    Escalating hacks of internet-connected fridges affecting blood labs and grocery stores expose serious weaknesses in critical infrastructure. The incidents stem from basic security lapses in IoT devices. Healthcare and supply-chain operators should review device security.
+    https://www.wired.com/story/kernel-panic-refrigeration-hacks-internet-of-things/
 
 ENTREPRENEURSHIP
-[4] Show HN: Agentic Identity Broker, OAuth Delegation for AI Agents
-    Agentic Identity Broker is an open-source OAuth2 broker letting users grant AI agents scoped, revocable access to MCP services.
-    https://github.com/zalando-incubator/agentic-identity-broker
-[4] VeloDB’s Nitin Waghulde on why AI agents break down after the demo
-    VeloDB executive says AI agents fail in production and the database layer is often the fix.
-    https://yourstory.com/2026/11/velodbs-nitin-waghulde-on-why-ai-agents-break-down-after-the-demo
-[4] When code is cheap, trust is not: Inside the AI-era engineering roundtable
-    Roundtable across healthcare, fintech, and other sectors on automation, human oversight, and observability in AI-era engineering.
-    https://yourstory.com/2026/11/when-code-is-cheap-trust-is-not-inside-the-ai-era-engineering-roundtable
-[4] Cashfree Launches ‘Checkout For Agents’ To Enable AI-Led Payments
-    Cashfree launches Checkout for Agents, letting AI agents process customer payments, relevant to agentic payments infrastructure.
-    https://inc42.com/buzz/cashfree-launches-checkout-for-agents-to-enable-ai-led-payments/
-[4] Launch HN: Momentic (YC W24) – Agents that catch bugs by using your app
-    Launch of Momentic, AI QA agents that explore web and mobile apps autonomously to find bugs.
-    https://momentic.ai/
+[4] ED Searches CoinDCX & Delta Exchange Over Alleged Illegal Cross-Border Transfers
+    The Enforcement Directorate searched three premises linked to crypto exchanges CoinDCX and Delta Exchange India over alleged illegal cross-border transfers. The case points to tighter enforcement against Indian crypto platforms and relevant compliance pressure for fintechs.
+    https://inc42.com/buzz/ed-searches-coindcx-delta-exchange-over-alleged-illegal-cross-border-transfers/
+[3] How To Build The Future: Paul Graham & Amjad Masad
+    Amjad Masad of Replit discusses building toward AI coding and an agent shipped in 2024 that provisions its own infrastructure. He says enterprises are replacing $10M software projects with about $250K of Replit. Relevant to agent-based development tooling trends.
+    https://www.youtube.com/watch?v=Q78dJ0vkWe8
+[3] From GIVA To EloElo Group — Indian Startups Raised $255 Mn This Week
+    Inc42 data shows 20 Indian startups raised $255 million combined in the first week of November. It gives a snapshot of current Indian startup funding activity.
+    https://inc42.com/buzz/from-giva-to-eloelo-group-indian-startups-raised-255-mn-this-week/
+[3] OYO Parent PRISM’s Profit Jumps 17% YoY To ₹353 Cr In Q1
+    PRISM, the IPO-bound parent of OYO, reported a Q1 profit after tax of ₹353 crore, up 17% year on year. The result is relevant to the Indian IPO pipeline.
+    https://inc42.com/buzz/oyo-parent-prisms-profit-jumps-17-yoy-to-%e2%82%b9353-cr-in-q1/
+[3] Show HN: Goethe – The infrastructure for self-hosted AI
+    Goethe is an infrastructure product that deploys and manages self-hosted AI models on user-controlled hardware, exposing a secure API. It is relevant to inference deployment, though it is an early launch.
+    https://github.com/meshapplied/Goethe
 
 HEALTH-TECH
-[4] The Big Challenge for AI in Healthcare Comes After Approval
-    Argues the main challenge for healthcare AI is managing unexpected model changes after regulatory approval.
-    https://medcitynews.com/2026/11/the-big-challenge-for-ai-in-healthcare-comes-after-approval/
-[3] As Diwali Celebrations Begin, Hospitals Prepare for the Aftermath
-    Hospitals prepare for Diwali surge in burns, eye injuries, road accidents and pollution-related respiratory cases.
-    https://health.economictimes.indiatimes.com/news/industry/as-diwali-celebrations-begin-hospitals-prepare-for-the-aftermath/135604406
-[3] STAT+: After Medicare punts RPM overhaul to 2029, advocates see window to fight back
-    Medicare delays remote patient monitoring overhaul to 2029 despite opposition to banning third-party RPM delivery.
-    https://www.statnews.com/2026/11/06/new-medicare-overhaul-of-remote-patient-monitoring-hospital-pushback/?utm_campaign=rss
-[3] Forensic audit no hurdle to IHH increasing stake in Fortis: MD
-    IHH Healthcare says a forensic audit won't stop it raising its Fortis stake above 50% at market price.
-    https://health.economictimes.indiatimes.com/news/hospitals/forensic-audit-no-hurdle-to-ihh-increasing-stake-in-fortis-dr-raghuvanshi/135601766
-[3] Fortis posts ₹2735 crore in Q2 FY27, profit dips 2.5%
-    Fortis Q2 FY27 hospital revenue up 18.6% to ₹2,340 Cr, with PAT down 1.1% and occupancy at 72%.
-    https://health.economictimes.indiatimes.com/news/hospitals/fortis-posts-2735-crore-in-q2-fy27-profit-dips-2-5/135590500
+[3] Experian Health Survey: Providers Struggle Amid Increasing Claim Denials
+    An Experian Health survey finds provider efforts to prevent claim denials are falling short, with many reporting more denials than last year and more complex payer rules. This revenue-cycle pain point could inform claims-automation opportunities, though it is US-focused.
+    https://medcitynews.com/2026/11/experian-health-survey-providers-struggle-amid-increasing-claim-denials/
+[3] CMS proposes rollbacks of 'excessively burdensome' Conditions of Participation
+    CMS proposed rolling back Biden-era Conditions of Participation requirements it calls excessively burdensome, including obstetric-care requirements for hospital emergency departments. The changes are estimated to save $320 million. It affects hospital compliance and operational requirements.
+    https://www.fiercehealthcare.com/providers/cms-proposes-rollbacks-excessively-burdensome-conditions-participation
+[3] Omada Health hikes 2026 outlook after ‘strongest quarter ever’ in Q3
+    Omada Health raised its 2026 outlook after what CEO Sean Duffy called its strongest quarter ever in Q3. The update came on an earnings call. It is a digital health company performance signal relevant to the health-tech funding and market landscape.
+    https://www.fiercehealthcare.com/finance/omada-health-hikes-2026-outlook-after-strongest-quarter-ever-q3
