@@ -1,12 +1,6 @@
 name: Send daily digest
 on:
-  # 09:00 on the Mac's clock (UTC+05:30), then backups 30, 60 and 120 minutes later: GitHub sometimes
-  # delays or skips scheduled runs. Each digest is sent once (mail/sent.json), so the backups only act if needed.
-  schedule:
-    - cron: "30 3 * * *"
-    - cron: "0 4 * * *"
-    - cron: "30 4 * * *"
-    - cron: "30 5 * * *"
+  # Manual backup only: the daily 9am email is sent by the Google Apps Script (GitHub's schedule ran hours late).
   workflow_dispatch: {}
 permissions:
   contents: write
