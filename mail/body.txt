@@ -1,139 +1,139 @@
-Knowledge Updater · Mon 09 Nov 2026
+Knowledge Updater · Tue 10 Nov 2026
 
 Full page (all tabs & filters): https://eth-developer03.github.io/ku-a6244260/
 
 BUSINESS IDEAS
-1. Discharge summary drafter for small Indian hospitals (score 4.2; effort 3, cost 2, fit 5)
-   A web tool that takes a patient's inpatient notes, lab results and medication orders from the hospital's existing records and drafts a discharge summary in the hospital's own template. The treating doctor reviews, edits and signs every draft, and the tool exports to PDF and DOCX for hospitals that file paper or print records.
-   Why now: A recent npj Digital Medicine study found AI can help draft discharge summaries for long, complex stays, which makes this a credible workflow to build and validate now.
-   First step: Ask two or three hospital contacts for anonymised discharge summary templates and the fields their staff fill in by hand.
+1. Per-step LLM cost auditor for agent pipelines (score 4.2; effort 2, cost 1, fit 4)
+   A tool that records token use and latency for every step in an agent pipeline and suggests where a cheaper model, a small specialised decider or caching would do the job. It is sold as a monthly report to startups that spend more than a set amount on LLM APIs.
+   Why now: Amazon reportedly saved millions by replacing Sonnet 4.6 with a specialised decider, and Walmart cut inference costs from over $100k to $10k a month by moving to pay-as-you-go, so cost-per-step data now has a clear payoff.
+   First step: Add per-step token and latency logging to one of your existing agent pipelines and total the cost of each step for a week.
 
-2. SSH and credential exposure auditor for developer machines (score 4.2; effort 2, cost 1, fit 4)
-   A small CLI that lists every credential, SSH agent socket and cloud token a local machine exposes to desktop AI apps and to the remote hosts they connect to, then flags anything forwarded unexpectedly. Small dev teams and security consultancies pay for a per-seat or per-team report and a policy file that blocks specific forwards.
-   Why now: ChatGPT Desktop was reported to forward the user's SSH agent to remote machines, which shows AI desktop tools can silently widen credential reach, and teams now need a way to check what their tools can see.
-   First step: Set up a macOS VM with an SSH agent loaded, connect a desktop AI app to a remote host, and record what the remote side can access through the forwarded socket.
+2. Employee reimbursement payout API for Indian SMEs over UPI and IMPS (score 4.0; effort 3, cost 3, fit 5)
+   An API that lets Indian SMEs pay medical, travel and benefit reimbursements straight to employee bank accounts, with account validation before each payout and a reconciliation report for finance. It is sold per payout or as a flat monthly plan, and it runs through a licensed payment partner rather than as a standalone payment license.
+   Why now: Canada's Real-Time Rail launch shows national real-time rails becoming the default, and Flex's engineer-number-one story on fixing HSA and FSA payments shows benefit payouts are still painful.
+   First step: Talk to three finance or HR leads at Indian SMEs about how they pay medical reimbursements today, and compare two bank-account validation and payout partners' pricing and onboarding.
 
-3. GPU price comparison and routing advisor for AI startups (score 4.2; effort 2, cost 1, fit 4)
-   A service that continuously tracks hourly prices for the same GPUs across cloud and neocloud providers, estimates cost per token for each workload profile, and suggests the cheapest provider that meets latency needs. It sells as a monthly subscription to Indian AI startups that run inference or fine-tuning and need to control spend.
-   Why now: The same H100 is listed between $2.69 and $12.29 per hour depending on the provider, a spread big enough that a tracker could save startups real money.
-   First step: Script a daily scraper for the public hourly prices of three providers offering H100s and log the spread for two weeks to show the gap is consistent.
+3. Durable step log library for long-running agent workflows (score 4.0; effort 3, cost 1, fit 4)
+   A small open-source library, in Java or Python, that journals each external tool call and its result to Postgres or SQLite. After a crash, it skips completed steps and rebuilds state from the log. The paid version is a hosted runner for small teams.
+   Why now: Martin Fowler's piece on durable execution for multi-day agents and Rivet's S3-backed hibernating actors both point to the same unmet need: agents that survive crashes without a heavy orchestrator.
+   First step: Build a roughly 100-line Python decorator that journals tool results to SQLite and replays them after a simulated crash, then post it as a Show HN.
 
-4. Bank-rail reimbursement API for Indian SMEs (score 4.0; effort 3, cost 3, fit 5)
-   An API and dashboard where small Indian companies upload employee medical or travel claims, the system checks bills against policy limits, and it pays approved amounts to employee bank accounts over IMPS or UPI. Revenue comes from a per-payout fee, and a licensed payment partner handles the regulated money movement.
-   Why now: Payments Canada's launch of its real-time rail and Flex's work on HSA and FSA payment problems both point to instant, rules-based payouts for employee benefits, and India's real-time rails already allow this without new infrastructure.
-   First step: Check RBI's payment aggregator rules and talk to two licensed payout providers about a white-label or partner arrangement before writing any payout code.
+4. Closed-loop diagnostic report tracker for clinics and diagnostic labs (score 3.8; effort 3, cost 2, fit 4)
+   A SaaS that tracks every pending diagnostic report, sends reminders to patients over WhatsApp or SMS, and logs when the referring doctor has acknowledged the result. It gives clinics an audit trail that shows the follow-up loop was closed.
+   Why now: An NCDRC ruling on medical negligence put the burden of collecting diagnostic reports and coordinating follow-up on hospitals and doctors, so clinics now need evidence that the loop was closed.
+   First step: Map the full lifecycle of one diagnostic report at a clinic you know, from order to patient collection to doctor acknowledgement, and mark every handoff where a report can be lost.
 
-5. On-prem radiology report structurer for diagnostic centres (score 3.2; effort 4, cost 3, fit 4)
-   A self-hosted service that converts a radiologist's free-text report into a structured, consistent format with fields for measurements and findings, running fully on the centre's own hardware. The radiologist remains the sole author and approves every report, and the product sells as a licence plus support to diagnostic chains that cannot send scans or reports to a cloud API.
-   Why now: An agentic radiology framework that calls modular tools to produce structured reports shows the approach is maturing, and quantised models like Maple now run useful sizes on a 6GB consumer GPU, so on-prem deployment is affordable.
-   First step: Run a 4-bit quantised open model on a single consumer GPU and measure whether it can reliably extract measurements from 50 anonymised sample reports.
+5. Discharge summary drafter for small private hospitals in India (score 3.5; effort 4, cost 2, fit 4)
+   A tool that drafts discharge summaries from admission notes, lab results and medication orders, with the treating doctor reviewing and signing every draft. Sold per bed-month to hospitals with 30 to 150 beds that lack a documentation team.
+   Why now: A new npj Digital Medicine study found AI can help produce discharge summaries for long, complex stays, which makes a doctor-reviewed drafting workflow credible to hospital administrators now.
+   First step: Ask two hospital contacts from your internship for ten anonymised discharge summaries and time how long each one takes a doctor to write.
 
 TECH
 -- AI & ML
-[4] How LinkedIn Uses AI to Review 40,000 Pull Requests a Week
-    LinkedIn uses AI to review about 40,000 pull requests a week, with most reviews posted before a human reviewer opens the PR. Relevant to engineers building AI code review tooling at scale.
-    https://blog.bytebytego.com/p/how-linkedin-uses-ai-to-review-40000
-[4] The same H100 costs $2.69 or $12.29 an hour depending where you rent it
-    Reports that the same NVIDIA H100 GPU costs $2.69 or $12.29 per hour depending on the provider. A roughly 4.6x price spread. Important for cost planning when running GenAI pipelines.
-    https://github.com/datareceipts/data-receipts/tree/main/109-gpu-pricing
-[4] AWS Launches TorchNeuron to Run PyTorch Models on AWS Trainium Without Modifications
-    AWS introduced TorchNeuron, a native PyTorch backend that runs existing PyTorch code on Trainium chips with virtually no modifications. It was announced at PyTorch Conference North America 2026. Useful for teams evaluating cheaper training and inference hardware.
-    https://www.infoq.com/news/2026/11/aws-torchneuron-trainium-pytorch/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
+[5] Presentation: Batch Intelligence at Scale: Cost-Efficient Multi-Agent LLM Workflows with Built-In Resilience
+    Walmart Global Tech runs multi-agent LLM workflows for nightly batch inventory forecasting across 4,700 stores. The talk covers schema violations, data mismatches, and network drops, handled with MCP grounding and loop agents. Cloud inference costs fell from over $100k to $10k per month by moving from PTUs to pay-as-you-go.
+    https://www.infoq.com/presentations/scaling-multi-agent-llm-batch/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
+[5] Article: LLM Reliability Layers Under Test: Accuracy, Yield, and the Limits of Verification
+    A benchmark of six LLM reliability layers found voting and self-correction did not recover accuracy; they mainly withheld doubtful records. The authors argue production systems should use deterministic lookups, track yield over raw accuracy, and fix extraction bottlenecks first. Directly applicable to reliable LLM extraction pipelines, including clinical documents.
+    https://www.infoq.com/articles/llm-reliability-layers-limits-accuracy/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
+[4] Your Algorithm: Giving People More Ways to Personalize Facebook Recommendations
+    Meta's Your Algorithm lets users edit a single view of the interests that drive Facebook Feed and Reels, using natural-language preferences. It also describes tailoring LLMs to specific tasks inside the recommendation system. Useful for understanding task-specialised LLMs in production recommenders.
+    https://engineering.fb.com/2026/11/10/ml-applications/your-algorithm-giving-people-more-ways-to-personalize-facebook-recommendations/
 -- System Design
-[4] Show HN: Pgxio – a tiny PostgreSQL layer inside Nginx
-    Pgxio is an alpha Show HN project that embeds a PostgreSQL layer inside Nginx as a Rust module. It uses non-blocking libpq, supports HTTP/2, websockets, and LISTEN/NOTIFY, and is tested on Debian. Relevant to backend architecture and reducing service layers.
-    https://github.com/mishabunte/pgxio
-[4] Podcast: Distributed LLM Inference on Kubernetes with llm-d, Wasm, & TornadoVM
-    A podcast on distributed LLM inference on Kubernetes using llm-d and vLLM, covering KV and prefix cache locality, request routing, and batching across clusters. It focuses on maximizing expensive GPU utilization. Directly relevant to scaling inference infrastructure.
-    https://www.infoq.com/podcasts/distributed-llm-inference-kubernetes/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
-[3] BitDecoding-FP4: Native FP4 KV Cache Decoding via Algorithm-System Co-Design
-    BitDecoding-FP4 presents native FP4 KV-cache decoding for long-context LLM serving, reducing error via dual-residual query quantization and underflow-aware scaling. It addresses memory bandwidth bottlenecks in serving, relevant to inference infrastructure.
-    https://arxiv.org/abs/2611.09825v1
+[4] Self-service regional failover with Amazon Application Recovery Controller Region Switch and centralized ingress controls
+    AWS shows how regulated enterprises can run self-service regional failover with ARC Region Switch, even behind centrally managed ingress proxies. The design uses Transit Gateway peering, Route 53 Private Hosted Zones, and VPC Lattice to keep security controls while avoiding cross-team coordination during disaster recovery.
+    https://aws.amazon.com/blogs/architecture/self-service-regional-failover-with-amazon-application-recovery-controller-region-switch-and-centralized-ingress-controls/
+[4] Long-horizon agents and durable execution
+    Kiran Prakash explains durable execution for long-horizon agents that run for days or weeks and interact with people and external systems. The runtime logs each external step's result so that after a crash, completed steps are skipped and state is rebuilt from the record. Directly relevant to reliable agent backends and workflow design.
+    https://martinfowler.com/articles/durable-execution-agents.html
+[4] Pinterest and Intel Take Open-Source Profiling to Internet Scale
+    Pinterest and Intel are extending gProfiler, an open-source continuous profiler, to work across an internet-scale infrastructure fleet. The aim is production performance visibility at that scale. Relevant to observability and profiling for large backend systems.
+    https://www.infoq.com/news/2026/11/pinterest-intel-profiling/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
 -- Crypto & Blockchain
-[3] North Korea Is Minting Its Own Meme Coins to Launder Binance Hack Loot
-    Elliptic says North Korean launderers created six meme tokens on NEAR between Nov. 5 and 7. They moved about $430,000 of Binance hack proceeds through homemade liquidity pools.
-    https://bitcoinmagazine.com/news/north-korea-meme-coins-binance-hack
-[3] TD Cowen Gives Stablecoin Yield Ban 10% Odds as Banks Plan Push in Democrat-Led Congress
-    TD Cowen puts a 10% chance on Congress banning platform stablecoin yield within two years. Banks are renewing their lobbying push after Democratic midterm wins.
-    https://bitcoinmagazine.com/news/td-cowen-stablecoin-yield-ban-10-odds
-[3] Binance to Close Accounts in Four EU Countries Dec. 31, Charging Idle Balances From Nov. 29
-    Binance will close accounts in France, Spain, Italy and Poland on Dec. 31 and blocks new deposits. Idle balances incur a monthly fee from Nov. 29 because it still lacks an EU license.
-    https://bitcoinmagazine.com/news/binance-closing-accounts-four-eu-countries
+[3] Crypto teams up with U.S. government to defend stock perps in legal fight
+    Crypto firms are backing the U.S. government in a legal fight over whether stock perpetual futures can be listed. The outcome could shape how such products are offered in the U.S.
+    https://www.coindesk.com/policy/2026/11/10/crypto-teams-up-with-u-s-government-to-defend-stock-perps-in-legal-fight
+[3] Bitcoin Falls as Hot US Inflation Fuels Fears of Bigger Fed Rate Hike
+    Bitcoin dropped below $74,000 after October US inflation beat forecasts. The print raised expectations of another Federal Reserve rate hike at its December meeting. Relevant mainly as macro context for risk assets, including crypto.
+    https://decrypt.co/382950/bitcoin-falls-hot-us-inflation-fears-bigger-fed-rate-hike
+[3] Plume affiliate lands broker-dealer license to bring real U.S. assets onchain
+    A Plume affiliate has received a broker-dealer license to bring real U.S. assets onchain. This is a regulatory step toward tokenized real-world assets.
+    https://www.coindesk.com/markets/2026/11/10/emb-10-am-et-plume-affiliate-gets-the-legal-green-light-to-trade-regulated-security-entitlements-onchain
 -- Everything else
-[4] Payments Canada announces launch of Canada's Real-Time Rail (RTR) payment system
-    Payments Canada has announced the launch of Real-Time Rail (RTR), Canada's real-time payment system. It is a national-scale rail for instant payments. Directly relevant to payout infrastructure and bank-transfer design.
-    https://www.payments.ca/canada-launches-real-time-rail-bringing-247-payment-infrastructure-national-economy
-[4] Terminal2Shell: Critical flaw grants instant shell access on every major OS
-    A critical vulnerability named Terminal2Shell reportedly grants instant shell access on every major operating system. The title alone gives no CVE, affected versions, or patch status. Worth checking for immediate exposure and patches.
-    https://terminal2shell.com/
-[4] Cloudflare Develops Public Certificate Authority for Post-Quantum Web Security
-    Cloudflare is building a public certificate authority for Merkle Tree Certificates to reduce post-quantum cryptography bandwidth overhead. A Chrome experiment served billions of MTCs to 50% of Chrome Beta 146, reporting 9% faster median performance. Wider adoption depends on browser support and production validation.
-    https://www.infoq.com/news/2026/11/cloudflare-merkle-certificates/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
+[4] N-able takes its remote access service offline after researcher publishes dozens of zero-day bugs
+    N-able took its remote access service offline after a researcher published dozens of zero-day bugs, and urged self-hosted customers to shut down their own servers during a critical security incident. The company cited fears of cyberattacks. Significant security event for anyone running remote access tooling.
+    https://techcrunch.com/2026/11/10/n-able-takes-its-remote-access-service-offline-after-researcher-publishes-dozens-of-zero-day-bugs/
+[3] Nvidia CEO Jensen Huang’s affair with alleged Chinese spy: a timeline
+    A timeline of the reported affair between Nvidia CEO Jensen Huang and an alleged Chinese spy. The snippet says it could affect national security as the US and China race to build advanced AI infrastructure. Mostly a personality story with a semiconductor-policy angle.
+    https://techcrunch.com/2026/11/10/nvidia-ceo-jensen-huangs-affair-with-alleged-chinese-spy-a-timeline/
+[3] AMD's Zen 6 Family: Feeding the Beast
+    An analysis of AMD's Zen 6 processor family focuses on feeding the cores with memory and cache bandwidth. It is a hardware-architecture read that is only loosely relevant to backend scaling.
+    https://chipsandcheese.com/p/amds-zen-6-family-feeding-the-beast
 
 FINANCE
-[4] F&F payout tax rules: Switched jobs, received full and final settlement? Know which components are taxable
-    Full and final settlement payouts are taxed component by component when employment ends, with employers deducting TDS after the last working day. The article explains which parts are taxable, relevant for engineers switching jobs.
-    https://www.livemint.com/money/personal-finance/ff-payout-tax-rules-switched-jobs-received-full-and-final-settlement-know-which-components-are-taxable-11794230428281.html
-[4] NSE deploys liquid cooling for AI infra, plans over 80 GPUs this quarter
-    NSE is deploying liquid cooling for its AI infrastructure and plans to take GPU capacity past 80 this quarter, eventually reaching 224. It also plans to extend liquid cooling to its co-location data centre. Relevant to infra and compute-scaling decisions.
-    https://www.business-standard.com/technology/artificial-intelligence/nse-deploys-liquid-cooling-for-ai-infra-plans-over-80-gpus-this-quarter-126110900780_1.html
-[4] MakeMyTrip's India arm gets Sebi nod to float IPO
-    SEBI approved an IPO for MakeMyTrip's India subsidiary, MMT India, after a confidential draft filing in July. The offer includes share sales by MakeMyTrip and ibibo Group Holdings, with proceeds meant to strengthen the parent's cash position.
-    https://economictimes.indiatimes.com/markets/ipos/fpos/makemytrips-india-arm-gets-sebi-nod-to-float-ipo/articleshow/135675673.cms
-[3] Auction of Government of India Dated Security
-    The government is re-issuing the 6.94% GS 2036 dated security for ₹34,000 crore, with an option to retain an extra ₹2,000 crore. The auction is set for November 13 and settlement for November 16, 2026. Routine sovereign debt issuance that matters for bond market watchers.
-    https://www.rbi.org.in/scripts/BS_PressReleaseDisplay.aspx?prid=63952
-[3] Received cash from customers and deposited it in your bank account? When can income tax authorities tax it
-    ITAT Jaipur deleted an addition of ₹35.09 lakh treated as unexplained income from an insurance agent's demonetisation-era cash deposits. The tribunal accepted records showing the money came from policyholder premiums. Useful for anyone handling cash-income documentation.
-    https://www.livemint.com/money/personal-finance/received-cash-from-customers-and-deposited-it-in-your-bank-account-when-can-income-tax-authorities-tax-it-11794244686185.html
+[4] SIP vs lump sum: Which strategy delivers higher mutual fund returns? Global 30-yr data reveals what worked better
+    DSP Mutual Fund analysed 30 years of global equity data and found SIPs beat lump-sum investing in six of 10 major markets. Japan showed the largest SIP advantage, while Brazil favoured lump-sum investing. The findings support systematic investing but show results depend on the market.
+    https://www.livemint.com/money/personal-finance/sip-vs-lump-sum-which-strategy-delivers-higher-mutual-fund-returns-global-30-yr-data-reveals-what-worked-better-11794329719716.html
+[4] Anthropic's potential mega IPO joins ranks of world's biggest stock market listings
+    Anthropic has launched its US IPO roadshow, seeking to raise up to $64.4 billion by offering 825 million shares at a valuation of about $1.4 trillion, below earlier estimates of $2 trillion. Alphabet and Microsoft are reportedly set to invest $26 billion in a private placement.
+    https://economictimes.indiatimes.com/markets/us-stocks/news/anthropics-potential-mega-ipo-joins-ranks-of-worlds-biggest-stock-market-listings/articleshow/135714028.cms
+[4] FII selling eases in October as technology and telecom attract foreign investors: Motilal Oswal
+    Foreign institutional selling eased in October, with technology and telecom stocks attracting foreign investors, according to Motilal Oswal. Domestic institutions invested $6.3 billion during the month, extending their buying streak to 39 consecutive months. Steady domestic buying is cushioning Indian equities against foreign outflows.
+    https://www.thehindubusinessline.com/markets/fii-selling-eases-in-october-as-technology-and-telecom-attract-foreign-investors-motilal-oswal/article71685538.ece
+[4] FPIs return to Dalal Street amid AI sell-off and oil slump; Can proposed tax cuts sustain inflows?
+    FPIs have invested ₹53,739 crore in Indian equities so far in November. The Nifty 50 is on a seven-session winning streak and has cut its year-to-date loss to 4.15%. Relevant for reading near-term market sentiment amid the AI sell-off, the oil slump and proposed tax cuts.
+    https://www.livemint.com/market/stock-market-news/fpis-return-to-dalal-street-amid-ai-sell-off-and-oil-slump-can-proposed-tax-cuts-sustain-inflows-11794315705620.html
+[4] Salary slip shows PF deduction, but is the full amount reaching your EPF account? How to check and report shortfalls
+    Salary slip PF deductions do not guarantee the employer has deposited the full amount into the EPF account. The article explains how employees can check contributions and report shortfalls. This is practical for any salaried employee verifying PF records.
+    https://www.livemint.com/money/personal-finance/salary-slip-shows-pf-deduction-but-is-the-full-amount-reaching-your-epf-account-how-to-check-and-report-shortfalls-11794314412223.html
 
 GENERAL KNOWLEDGE
-[4] Nvidia shares slump amid investigation into CEO Jensen Huang
-    Nvidia shares slumped amid an investigation into CEO Jensen Huang, who admitted infidelity and denied compromising company security in a China spy inquiry. The $4.5 trillion AI chip firm's governance risk matters for the AI infrastructure market.
-    https://www.aljazeera.com/economy/2026/11/9/nvidia-shares-slump-amid-investigation-into-ceo-jensen-huang?traffic_source=rss
-[3] France accuses Iran of supermarket fridge hacking
-    France has accused Iran of a cyber-attack that heated fridges and freezers across hundreds of supermarkets last month. It is a notable state-linked attack on operational technology, relevant to security awareness for connected systems.
-    https://www.bbc.co.uk/news/articles/cmg474vk6dyqo?at_medium=RSS&at_campaign=rss
-[3] France accuses Iran of cyberattack on European fridges
-    Paris says a cyber unit linked to Iran's Revolutionary Guard was behind a hack that hit more than 1,000 stores, including fridges in European supermarkets. It is a significant state-linked cyberattack relevant to infrastructure security.
-    https://www.aljazeera.com/news/2026/11/9/france-accuses-iran-of-cyberattack-on-european-fridges?traffic_source=rss
-[3] Trump says Iran is sealed off. But can new US task force stop weapons flow?
-    Trump says Iran is sealed off, but analysts doubt a small intelligence-focused US task force can stop the weapons flow. Some warn the unit could expand the war.
-    https://www.aljazeera.com/news-analysis/2026/11/9/trump-says-iran-is-sealed-off-but-can-new-us-task-force-stop-weapons-flow?traffic_source=rss
-[3] Did Life Begin in an RNA World?
-    The piece examines whether life began in an RNA world, where self-copying molecules could mutate and evolve, and questions whether that alone was enough. It is a substantive science read with no direct link to the reader's work.
-    https://www.quantamagazine.org/did-life-begin-in-an-rna-world-20261109/
+[4] First day of Ukraine peace talks constructive, Zelensky says
+    Zelensky described the first day of trilateral Ukraine peace talks in the United Arab Emirates as constructive. Delegations from Kyiv, Washington and Moscow attended, the first such talks since February. The outcome could shape the war's trajectory and global geopolitics.
+    https://www.bbc.co.uk/news/articles/cqpvgvrpjvv8o?at_medium=RSS&at_campaign=rss
+[4] ‘Positive momentum’: Is the US war on Iran about to end?
+    Domestic pressures have revived stalled US-Iran diplomatic talks, but analysts say peace still hangs by a thread. Progress or collapse would materially affect energy markets and regional stability.
+    https://www.aljazeera.com/news/2026/11/10/positive-momentum-is-the-us-war-on-iran-about-to-end?traffic_source=rss
+[3] Israel's new parliament sworn in as leaders compete to form government
+    Israel's new parliament was sworn in, with Gadi Eisenkot, Benjamin Netanyahu's main rival, given the first chance to form a government. The outcome could oust the prime minister. Coalition formation will shape Israel's political direction.
+    https://www.bbc.co.uk/news/articles/crd939lpzjp9o?at_medium=RSS&at_campaign=rss
+[3] Security forces seized top court, Somalia’s ex-chief justice says
+    Somalia's former chief justice says more than 300 security personnel militarily occupied the Supreme Court. The claim points to a serious erosion of judicial independence in Somalia.
+    https://www.aljazeera.com/video/newsfeed/2026/11/10/security-forces-seized-top-court-somalias-ex-chief-justice-says?traffic_source=rss
+[3] ‘We Have to Take Over’: Far-Right Extremists Want to Seize Control of the GOP
+    Right-wing extremists argue that MAGA failed by not going far enough and now want to take control of the Republican Party after heavy midterm losses. The article reports their stated strategy and intent.
+    https://www.wired.com/story/we-have-to-take-over-far-right-extremists-want-to-seize-control-of-the-gop/
 
 ENTREPRENEURSHIP
-[4] Show HN: Pgxio – a tiny PostgreSQL layer inside Nginx
-    Pgxio is an alpha Show HN project that embeds a PostgreSQL layer inside Nginx as a Rust module. It uses non-blocking libpq, supports HTTP/2, websockets, and LISTEN/NOTIFY, and is tested on Debian. Relevant to backend architecture and reducing service layers.
-    https://github.com/mishabunte/pgxio
-[4] MakeMyTrip's India arm gets Sebi nod to float IPO
-    SEBI approved an IPO for MakeMyTrip's India subsidiary, MMT India, after a confidential draft filing in July. The offer includes share sales by MakeMyTrip and ibibo Group Holdings, with proceeds meant to strengthen the parent's cash position.
-    https://economictimes.indiatimes.com/markets/ipos/fpos/makemytrips-india-arm-gets-sebi-nod-to-float-ipo/articleshow/135675673.cms
-[3] 🎙️ How I AI: How this founder built a better Duolingo with Codex
-    A weekly How I AI podcast episode covers a founder who built a better Duolingo-style app using Codex. It offers product-building ideas for indie developers.
-    https://www.lennysnewsletter.com/p/how-i-ai-how-this-founder-built-a
-[3] Your Next Customer Is an AI Agent. Here’s How to Market to It.
-    Entrepreneur argues AI agents will become a new customer segment, with marketing shifting beyond AEO and GEO further down the purchase funnel. Relevant for distribution strategy for an indie AI product.
-    https://www.entrepreneur.com/business-news/tech/your-next-customer-is-an-ai-agent-heres-how-to-market-to-it
-[3] How AI Agents Are Helping Companies Scale Their Marketing
-    The article describes how AI agents can scale marketing by combining skills, tools and context into an agentic marketing operating model. Some relevance if you are building agent tooling for go-to-market.
-    https://www.entrepreneur.com/business-news/tech/how-ai-agents-are-helping-companies-scale-their-marketing
+[4] State of the tech job market: late 2026
+    Lenny's late-2026 tech job market report says product managers are gaining ground, engineers are plateauing, and designers are struggling. It adds that the largest AI hiring boom is happening outside software companies.
+    https://www.lennysnewsletter.com/p/state-of-the-tech-job-market-late
+[4] Froncort.AI Raises $2.3 Mn From Google.org To Expand AI-Based Disease Surveillance
+    Healthcare AI startup Froncort.AI raised $2.3 million (Rs 21.5 crore) from Google.org to expand its AI-based disease surveillance work. The funding supports scaling a health-focused AI product.
+    https://inc42.com/buzz/froncort-ai-raises-2-3-mn-from-google-org-to-expand-ai-based-disease-surveillance/
+[4] OpenAI Deploys Control Room With 35-Second Kill Switch Amid Security Concerns
+    OpenAI has built and deployed Control Room, a centralised system with a 35-second kill switch for AI agents, amid concerns about rogue agents. It is directly relevant to agent safety and oversight design.
+    https://inc42.com/buzz/openai-deploys-control-room-with-35-second-kill-switch-amid-security-concerns/
+[4] Arka Fincap raises Rs 525 Cr from The Rise Funds of TPG
+    Arka Fincap, a Kirloskar Group-promoted NBFC founded in 2018, raised an initial Rs 525 crore from The Rise Funds of TPG. The capital will fund expansion and investments in technology and risk management.
+    https://yourstory.com/2026/11/arka-fincap-raises-rs-525-crore-from-the-rise-funds-of-tpg
+[4] Show HN: Emma, a real-time AI video persona from Nuance Labs
+    Nuance Labs has released Emma, a browser-based real-time audio-visual AI built on its full-duplex Nuplex system, after 18 months of work. It is relevant to your speech and GenAI interest, especially for conversational voice interfaces.
+    https://app.nuancelabs.ai/try
 
 HEALTH-TECH
-[4] AB PM-JAY and ABDM implementation reviewed by Centre and States at national meeting
-    The Centre and States held a two-day review in Kolkata of AB PM-JAY and ABDM implementation, covering coverage, delivery, financial protection and digital integration. Directly relevant to ABHA and ABDM work.
-    https://www.expresshealthcare.in/news/ab-pm-jay-and-abdm-implementation-reviewed-by-centre-and-states-at-national-meeting/455791/
-[4] Cardiologists seek review of curbs on reprocessing select medical devices to cut angioplasty costs
-    Cardiologists have asked for a review of curbs on reprocessing catheters, guidewires and other devices, arguing reprocessing under validated protocols could cut angioplasty costs. Relevant to hospital cost and procurement in India.
-    https://health.economictimes.indiatimes.com/news/industry/cardiologists-seek-review-of-curbs-on-reprocessing-select-medical-devices-to-cut-angioplasty-costs/135664846
-[4] Doximity expands clinical AI footprint to more than 190 health systems
-    Doximity is expanding its clinical AI to more than 190 health systems and launching DoseCheck plus a UpToDate partnership with Wolters Kluwer. Directly relevant to clinician-facing AI and reliability in health systems.
-    https://www.fiercehealthcare.com/ai-and-machine-learning/doximity-expands-clinical-ai-footprint-more-190-health-systems
-[3] Max Lab expands diagnostic services in Uttar Pradesh with Moradabad laboratory
-    Max Lab is opening a Moradabad laboratory offering pathology, genomics and oncology diagnostics in a Tier II city. Shows diagnostic chains expanding into smaller cities, relevant to lab-report and OCR workflows.
-    https://www.expresshealthcare.in/news/max-lab-expands-diagnostic-services-in-uttar-pradesh-with-moradabad-laboratory/455796/
-[3] What’s Driving the Consumerization of Healthcare?
-    Panelists at the MedCity INVEST Digital Health Conference said patients increasingly expect convenient, consumer-style healthcare. Broad digital-health trend commentary useful as background for patient-facing tools.
-    https://medcitynews.com/2026/11/whats-driving-the-consumerization-of-healthcare/
+[5] Google Cloud rolls out Gemini for healthcare
+    Google Cloud rolled out Gemini for healthcare, developed with clinical and health plan leaders and built to support HIPAA compliance. Directly relevant given your GenAI pipelines work on Vertex AI and healthcare workflows.
+    https://www.fiercehealthcare.com/ai-and-machine-learning/google-cloud-rolls-out-gemini-healthcare
+[5] Failure to implement closed-loop diagnostic protocols invites the courts’ displeasure
+    The Institute of Medicine & Law examines an NCDRC ruling on medical negligence, patient responsibility for collecting diagnostic reports, and the need for coordination between hospitals, doctors and labs. It highlights the closed-loop diagnostic workflow gap hospitals must close.
+    https://www.expresshealthcare.in/news/failure-to-implement-closed-loop-diagnostic-protocols-invites-the-courts-displeasure/455798/
+[4] STAT+: Oura to acquire Counsel Health for $625 million, placing a big bet on AI care
+    Oura, the smart ring maker that recently delayed its IPO plans, will pay $625 million to acquire Counsel Health, a clinical AI startup. A large deal signaling major consumer-health players betting on AI-driven care delivery.
+    https://www.statnews.com/2026/11/10/oura-acquires-counsel-health-big-bet-ai-care/?utm_campaign=rss
+[4] New Campaign Wants AI Applications To Look Beyond Speed
+    Anterior's 'Beyond Faster Horses' campaign argues that healthcare AI should rebuild workflows rather than just speed up broken administrative processes. Healthcare leaders are pushing for an AI-native system design.
+    https://medcitynews.com/2026/11/new-campaign-wants-ai-applications-to-look-beyond-speed/
+[4] Trump administration announces $10B in awards for Rural Health Transformation Program’s second year
+    The Trump administration announced $10 billion in awards for the second year of the Rural Health Transformation Program, with funding partly based on how states have implemented their plans. Relevant to rural hospital technology funding and adoption.
+    https://www.fiercehealthcare.com/regulatory/trump-administration-announces-10b-awards-rural-health-transformation-programs-second
