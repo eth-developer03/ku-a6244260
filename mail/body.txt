@@ -1,139 +1,139 @@
-Knowledge Updater · Tue 10 Nov 2026
+Knowledge Updater · Wed 11 Nov 2026
 
 Full page (all tabs & filters): https://eth-developer03.github.io/ku-a6244260/
 
 BUSINESS IDEAS
-1. Per-step LLM cost auditor for agent pipelines (score 4.2; effort 2, cost 1, fit 4)
-   A tool that records token use and latency for every step in an agent pipeline and suggests where a cheaper model, a small specialised decider or caching would do the job. It is sold as a monthly report to startups that spend more than a set amount on LLM APIs.
-   Why now: Amazon reportedly saved millions by replacing Sonnet 4.6 with a specialised decider, and Walmart cut inference costs from over $100k to $10k a month by moving to pay-as-you-go, so cost-per-step data now has a clear payoff.
-   First step: Add per-step token and latency logging to one of your existing agent pipelines and total the cost of each step for a week.
+1. Yield dashboard for clinical document digitisation (score 4.8; effort 2, cost 1, fit 5)
+   A small service that wraps any OCR or LLM extraction pipeline for scanned prescriptions and lab reports and reports yield, meaning the share of records that pass deterministic checks and reach the EHR, next to accuracy. Sold per document batch to digitisation vendors and hospital IT teams.
+   Why now: A new benchmark shows voting and self-correction mainly withhold doubtful records rather than fix them, so teams need to see yield to know what their pipeline is actually delivering.
+   First step: Take 200 anonymised scanned lab reports from an existing internship project and measure yield with deterministic lookup checks against the lab's test-code list.
 
-2. Employee reimbursement payout API for Indian SMEs over UPI and IMPS (score 4.0; effort 3, cost 3, fit 5)
-   An API that lets Indian SMEs pay medical, travel and benefit reimbursements straight to employee bank accounts, with account validation before each payout and a reconciliation report for finance. It is sold per payout or as a flat monthly plan, and it runs through a licensed payment partner rather than as a standalone payment license.
-   Why now: Canada's Real-Time Rail launch shows national real-time rails becoming the default, and Flex's engineer-number-one story on fixing HSA and FSA payments shows benefit payouts are still painful.
-   First step: Talk to three finance or HR leads at Indian SMEs about how they pay medical reimbursements today, and compare two bank-account validation and payout partners' pricing and onboarding.
+2. Durable-execution starter for Spring Boot agent jobs (score 4.5; effort 3, cost 1, fit 5)
+   A small Spring Boot library that records each external tool call result in Postgres, so a crashed multi-day agent job resumes from its last completed step without repeating side effects. Sold as an open-source core with a paid hosted dashboard for monitoring jobs.
+   Why now: Martin Fowler's piece on durable execution for long-running agents and Rivet's S3-backed actor orchestrator both show teams building this same primitive from scratch.
+   First step: Build a prototype that wraps three tool calls in a Spring Boot service and checks that a forced crash between steps resumes without duplicate writes.
 
-3. Durable step log library for long-running agent workflows (score 4.0; effort 3, cost 1, fit 4)
-   A small open-source library, in Java or Python, that journals each external tool call and its result to Postgres or SQLite. After a crash, it skips completed steps and rebuilds state from the log. The paid version is a hosted runner for small teams.
-   Why now: Martin Fowler's piece on durable execution for multi-day agents and Rivet's S3-backed hibernating actors both point to the same unmet need: agents that survive crashes without a heavy orchestrator.
-   First step: Build a roughly 100-line Python decorator that journals tool results to SQLite and replays them after a simulated crash, then post it as a Show HN.
+3. Employee benefits claim-to-payout API for Indian HR teams (score 4.2; effort 3, cost 2, fit 5)
+   A solo-built API and HR dashboard that handles medical and meal-benefit claim submission, receipt checks, approval rules and payouts to employee bank accounts through a licensed payout partner. You charge per claim or a monthly seat fee and never hold funds yourself.
+   Why now: Flex's founder built the company after running into HSA and FSA payment problems, which shows that employers and employees feel benefit payout friction directly.
+   First step: Email five HR managers at 50 to 300-person Indian companies and ask how they currently reimburse medical claims, then record the steps and delays they describe.
 
-4. Closed-loop diagnostic report tracker for clinics and diagnostic labs (score 3.8; effort 3, cost 2, fit 4)
-   A SaaS that tracks every pending diagnostic report, sends reminders to patients over WhatsApp or SMS, and logs when the referring doctor has acknowledged the result. It gives clinics an audit trail that shows the follow-up loop was closed.
-   Why now: An NCDRC ruling on medical negligence put the burden of collecting diagnostic reports and coordinating follow-up on hospitals and doctors, so clinics now need evidence that the loop was closed.
-   First step: Map the full lifecycle of one diagnostic report at a clinic you know, from order to patient collection to doctor acknowledgement, and mark every handoff where a report can be lost.
+4. Pending-report tracker for Indian clinics and labs (score 4.2; effort 2, cost 1, fit 4)
+   A WhatsApp and SMS workflow tool that tracks every ordered test from order to report collection, sends reminders, and keeps a timestamped log of each outreach attempt. Clinics and diagnostic labs pay a monthly per-location fee, and the doctor still reviews every report.
+   Why now: A new NCDRC ruling makes hospitals and doctors answerable for whether diagnostic reports actually reached the patient, so a documented closed loop now has legal value.
+   First step: Interview three clinic front-desk staff this week about how they currently chase pending reports, and write down the exact steps they take.
 
-5. Discharge summary drafter for small private hospitals in India (score 3.5; effort 4, cost 2, fit 4)
-   A tool that drafts discharge summaries from admission notes, lab results and medication orders, with the treating doctor reviewing and signing every draft. Sold per bed-month to hospitals with 30 to 150 beds that lack a documentation team.
-   Why now: A new npj Digital Medicine study found AI can help produce discharge summaries for long, complex stays, which makes a doctor-reviewed drafting workflow credible to hospital administrators now.
-   First step: Ask two hospital contacts from your internship for ten anonymised discharge summaries and time how long each one takes a doctor to write.
+5. Pre-authorisation packet checker for Indian hospital billing desks (score 4.0; effort 3, cost 1, fit 4)
+   A rules engine that checks insurance pre-auth and claim packets against the TPA's documented requirements before submission, using an LLM only to extract fields from scanned documents. Hospitals pay per claim checked, and the rules stay deterministic and auditable.
+   Why now: Workflow-distillation work shows that SOPs and logged runs can become deterministic step sequences, which makes checks on repeated billing steps cheaper and easier to audit than an LLM agent.
+   First step: Collect the pre-auth checklists from two TPAs' public provider manuals and turn them into a rule file with one pass/fail rule per required field.
 
 TECH
 -- AI & ML
-[5] Presentation: Batch Intelligence at Scale: Cost-Efficient Multi-Agent LLM Workflows with Built-In Resilience
-    Walmart Global Tech runs multi-agent LLM workflows for nightly batch inventory forecasting across 4,700 stores. The talk covers schema violations, data mismatches, and network drops, handled with MCP grounding and loop agents. Cloud inference costs fell from over $100k to $10k per month by moving from PTUs to pay-as-you-go.
-    https://www.infoq.com/presentations/scaling-multi-agent-llm-batch/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
-[5] Article: LLM Reliability Layers Under Test: Accuracy, Yield, and the Limits of Verification
-    A benchmark of six LLM reliability layers found voting and self-correction did not recover accuracy; they mainly withheld doubtful records. The authors argue production systems should use deterministic lookups, track yield over raw accuracy, and fix extraction bottlenecks first. Directly applicable to reliable LLM extraction pipelines, including clinical documents.
-    https://www.infoq.com/articles/llm-reliability-layers-limits-accuracy/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
-[4] Your Algorithm: Giving People More Ways to Personalize Facebook Recommendations
-    Meta's Your Algorithm lets users edit a single view of the interests that drive Facebook Feed and Reels, using natural-language preferences. It also describes tailoring LLMs to specific tasks inside the recommendation system. Useful for understanding task-specialised LLMs in production recommenders.
-    https://engineering.fb.com/2026/11/10/ml-applications/your-algorithm-giving-people-more-ways-to-personalize-facebook-recommendations/
+[4] Intelligent Delivery: Making Every Unit of Compute Serve Better Ads
+    Meta describes allocating limited extra compute across ad requests, models, and chips, since ads ranking models are scaling toward LLM size faster than hardware. The approach targets the best outcome for the whole system. Relevant to inference cost and serving tradeoffs.
+    https://engineering.fb.com/2026/11/11/ml-applications/intelligent-delivery-serve-better-ads/
+[4] GitHub Makes Agentic Workflows Generally Available with Isolation and Budget Controls
+    GitHub Agentic Workflows is now generally available, running coding agents in GitHub Actions with read-only defaults and separately scoped write jobs. The snippet notes these protections do not cover direct write permissions or custom jobs, so safety depends on configuration.
+    https://www.infoq.com/news/2026/11/github-agentic-workflows-ga/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
+[4] Faster Retrieval for Better, More Efficient RAG
+    The article promises faster retrieval methods for RAG pipelines, aiming for better answers at lower cost. The title gives no specific technique or benchmark numbers.
+    https://machinelearning.apple.com/research/faster-retrieval
 -- System Design
-[4] Self-service regional failover with Amazon Application Recovery Controller Region Switch and centralized ingress controls
-    AWS shows how regulated enterprises can run self-service regional failover with ARC Region Switch, even behind centrally managed ingress proxies. The design uses Transit Gateway peering, Route 53 Private Hosted Zones, and VPC Lattice to keep security controls while avoiding cross-team coordination during disaster recovery.
-    https://aws.amazon.com/blogs/architecture/self-service-regional-failover-with-amazon-application-recovery-controller-region-switch-and-centralized-ingress-controls/
-[4] Long-horizon agents and durable execution
-    Kiran Prakash explains durable execution for long-horizon agents that run for days or weeks and interact with people and external systems. The runtime logs each external step's result so that after a crash, completed steps are skipped and state is rebuilt from the record. Directly relevant to reliable agent backends and workflow design.
-    https://martinfowler.com/articles/durable-execution-agents.html
-[4] Pinterest and Intel Take Open-Source Profiling to Internet Scale
-    Pinterest and Intel are extending gProfiler, an open-source continuous profiler, to work across an internet-scale infrastructure fleet. The aim is production performance visibility at that scale. Relevant to observability and profiling for large backend systems.
-    https://www.infoq.com/news/2026/11/pinterest-intel-profiling/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
+[5] Choosing QuePaxa, an unusual consensus algorithm
+    Cloudflare is building an experimental consensus service on QuePaxa, a consensus algorithm it says has never been deployed before. The post explains how the algorithm works and why Cloudflare chose it. Directly relevant to distributed systems design.
+    https://blog.cloudflare.com/choosing-quepaxa/
+[5] Bursts That Outlast Themselves: Persistent Degradation in Prefix-Cached Agent Serving
+    The paper shows prefix-cached LLM agent serving can enter a metastable degraded state after a short burst, with about 10% hit ratio and half throughput persisting for around 70 minutes. Highly relevant to reliability and capacity planning for agent backends.
+    https://arxiv.org/abs/2611.13412v1
+[4] Presentation: Uncorking Queueing Bottlenecks with OpenTelemetry
+    Gearset replaced guesswork in its distributed async queues with OpenTelemetry tracing, according to a talk by Oli Lane and Julian Wreford. The talk covers latency-distribution SLOs and debugging tips. Directly relevant to queue observability.
+    https://www.infoq.com/presentations/opentelemetry-queue-observability/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
 -- Crypto & Blockchain
-[3] Crypto teams up with U.S. government to defend stock perps in legal fight
-    Crypto firms are backing the U.S. government in a legal fight over whether stock perpetual futures can be listed. The outcome could shape how such products are offered in the U.S.
-    https://www.coindesk.com/policy/2026/11/10/crypto-teams-up-with-u-s-government-to-defend-stock-perps-in-legal-fight
-[3] Bitcoin Falls as Hot US Inflation Fuels Fears of Bigger Fed Rate Hike
-    Bitcoin dropped below $74,000 after October US inflation beat forecasts. The print raised expectations of another Federal Reserve rate hike at its December meeting. Relevant mainly as macro context for risk assets, including crypto.
-    https://decrypt.co/382950/bitcoin-falls-hot-us-inflation-fears-bigger-fed-rate-hike
-[3] Plume affiliate lands broker-dealer license to bring real U.S. assets onchain
-    A Plume affiliate has received a broker-dealer license to bring real U.S. assets onchain. This is a regulatory step toward tokenized real-world assets.
-    https://www.coindesk.com/markets/2026/11/10/emb-10-am-et-plume-affiliate-gets-the-legal-green-light-to-trade-regulated-security-entitlements-onchain
+[3] MSCI Rules Today on Cutting Strategy (MSTR) From Its Indexes After a Draft List Marks It Deleted
+    MSCI publishes its November index review today, the first under a new non-operating company screen. A draft list already marks Strategy and Metaplanet, plus three others, as deleted, signaling index removal risk for bitcoin treasury firms.
+    https://bitcoinmagazine.com/markets/msci-rules-today-strategy-mstr-deleted
+[3] OKX-ICE Tokenized Stock Venue Sets Launch, Turning to Crypto Companies After Big Tech Opts Out
+    OKXICE opens its tokenized securities venue on Nov. 23 with more than 70 assets, led by crypto firms such as Coinbase, Circle, Robinhood and Strategy. Big Tech companies opted out, and 67 companies objected to their shares being listed. The launch is relevant to tokenized equities market structure.
+    https://decrypt.co/383040/okx-ice-tokenized-stock-venue-sets-launch-crypto-companies-big-tech-opts-out
+[3] Crypto Long & Short: The GENIUS Act’s guarantees don’t cover DeFi lending
+    A CoinDesk column argues that guarantees under the GENIUS Act, the US stablecoin law, do not extend to lending in DeFi. The point matters for anyone assessing counterparty and stablecoin regulatory risk in crypto lending.
+    https://www.coindesk.com/coindesk-indices/2026/11/11/crypto-long-and-short-the-genius-act-s-guarantees-don-t-cover-defi-lending
 -- Everything else
-[4] N-able takes its remote access service offline after researcher publishes dozens of zero-day bugs
-    N-able took its remote access service offline after a researcher published dozens of zero-day bugs, and urged self-hosted customers to shut down their own servers during a critical security incident. The company cited fears of cyberattacks. Significant security event for anyone running remote access tooling.
-    https://techcrunch.com/2026/11/10/n-able-takes-its-remote-access-service-offline-after-researcher-publishes-dozens-of-zero-day-bugs/
-[3] Nvidia CEO Jensen Huang’s affair with alleged Chinese spy: a timeline
-    A timeline of the reported affair between Nvidia CEO Jensen Huang and an alleged Chinese spy. The snippet says it could affect national security as the US and China race to build advanced AI infrastructure. Mostly a personality story with a semiconductor-policy angle.
-    https://techcrunch.com/2026/11/10/nvidia-ceo-jensen-huangs-affair-with-alleged-chinese-spy-a-timeline/
-[3] AMD's Zen 6 Family: Feeding the Beast
-    An analysis of AMD's Zen 6 processor family focuses on feeding the cores with memory and cache bandwidth. It is a hardware-architecture read that is only loosely relevant to backend scaling.
-    https://chipsandcheese.com/p/amds-zen-6-family-feeding-the-beast
+[4] Tests as data: ensuring AI-generated code does what we want
+    Matteo Vaccari argues that when AI writes the code, customer-level tests stored as data rather than code become the contract with the AI, protecting them from agent edits. Directly useful for testing AI-generated backend code.
+    https://martinfowler.com/articles/tests-as-data.html
+[4] Google DeepMind just mathematically verified key parts of Signal
+    Google DeepMind used AI to mathematically verify key parts of the Signal messaging protocol in a four-week project. The work suggests AI could make formal verification of security-critical systems far more practical.
+    https://arstechnica.com/ai/2026/11/signals-encryption-just-passed-an-ai-powered-mathematical-checkup/
+[4] Tim Peters has died
+    A linked Reddit thread reports the death of Tim Peters, a longtime Python core developer. The Python community's loss is significant for anyone working in the Python ecosystem.
+    https://discuss.python.org/t/in-memoriam-tim-peters-1952-2026/110028
 
 FINANCE
-[4] SIP vs lump sum: Which strategy delivers higher mutual fund returns? Global 30-yr data reveals what worked better
-    DSP Mutual Fund analysed 30 years of global equity data and found SIPs beat lump-sum investing in six of 10 major markets. Japan showed the largest SIP advantage, while Brazil favoured lump-sum investing. The findings support systematic investing but show results depend on the market.
-    https://www.livemint.com/money/personal-finance/sip-vs-lump-sum-which-strategy-delivers-higher-mutual-fund-returns-global-30-yr-data-reveals-what-worked-better-11794329719716.html
-[4] Anthropic's potential mega IPO joins ranks of world's biggest stock market listings
-    Anthropic has launched its US IPO roadshow, seeking to raise up to $64.4 billion by offering 825 million shares at a valuation of about $1.4 trillion, below earlier estimates of $2 trillion. Alphabet and Microsoft are reportedly set to invest $26 billion in a private placement.
-    https://economictimes.indiatimes.com/markets/us-stocks/news/anthropics-potential-mega-ipo-joins-ranks-of-worlds-biggest-stock-market-listings/articleshow/135714028.cms
-[4] FII selling eases in October as technology and telecom attract foreign investors: Motilal Oswal
-    Foreign institutional selling eased in October, with technology and telecom stocks attracting foreign investors, according to Motilal Oswal. Domestic institutions invested $6.3 billion during the month, extending their buying streak to 39 consecutive months. Steady domestic buying is cushioning Indian equities against foreign outflows.
-    https://www.thehindubusinessline.com/markets/fii-selling-eases-in-october-as-technology-and-telecom-attract-foreign-investors-motilal-oswal/article71685538.ece
-[4] FPIs return to Dalal Street amid AI sell-off and oil slump; Can proposed tax cuts sustain inflows?
-    FPIs have invested ₹53,739 crore in Indian equities so far in November. The Nifty 50 is on a seven-session winning streak and has cut its year-to-date loss to 4.15%. Relevant for reading near-term market sentiment amid the AI sell-off, the oil slump and proposed tax cuts.
-    https://www.livemint.com/market/stock-market-news/fpis-return-to-dalal-street-amid-ai-sell-off-and-oil-slump-can-proposed-tax-cuts-sustain-inflows-11794315705620.html
-[4] Salary slip shows PF deduction, but is the full amount reaching your EPF account? How to check and report shortfalls
-    Salary slip PF deductions do not guarantee the employer has deposited the full amount into the EPF account. The article explains how employees can check contributions and report shortfalls. This is practical for any salaried employee verifying PF records.
-    https://www.livemint.com/money/personal-finance/salary-slip-shows-pf-deduction-but-is-the-full-amount-reaching-your-epf-account-how-to-check-and-report-shortfalls-11794314412223.html
+[4] FD auto-renewal: Your fixed deposit auto-renewed at a lower interest rate? Can you reverse it? Know here
+    This guide explains what to do when a fixed deposit auto-renews at a lower rate after maturity. It covers whether the depositor can reverse the renewal once it has happened. Practical for anyone holding bank FDs.
+    https://www.livemint.com/money/personal-finance/fd-auto-renewal-your-fixed-deposit-auto-renewed-at-a-lower-interest-rate-can-you-reverse-it-know-here-11794409918321.html
+[4] HDFC Bank raises MCLR by 5-15 bps across all tenures: Check new lending rates and what they mean for your loan EMIs
+    HDFC Bank has raised its MCLR by 5 to 15 basis points across all seven tenures, effective November 7. The change will push up interest on floating-rate loans linked to MCLR. Directly affects existing home and personal loan EMIs.
+    https://www.livemint.com/money/personal-finance/hdfc-bank-raises-mclr-by-5-15-bps-across-all-tenures-check-new-lending-rates-and-what-they-mean-for-your-loan-emis-11794396761391.html
+[4] 7 schemes offering 7.5% or higher interest rates: SCSS, NSC, RBI floating rate bond
+    This article lists seven government and bank schemes offering 7.5% or higher interest, including SCSS, NSC and the RBI floating rate bond. The title is the only source material available. Helpful for comparing safe debt options.
+    https://economictimes.indiatimes.com/wealth/invest/7-schemes-offering-7-5-or-higher-interest-rates-scss-nsc-rbi-floating-rate-bond/slideshow/135736973.cms
+[4] NRIs can complete investment KYC from abroad starting Dec 3: What changes?
+    From December 3, Sebi will let NRIs complete investment KYC from abroad by removing the requirement for physical presence in India for digital KYC. The change replaces weeks of paperwork with a faster digital process. Directly relevant to KYC and fintech onboarding.
+    https://www.business-standard.com/markets/news/nris-can-complete-investment-kyc-from-abroad-starting-dec-3-what-changes-126111101128_1.html
+[3] Post office time deposit scheme: How much interest can you earn on a ₹1L investment across 1, 2, 3 and 5-year tenures?
+    This explainer calculates post office time deposit returns on a ₹1 lakh lump sum across 1, 2, 3 and 5-year tenures. Rates differ by tenure and the returns are assured. Practical for comparing safe fixed-income options.
+    https://www.livemint.com/money/personal-finance/post-office-time-deposit-scheme-how-much-interest-can-you-earn-on-a-1l-investment-across-1-2-3-and-5-year-tenures-11794418578977.html
 
 GENERAL KNOWLEDGE
-[4] First day of Ukraine peace talks constructive, Zelensky says
-    Zelensky described the first day of trilateral Ukraine peace talks in the United Arab Emirates as constructive. Delegations from Kyiv, Washington and Moscow attended, the first such talks since February. The outcome could shape the war's trajectory and global geopolitics.
-    https://www.bbc.co.uk/news/articles/cqpvgvrpjvv8o?at_medium=RSS&at_campaign=rss
-[4] ‘Positive momentum’: Is the US war on Iran about to end?
-    Domestic pressures have revived stalled US-Iran diplomatic talks, but analysts say peace still hangs by a thread. Progress or collapse would materially affect energy markets and regional stability.
-    https://www.aljazeera.com/news/2026/11/10/positive-momentum-is-the-us-war-on-iran-about-to-end?traffic_source=rss
-[3] Israel's new parliament sworn in as leaders compete to form government
-    Israel's new parliament was sworn in, with Gadi Eisenkot, Benjamin Netanyahu's main rival, given the first chance to form a government. The outcome could oust the prime minister. Coalition formation will shape Israel's political direction.
-    https://www.bbc.co.uk/news/articles/crd939lpzjp9o?at_medium=RSS&at_campaign=rss
-[3] Security forces seized top court, Somalia’s ex-chief justice says
-    Somalia's former chief justice says more than 300 security personnel militarily occupied the Supreme Court. The claim points to a serious erosion of judicial independence in Somalia.
-    https://www.aljazeera.com/video/newsfeed/2026/11/10/security-forces-seized-top-court-somalias-ex-chief-justice-says?traffic_source=rss
-[3] ‘We Have to Take Over’: Far-Right Extremists Want to Seize Control of the GOP
-    Right-wing extremists argue that MAGA failed by not going far enough and now want to take control of the Republican Party after heavy midterm losses. The article reports their stated strategy and intent.
-    https://www.wired.com/story/we-have-to-take-over-far-right-extremists-want-to-seize-control-of-the-gop/
+[4] Russia-Ukraine talks in UAE secure major prisoner exchange deal
+    Russia and Ukraine agreed a major prisoner exchange after two days of US-mediated talks in Abu Dhabi. The deal is a notable humanitarian step amid the ongoing war.
+    https://www.aljazeera.com/video/newsfeed/2026/11/11/russia-ukraine-talks-in-uae-secure-major-prisoner-exchange-deal?traffic_source=rss
+[4] Can Tehran survive a ‘zero oil’ budget, if US blockade on Iran persists?
+    Iran's government is planning a 'zero oil' budget under a US blockade, and is defiant while preparing for the worst. A US siege is expected to make most Iranians poorer.
+    https://www.aljazeera.com/economy/2026/11/11/can-tehran-survive-a-zero-oil-budget-if-us-blockade-on-iran-persists?traffic_source=rss
+[4] Russia and Ukraine agree to a prisoner exchange as talks end with no big breakthrough
+    Russia and Ukraine agreed a large prisoner-of-war exchange after US-mediated talks in Abu Dhabi ended without a major breakthrough. It is the biggest humanitarian release since the war began in 2022.
+    https://www.npr.org/2026/11/11/g-s1-152954/russia-ukraine-war-talks
+[4] House effectively ends Hegseth impeachment. And, 3 men accused of plotting U.K. attacks
+    The House effectively ended its Hegseth impeachment effort, at least for now. Federal prosecutors also arrested three men accused of being Iran-backed operatives plotting attacks in the UK.
+    https://www.npr.org/2026/11/11/g-s1-152949/up-first-newsletter-pete-hegseth-jim-jordan-iran-backed-trio-us-bases
+[4] US House blocks bid to impeach Defence Secretary Pete Hegseth
+    The US House blocked a bid to impeach Defence Secretary Pete Hegseth, and Trump welcomed the outcome. Democrats can try again next year, so the impeachment push is not fully over.
+    https://www.bbc.co.uk/news/articles/cxly4y5jzl0qo?at_medium=RSS&at_campaign=rss
 
 ENTREPRENEURSHIP
-[4] State of the tech job market: late 2026
-    Lenny's late-2026 tech job market report says product managers are gaining ground, engineers are plateauing, and designers are struggling. It adds that the largest AI hiring boom is happening outside software companies.
-    https://www.lennysnewsletter.com/p/state-of-the-tech-job-market-late
-[4] Froncort.AI Raises $2.3 Mn From Google.org To Expand AI-Based Disease Surveillance
-    Healthcare AI startup Froncort.AI raised $2.3 million (Rs 21.5 crore) from Google.org to expand its AI-based disease surveillance work. The funding supports scaling a health-focused AI product.
-    https://inc42.com/buzz/froncort-ai-raises-2-3-mn-from-google-org-to-expand-ai-based-disease-surveillance/
-[4] OpenAI Deploys Control Room With 35-Second Kill Switch Amid Security Concerns
-    OpenAI has built and deployed Control Room, a centralised system with a 35-second kill switch for AI agents, amid concerns about rogue agents. It is directly relevant to agent safety and oversight design.
-    https://inc42.com/buzz/openai-deploys-control-room-with-35-second-kill-switch-amid-security-concerns/
-[4] Arka Fincap raises Rs 525 Cr from The Rise Funds of TPG
-    Arka Fincap, a Kirloskar Group-promoted NBFC founded in 2018, raised an initial Rs 525 crore from The Rise Funds of TPG. The capital will fund expansion and investments in technology and risk management.
-    https://yourstory.com/2026/11/arka-fincap-raises-rs-525-crore-from-the-rise-funds-of-tpg
-[4] Show HN: Emma, a real-time AI video persona from Nuance Labs
-    Nuance Labs has released Emma, a browser-based real-time audio-visual AI built on its full-duplex Nuplex system, after 18 months of work. It is relevant to your speech and GenAI interest, especially for conversational voice interfaces.
-    https://app.nuancelabs.ai/try
+[4] Can Indian Startups Win The AI Inference Race?
+    Inc42 asks whether Indian startups can compete in AI inference, after nations spent years focused on larger models and training compute. The question matters for your GenAI work, since inference cost and serving are where production economics are decided.
+    https://inc42.com/features/can-indian-startups-win-the-ai-inference-race/
+[4] Show HN: WolveKafka – Consume Kafka with a plain HTTP endpoint
+    WolveKafka exposes Kafka topic consumption through a plain HTTP endpoint instead of a native Kafka client. It's relevant to your Kafka work for serving streams to services without good client libraries, though offset and delivery semantics aren't clear from the title.
+    https://github.com/wolveflake/wolvekafka
+[3] Launch HN: Pomerado (YC F26) – Turn any website into an MCP for agents
+    Pomerado, a YC F26 company, turns websites into self-healing, deterministic APIs so agents can interact with sites that lack APIs. It targets airlines, banks, insurers, and government portals where browser automation is slow or restricted.
+    https://pomerado.ai/
+[3] Show HN: Yogurt – Free, private, open-source alternative to Granola
+    Yogurt is an MIT-licensed desktop app that transcribes, summarises, and answers questions about meetings using on-device models, without joining calls. It positions itself as a free, private alternative to Granola, a local-first approach relevant to privacy-focused GenAI tooling.
+    https://github.com/FrigadeHQ/yogurt
+[3] He Started a Pizza Side Hustle in His San Diego Apartment After a Layoff. Now 3,500 People Battle for the 15 Pies He Makes a Week: ‘People Like What They Can’t Get’
+    AJ Miller runs a New Haven-style pizza side hustle from his San Diego apartment after a layoff, making about 15 pies a week for over 3,500 people. It is a useful demand and scarcity case study for bootstrapped founders.
+    https://www.entrepreneur.com/side-hustle/he-started-a-pizza-side-hustle-in-his-san-diego-apartment-after-a-layoff
 
 HEALTH-TECH
-[5] Google Cloud rolls out Gemini for healthcare
-    Google Cloud rolled out Gemini for healthcare, developed with clinical and health plan leaders and built to support HIPAA compliance. Directly relevant given your GenAI pipelines work on Vertex AI and healthcare workflows.
-    https://www.fiercehealthcare.com/ai-and-machine-learning/google-cloud-rolls-out-gemini-healthcare
-[5] Failure to implement closed-loop diagnostic protocols invites the courts’ displeasure
-    The Institute of Medicine & Law examines an NCDRC ruling on medical negligence, patient responsibility for collecting diagnostic reports, and the need for coordination between hospitals, doctors and labs. It highlights the closed-loop diagnostic workflow gap hospitals must close.
-    https://www.expresshealthcare.in/news/failure-to-implement-closed-loop-diagnostic-protocols-invites-the-courts-displeasure/455798/
-[4] STAT+: Oura to acquire Counsel Health for $625 million, placing a big bet on AI care
-    Oura, the smart ring maker that recently delayed its IPO plans, will pay $625 million to acquire Counsel Health, a clinical AI startup. A large deal signaling major consumer-health players betting on AI-driven care delivery.
-    https://www.statnews.com/2026/11/10/oura-acquires-counsel-health-big-bet-ai-care/?utm_campaign=rss
-[4] New Campaign Wants AI Applications To Look Beyond Speed
-    Anterior's 'Beyond Faster Horses' campaign argues that healthcare AI should rebuild workflows rather than just speed up broken administrative processes. Healthcare leaders are pushing for an AI-native system design.
-    https://medcitynews.com/2026/11/new-campaign-wants-ai-applications-to-look-beyond-speed/
-[4] Trump administration announces $10B in awards for Rural Health Transformation Program’s second year
-    The Trump administration announced $10 billion in awards for the second year of the Rural Health Transformation Program, with funding partly based on how states have implemented their plans. Relevant to rural hospital technology funding and adoption.
-    https://www.fiercehealthcare.com/regulatory/trump-administration-announces-10b-awards-rural-health-transformation-programs-second
+[5] STAT+: MDCalc launches a ‘rumble strip’ for doctors using generative AI tools
+    MDCalc is launching CrossCover, a tool meant to help clinicians judge whether answers from medical AI chatbots can be trusted. It is positioned as a 'rumble strip' warning for doctors using generative AI. Directly relevant to building AI support tools for clinicians.
+    https://www.statnews.com/2026/11/11/mdcalc-launches-crosscover-rumble-strip-for-clinical-ai-chatbots/?utm_campaign=rss
+[4] STAT+: Why this former ER doc thinks giving AI less information is sometimes better
+    STAT's AI Prognosis column interviews Graham Walker, co-founder of MDCalc, about the company's new AI tool. The conversation argues that giving AI less information can sometimes yield better clinical answers. Relevant to anyone building clinical AI assistants.
+    https://www.statnews.com/2026/11/11/mdcalc-cofounder-graham-walker-on-crosscover-ai-prognosis/?utm_campaign=rss
+[4] Centre proposes provisional registration framework for allied healthcare professionals
+    The Health Ministry proposed a provisional registration framework for allied healthcare professionals, with pathways for skill upgrades, competency assessment and transition to full registration. It could formalise the clinic workforce, which matters for workflow tools built for clinics.
+    https://health.economictimes.indiatimes.com/news/policy/centre-proposes-provisional-registration-framework-for-allied-healthcare-professionals/135736770
+[4] Oura Buys Counsel for $625M, But Will Payers and Consumers Get on Board?
+    Oura agreed to buy Counsel Health for $625M and will integrate its clinical AI and virtual care into the Oura app. The piece questions whether payers, employers and consumers will pay for the subscription, which matters for AI-enabled care models.
+    https://medcitynews.com/2026/11/ouras-buys-counsel-for-625m-but-will-payers-and-consumers-get-on-board/
+[4] Oura to acquire AI virtual primary care partner Counsel Health for $625M
+    Oura agreed to acquire AI virtual primary care company Counsel Health for $625M. The two companies had partnered since June and planned to work together on CMS's 10-year ACCESS Model. A notable consolidation of wearables and AI primary care.
+    https://www.fiercehealthcare.com/digital-health/oura-acquire-ai-virtual-primary-care-partner-counsel-health-625m
