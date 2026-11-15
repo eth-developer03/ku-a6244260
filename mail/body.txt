@@ -1,113 +1,112 @@
-Knowledge Updater · Sat 14 Nov 2026
+Knowledge Updater · Sun 15 Nov 2026
 
 Full page (all tabs & filters): https://eth-developer03.github.io/ku-a6244260/
 
+BUSINESS IDEAS
+1. Clinic-specific glossary for extracting Indian hospital records (score 4.8; effort 2, cost 1, fit 5)
+   Build a glossary of local abbreviations, shorthand, and mixed-language terms from a clinic's own past documents, then use it to guide OCR and LLM extraction of its reports and bills. Track field-level yield per document type, not only accuracy on a sample. Sold as an extraction add-on to small labs and clinics that already use scanned reports.
+   Why now: Martin Fowler's generated-glossary approach gives a concrete method for closing vocabulary gaps that generic models miss in specialised domains.
+   First step: Collect 50 scanned reports from one lab, run a glossary-generation prompt over the OCR text, and measure how many extracted fields are filled before and after adding the glossary.
+
+2. Source-linked OPD note drafting for Indian clinics (score 4.2; effort 3, cost 2, fit 5)
+   A tool that turns a doctor's dictated or typed OPD notes into a structured visit summary where every generated line links back to the source sentence. Each line gets a trust flag so the doctor can see what is unverified before signing. The doctor stays responsible for all clinical content; the tool only reduces transcription and formatting work. Sold per clinic as a monthly subscription.
+   Why now: MDCalc's CrossCover 'rumble strip' shows clinicians now need explicit warnings about whether AI-generated answers can be trusted, which a source-linked draft can provide.
+   First step: Ask two OPD doctors you know to share anonymised sample notes, then hand-mark which summary lines would need a source link to be trusted.
+
+3. Customer-level test-as-data harness for AI-written Java services (score 4.2; effort 2, cost 1, fit 4)
+   A small CLI and library that stores customer-level acceptance tests as YAML or JSON data files, so AI coding agents cannot edit the contract when they change the code. It runs these tests in CI and reports which customer scenarios broke. Sold to small backend teams using coding agents on Spring Boot services.
+   Why now: Shopify's agent-driven mobile rebuild stressed validation as the bottleneck, and Vaccari's test-as-data argument gives a concrete way to protect agent-written code from its own edits.
+   First step: Take one existing Spring Boot service and write ten customer-level scenarios as JSON files, then check whether a coding agent can break them by changing the code.
+
+4. Abnormal-result follow-up tracker for diagnostic labs (score 3.8; effort 3, cost 2, fit 4)
+   A B2B tool for labs and clinics that flags reports with out-of-range values, tracks whether the ordering doctor has acknowledged them, and sends reminders to staff when acknowledgement is overdue. The lab stays the system of record and avoids storing patient data beyond what it needs. Sold to labs, never to consumers.
+   Why now: 23andMe's collapse shows that consumer-facing health data products carry heavy trust and liability risk, so a B2B workflow tool for labs is the safer way to serve the same need.
+   First step: Map the report-to-acknowledgement workflow at one lab and identify where results currently get lost.
+
+5. Same-day medical reimbursement payouts for Indian employers (score 3.2; effort 4, cost 3, fit 4)
+   Employees upload hospital bills and prescriptions, the tool extracts amounts and validates the employee's bank account, then routes approved claims to a payout partner over IMPS or UPI. HR gets an approval dashboard and an audit trail. Targets mid-size companies that currently run reimbursements through spreadsheets and manual transfers.
+   Why now: Flex's founder built the company after running into broken HSA and FSA payment flows, which shows that benefit reimbursement is a real and recurring pain point.
+   First step: Interview three HR or finance leads about how they handle medical reimbursements today and what happens when a payout fails.
+
 TECH
 -- AI & ML
-[5] Google Open Sources Ambient Quality Agent (AQuA) to Diagnose Production AI Agent Failures
-    Google open-sourced AQuA, a reference implementation that analyzes production AI agent sessions and investigates root causes against deployed source. In a 32-session replay, seat selection bypasses fell from 15 to two after prompt changes. Directly relevant to agent observability and debugging.
-    https://www.infoq.com/news/2026/11/google-ambient-agent-prod/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
-[5] Inside an enterprise AI agent: A governed, observable loop architecture
-    AWS proposes a five-layer reference architecture for governed, observable enterprise AI agents, covering gateway, agent runtime, state, platform services, and trust controls. Each layer maps to managed AWS services, with patterns and pitfalls noted. Directly applicable to agent system design.
-    https://aws.amazon.com/blogs/architecture/inside-an-enterprise-ai-agent-a-governed-observable-loop-architecture/
-[4] OpenAI, Anthropic, Google and Other AI Giants Face Lawsuit Demanding Development Freeze
-    OpenAI, Anthropic, Google, and other major AI companies face a lawsuit demanding a development freeze on stronger AI models. Four nonprofit groups allege the technology could cause catastrophic global harm.
-    https://decrypt.co/383270/openai-anthropic-google-ai-giants-lawsuit-development-freeze
+[4] Understanding Positional Embeddings in Modern LLMs
+    An explainer on positional embeddings in modern LLMs. The title gives no specific methods or results. Directly relevant to GenAI and RAG engineering.
+    https://magazine.sebastianraschka.com/p/understanding-positional-embeddings
 -- System Design
-[5] EP233: Kubernetes Explained for Busy Engineers
-    Kubernetes is explained for busy engineers in this episode. It covers the fundamentals of this container orchestration platform for managing containerized applications at scale.
-    https://blog.bytebytego.com/p/ep233-kubernetes-explained-for-busy
-[4] Microsoft confirms global outage resolved, rules out cyberattack
-    Microsoft confirmed a global outage affecting its services has been resolved, attributing it to a network capacity upgrade issue. The company explicitly ruled out a cyberattack as the cause.
-    https://cointelegraph.com/news/microsoft-365-outage-resolved-cyberattack-ruled-out?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound
-[4] Node.js Brings Debounce, Throttle, and PKCS#12 Parsing Into Core Modules
-    Node.js 26.10.0 now includes `util.debounce()`, `util.throttle()`, and `crypto.parsePKCS12()` in its core modules. These additions reduce reliance on third-party libraries for common utility and cryptographic tasks.
-    https://www.infoq.com/news/2026/11/nodejs-debounce-throttle/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
+[3] Show HN: Sauron – Error tracking and product analytics in one self-hosted stack
+    Sauron is a self-hosted stack combining error tracking and product analytics, shown on Show HN. Useful for teams wanting observability without vendor lock-in, though it is a small project.
+    https://sauron.splimter.com/
 -- Crypto & Blockchain
-[3] Ethereum scaling project MegaETH slashes staff by 20% as it pursues AI business
-    Ethereum scaling project MegaETH has cut 20% of its staff as it pivots towards an AI business model. This restructuring indicates a strategic shift away from its core blockchain development.
-    https://www.coindesk.com/business/2026/11/14/ethereum-scaling-project-megaeth-slashes-staff-by-20-as-it-pursues-ai-business
-[3] What Is Canton Network? The Privacy Blockchain Built for Wall Street
-    Canton Network is a new privacy-enabled blockchain designed for Wall Street, focusing on banks and tokenized assets. It aims to provide secure, confidential transactions for institutional finance.
-    https://decrypt.co/resources/what-is-canton-network-the-privacy-blockchain-built-for-wall-street
-[3] UK, Singapore, and Thailand central banks test cross-border FX settlement as stablecoins gain ground
-    Central banks from the UK, Singapore, and Thailand are testing cross-border FX settlement using stablecoins. This pilot aims to leverage blockchain for more efficient international currency exchange.
-    https://www.coindesk.com/policy/2026/11/14/uk-singapore-and-thailand-central-banks-test-cross-border-fx-settlement-as-stablecoins-gain-ground
+[3] How Wall Street Is Racing to Claim the Onchain Dollar
+    Goldman and Citi's Project Faro, cited at $270 million, is among moves by SoFi, Anchorage, Mastercard, Visa and Circle to compete for the onchain dollar. Tether and Circle have long dominated that space.
+    https://decrypt.co/383284/how-wall-street-racing-onchain-dollar-stablecoins
 -- Everything else
-[4] PyPI's redesigned project pages with clearer security signals are now live
-    PyPI has launched redesigned project pages featuring clearer security signals. This update aims to improve awareness of package security for Python developers.
-    https://blog.pypi.org/posts/2026-11-06-ui-updates-complete/
-[3] Let Me Let You Own Your Data
-    The discussion "Let Me Let You Own Your Data" focuses on personal data ownership. This explores concepts and technologies enabling individuals to control their digital information.
-    https://www.willett.io/posts/data/
-[3] Italy fines Meta €805M over photo privacy
-    Italy has fined Meta €805 million over photo privacy concerns. This large penalty underscores European regulators' focus on strict enforcement of data privacy laws.
-    https://www.rapporteur.com/news/italy-fines-meta-880mn-over-photo-privacy-authority/
+[4] Coinone warns of phishing, identity theft after customer data breach
+    Coinone, a South Korean crypto exchange, disclosed a customer data breach that may expose passwords, bank account numbers, national IDs, and wallet addresses. Users face phishing and identity-theft risk. Relevant to fintech KYC and security, and a useful breach case.
+    https://cointelegraph.com/news/coinone-data-breach-phishing-identity-theft-customer-information?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound
+[4] Lovable apps expose passport details and more than 200K private messages
+    Apps built on Lovable reportedly expose passport details and over 200K private messages. This is a data-exposure security failure in AI-generated app builds. Relevant to security practices for AI-built products, especially anything handling sensitive records.
+    https://www.crissyfield.de/research/lovable-en/
+[3] Lutnick Pushed to Weaken Chip Rules That Overlap with His Family Business
+    A report that Commerce Secretary Lutnick pushed to weaken chip rules that overlap with his family business. The title gives no specifics on the rules or the business. Relevant to semiconductor export policy and conflict-of-interest questions.
+    https://www.nytimes.com/2026/11/15/us/politics/lutnick-pushed-to-weaken-chip-rules-that-overlap-with-his-family-business.html
 
 FINANCE
-[4] How Nvidia turmoil and a Democratic Congress could reshape the AI trade, according to ETF experts
-    ETF experts believe Nvidia's leadership issues and a Democratic Congress could shift AI investment. This may benefit other Big Tech stocks and rival chipmakers, reshaping the overall AI trade landscape.
-    https://www.cnbc.com/2026/11/14/nvidia-ai-trade-data-centers-congress.html
-[4] Investing in IT stocks through mutual funds? Should you continue your SIP amid AI disruption and earnings concerns?
-    Technology mutual funds are the worst-performing equity category in 2026, down 10.47%. With AI disruption and pressure on IT services, investors should evaluate continuing SIPs in IT funds given earnings concerns.
-    https://www.livemint.com/money/personal-finance/investing-in-it-stocks-through-mutual-funds-should-you-continue-your-sip-amid-ai-disruption-and-earnings-concerns-11794670144507.html
-[4] Yes Bank moves SC seeking review of order on writing off of Rs 8,415 cr AT-1 bonds
-    Yes Bank has petitioned the Supreme Court to review an order that upheld a Bombay High Court ruling. The high court had quashed the bank's decision to write off Rs 8,415 crore worth of AT-1 bonds.
-    https://economictimes.indiatimes.com/markets/bonds/yes-bank-moves-sc-seeking-review-of-order-on-writing-off-of-rs-8415-cr-at-1-bonds/articleshow/135830873.cms
-[4] Microsoft shares defy massive global outage, close higher on Friday; Outlook, Teams services recover - Things to know
-    Microsoft shares closed higher despite a massive global outage affecting Outlook, Teams, and Copilot services. The company attributed the disruption, which lasted over 24 hours, to a network capacity issue and not a cyberattack.
-    https://www.livemint.com/market/stock-market-news/microsoft-shares-defy-massive-global-outage-close-higher-on-friday-outlook-teams-services-recover-things-to-know-11794647299206.html
-[3] Can a bank recover someone else's loan from your pension if you are a guarantor? What the High Court ruled
-    The Jammu and Kashmir High Court ruled a bank cannot recover another person's loan from a retired guarantor's pension. This protects pension accounts, though a differing High Court judgment previously existed on this issue.
-    https://www.livemint.com/money/personal-finance/can-a-bank-recover-someone-elses-loan-from-your-pension-if-you-are-a-guarantor-what-the-high-court-ruled-11794674798959.html
+[4] Sebi to issue AI guidelines for capital markets soon, focus on investor protection and human oversight
+    Sebi will soon issue guidelines for AI use in capital markets, covering AI disclosures, accountability and decision-making. A cybersecurity framework is also under review.
+    https://www.livemint.com/market/stock-market-news/sebi-to-issue-ai-guidelines-for-capital-markets-soon-focus-on-investor-protection-and-human-oversight-11794737481977.html
+[4] Sebi plans AI guardrails for capital markets, focus on investor protection
+    Sebi chairman Tuhin Kanta Pandey said detailed guidelines for responsible AI use in capital markets will be issued soon. They will cover disclosures, accountability and human-in-the-loop oversight, building on a June 2025 consultation paper.
+    https://www.business-standard.com/markets/news/sebi-plans-ai-guardrails-for-capital-markets-focus-on-investor-protection-126111500187_1.html
+[3] Pension cannot be attached to recover another person's loan even if retired employee stood as guarantor: J&K&L HC
+    The J&K and Ladakh High Court ruled that a retired employee's pension cannot be attached to recover a loan taken by someone else, even if the retiree stood as guarantor. The court treated pension as a welfare measure protecting retirees and their families. Relevant mainly to lending and recovery practices.
+    https://www.livemint.com/money/personal-finance/pension-cannot-be-attached-to-recover-another-persons-loan-even-if-retired-employee-stood-as-guarantor-j-k-l-h-11794756500677.html
+[3] Bitcoin wallet untouched since 2011 moves ₹44 crore after legal notice in $260 billion lawsuit targeting dormant BTC
+    A Bitcoin wallet dormant since 2011 moved 75 BTC, worth about ₹44 crore, after receiving a court-ordered legal notice. The wallet is among 39,069 targeted in a $260 billion US lawsuit seeking ownership of dormant Bitcoin. Notable for crypto custody and legal claims on dormant holdings.
+    https://www.livemint.com/money/personal-finance/bitcoin-wallet-untouched-since-2011-moves-44-crore-after-legal-notice-in-260-billion-lawsuit-targeting-dormant-btc-11794761268978.html
+[3] Small-cap mutual funds: Should you continue your SIP? 10-year rolling returns reveal risks investors may be missing
+    Small-cap mutual funds averaged 15.02% over 10-year SIPs, beating large-caps, but their worst 10-year rolling outcome was negative. The piece examines whether investors should continue small-cap SIPs given that downside risk. Useful for an investor reviewing equity allocation.
+    https://www.livemint.com/money/personal-finance/smallcap-mutual-funds-should-you-continue-your-sip-10-year-rolling-returns-reveal-risks-investors-may-be-missing-11794758823173.html
 
 GENERAL KNOWLEDGE
-[3] US suggested Ukraine cede parts of Donbas to Russia to become part of NATO
-    The US proposed Ukraine cede parts of Donbas to Russia in exchange for NATO membership, which President Zelenskyy rejected. He also refused commitments to neutrality or ceding territory to Russia.
-    https://www.aljazeera.com/news/2026/11/14/us-suggested-ukraine-cede-parts-of-donbas-to-russia-to-become-part-of-nato?traffic_source=rss
-[3] FAA blames Friday's ground stop on 'equipment issue' during telecoms network upgrade
-    The FAA attributed a recent Friday ground stop to an "equipment issue" during a telecoms network upgrade. Initial investigations point to problems with a contractor updating old technology, highlighting risks in critical infrastructure upgrades.
-    https://www.npr.org/2026/11/14/nx-s1-6040952/faa-ground-stop-airplane-travel
-[3] Italy fines Meta €805m over accessing users' photos
-    Italy has fined Meta €805 million for allegedly accessing 20 million users' photos without proper notification. The regulator accused the social media giant of failing to inform users about its access to their images.
-    https://www.bbc.co.uk/news/articles/cwn83gxemk35o?at_medium=RSS&at_campaign=rss
-[3] Italy fines Meta $880m over photo privacy
-    Italy has fined Meta $880 million for photo privacy violations, citing the company's "lack of cooperation" and the large number of affected users. The regulator determined Meta did not adequately inform approximately 20 million users about access to their photos.
-    https://www.aljazeera.com/news/2026/11/14/italy-fines-meta-880m-over-photo-privacy?traffic_source=rss
-[3] Trump, Putin and Xi plan historic joint meeting in China next week, White House says
-    The White House says Trump, Putin and Xi will hold an unprecedented joint meeting in China next week. Trump plans to raise reducing nuclear weapons.
-    https://www.bbc.co.uk/news/articles/ckz74jzpy18do?at_medium=RSS&at_campaign=rss
+[4] Iran targets US military base in Bahrain with drone attack
+    Iran launched a drone attack on a US military base in Bahrain, the second attack on the country in three days. It comes as the US and Iran remain in a stand-off over the Strait of Hormuz. Significant escalation with global energy implications.
+    https://www.bbc.co.uk/news/articles/cqn4e2py48kwo?at_medium=RSS&at_campaign=rss
+[4] 'Can you believe it?': SpaceX catches part of its Starship rocket on return to Earth
+    SpaceX caught part of its Starship rocket on its return to Earth, using mechanical arms on the launch tower nicknamed "chopsticks." The company described it as a historic first. For an engineer, it is a notable milestone in reusable launch-vehicle recovery.
+    https://www.bbc.co.uk/news/videos/cwlym2gy3y3eo?at_medium=RSS&at_campaign=rss
+[4] SpaceX successfully catches Starship and makes history
+    SpaceX's Starship returned to its Texas launchpad and was secured by two metal arms on the launch tower after lowering itself into place. The company described it as a historic success for reusable spacecraft recovery.
+    https://www.npr.org/2026/11/14/g-s1-153786/spacex-successfully-catches-starship-and-makes-history
+[3] Zelensky urges US and Musk to lift Starlink restrictions and be on 'right side of history'
+    Zelensky urged the US and Elon Musk to lift Starlink restrictions, saying the limits still stand and make it harder to stop Russian missiles. He framed the issue as being on the right side of history. Relevant to the war and satellite access.
+    https://www.bbc.co.uk/news/articles/c6m25zg88k45o?at_medium=RSS&at_campaign=rss
+[3] Yemeni government forces redeploy from Bab al-Mandeb to defend Aden
+    Yemeni government forces are redeploying from Bab al-Mandeb to defend Aden, according to a Southern Armed Forces spokesman. The group is pulling back from Dhubab airport and nearby areas. The move matters for Red Sea security and Yemen's internal balance of power.
+    https://www.aljazeera.com/news/2026/11/15/yemeni-government-forces-redeploy-from-bab-al-mandeb-to-defend-aden?traffic_source=rss
 
 ENTREPRENEURSHIP
-[4] Show HN: DeepSeek V3 in ~200 lines of pure Jax
-    DeepSeek V3 has been showcased implemented in approximately 200 lines of pure Jax code. This demonstrates an efficient and concise implementation of a large language model.
-    https://github.com/Vaibhaav-Tiwari/deepseek-v3-jax
-[4] Grok Bot: What Changes When You Can Build AI Teammates
-    Grok Bot demonstrates how building AI teammates can change workflows. The Y Combinator discussion covers automated tests, codebase guardrails for agents, earning broader access over time, and the importance of clear goal setting with faster execution.
-    https://www.youtube.com/watch?v=JpJUHOe8bDo
-[4] Show HN: Gamma PDF – AI-native PDF reader, self-hosted
-    Gamma PDF, an AI-native, self-hosted PDF reader, has been showcased. It integrates AI chat, annotation, and citation features for academic and technical document review.
-    https://gammapdf.com/
-[4] Odisha startup BabyCue wins national challenge with its rapid diagnostic test for children
-    Odisha startup BabyCue won a national challenge for its rapid diagnostic test, DiaCue, for childhood diarrhoea. This innovation addresses a significant health issue in children and showcases successful healthtech entrepreneurship from India.
-    https://yourstory.com/2026/11/babycue-wins-rs-5-lakh-at-tribal-business-conclave-for-diacue-healthtech-innovation
-[4] Microsoft’s global outage; Vidya Balan’s call to put child safety first
-    A Microsoft Exchange Online problem spread across Microsoft 365 and external businesses, disrupting workplaces that depend on shared cloud infrastructure. The incident is a useful reliability and single-provider dependency case for backend and distributed-systems work.
-    https://yourstory.com/2026/11/microsofts-global-outage-vidya-balan-call-child-safety-first
+[4] Sebi to issue AI usage guidelines for capital markets, focus on investor protection
+    SEBI chief says the regulator will issue AI usage guidelines for capital markets, focused on investor protection. The proposed rules would require disclosures, accountability for regulated entities, and a human-in-the-loop approach. This matters for any fintech product that uses AI in regulated financial workflows.
+    https://yourstory.com/2026/11/sebi-issue-ai-usage-guidelines-investor-protection
+[4] Launch HN: Pomerado (YC F26) – Turn any website into an MCP for agents
+    Pomerado, a YC F26 startup, launched a self-serve product that turns any website into an MCP-compatible API for AI agents. It claims to create deterministic, self-healing APIs in minutes. For a builder of agent tooling, this addresses the unreliability of browser automation in systems without APIs.
+    https://news.ycombinator.com/item?id=50455811
+[3] (Weekly funding roundup Nov 7-14) VC inflow drops to its lowest level in 2026
+    Venture capital inflows into Indian startups fell to their lowest level of 2026 in the week of November 7-14, driven by weak deal activity. The weekly roundup signals a cooling funding environment. It is useful context for startup fundraising and market sentiment.
+    https://yourstory.com/2026/11/weekly-funding-roundup-nov-7-14-vc-inflow-drops-to-lowest-level-2026
+[3] Show HN: Nano-Edge-TTS – 70x realtime, Lightweight Kokoro-based TTS model
+    Nano-Edge-TTS is a lightweight Kokoro-based text-to-speech model reported at 70x realtime speed. Fast, small TTS could suit voice interfaces, though the title gives no benchmark details.
+    https://huggingface.co/drmhse/nano-edge-tts
+[3] Measure AI by results, not number of agents deployed: Oracle senior executive
+    Natalia Rachelson, Oracle's Senior Vice President of Applications Development, argues that AI should be judged by measurable outcomes rather than the number of agents deployed. She cites examples such as cutting time spent on accounting errors or lowering transport costs. The advice applies directly to evaluating AI tools in enterprise and clinical settings.
+    https://yourstory.com/2026/11/measure-ai-results-not-number-agents-deployed-oracles-natalia-rachelson
 
 HEALTH-TECH
-[4] Zus Health Raises $33M to Make Healthcare More Connected
-    Zus Health raised $33 million in a Series B round led by Drive Capital, with participation from Sanofi Ventures, a16z and others. The company focuses on connecting healthcare. The round signals investor appetite for health-tech infrastructure startups.
-    https://medcitynews.com/2026/11/zus-health-raises-33m-to-make-healthcare-more-connected/
-[4] Manipal posts ₹ 3,399 cr in Q2 FY27, net profit rises 21.6%
-    Manipal reported ₹3,399 crore revenue in Q2 FY27 and a 21.6% rise in net profit. Consolidated ARPOB was ₹70,600 per day, and inpatient volumes grew 35% to about 169,000. Hospital-chain benchmarks like these inform how operators measure growth and throughput.
-    https://health.economictimes.indiatimes.com/news/hospitals/manipal-posts-3399-cr-in-q2-fy27-net-profit-rises-21-6/135801358
-[4] Dyania Health, Nvidia team up to bring clinical reasoning AI inside hospital networks
-    Dyania Health is partnering with Nvidia to run its Synapsis AI clinical reasoning platform inside hospitals' own IT environments. Health systems can analyze years of patient records at population scale without moving protected data outside their networks. Relevant to hospital AI deployment and data-privacy constraints.
-    https://www.fiercehealthcare.com/ai-and-machine-learning/dyania-health-nvidia-cleveland-clinic
-[3] Trump administration delays enforcement of Medicaid work requirements for six months
-    CMS is offering states an optional six-month enforcement grace period for new Medicaid work requirements, running through June 30, 2027. States can test eligibility systems without terminating eligible beneficiaries for noncompliance. This affects how eligibility and verification systems are built and rolled out.
-    https://www.fiercehealthcare.com/regulatory/trump-administration-delays-enforcement-medicaid-work-requirements-six-months
-[3] Industry Voices—From pledges to progress: Kill the clipboard, keep an eye on consistency
-    An industry voice piece says CMS's goal to 'kill the clipboard' needs more than voluntary commitments from individual technology developers. The author, from Altera, calls for focus on consistency. It is relevant to digital intake and interoperability work in clinics.
-    https://www.fiercehealthcare.com/health-tech/industry-voices-pledges-progress-kill-clipboard-keep-eye-consistency
+[3] The Zip Code Trap: Why Geography Might Be a Better Predictor of Cancer Survival Than DNA
+    MedCity News argues that geography may predict cancer survival better than genetics, as patients in some zip codes struggle to reliably reach the healthcare system despite heavy investment in precision cancer treatment. The piece frames access barriers as a major, underaddressed gap in oncology outcomes.
+    https://medcitynews.com/2026/11/the-zip-code-trap-why-geography-might-be-a-better-predictor-of-cancer-survival-than-dna/
+[3] In a first, AIIMS Delhi performs surgery to repair baby’s spine before birth
+    AIIMS Delhi performed a six-hour surgery to repair a severe spinal birth defect, myelomeningocele, on a baby at 25 weeks of pregnancy. Both mother and foetus are stable and recovering. It is a notable clinical milestone, though not a health-IT story.
+    https://health.economictimes.indiatimes.com/news/hospitals/at-aiims-delhi-indias-first-fetal-surgery-to-repair-babys-spine-before-birth/135854091
