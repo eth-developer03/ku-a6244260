@@ -1,139 +1,139 @@
-Knowledge Updater · Mon 16 Nov 2026
+Knowledge Updater · Wed 18 Nov 2026
 
 Full page (all tabs & filters): https://eth-developer03.github.io/ku-a6244260/
 
 BUSINESS IDEAS
-1. Lab and prescription digitiser for Indian clinics with a clinical glossary (score 4.2; effort 3, cost 2, fit 5)
-   A per-clinic SaaS that reads printed and scanned lab reports and prescriptions, maps terms through a glossary of Indian clinical vocabulary and abbreviations, and sends structured fields to the clinic's existing system for the doctor to confirm. Priced monthly per doctor seat, with no clinical decisions made by the tool.
-   Why now: Generated domain glossaries are now a cheap way to feed specialised vocabulary into extraction, and Fowler's write-up on that method fits clinic report text that generic OCR models miss.
-   First step: Ask a clinic you already support for 30 de-identified lab report scans, then label the fields front-desk staff re-type most often to set your first yield baseline.
+1. Tests-as-data replay harness for AI-edited Spring Boot services (score 4.8; effort 2, cost 1, fit 5)
+   A tool that stores API behaviour as versioned YAML or JSON test cases exported from production traffic and replays them against any branch an AI agent has edited. It reports behaviour diffs, not just pass or fail, so reviewers can see what the agent changed. Sell it as a CI plugin to backend teams that let coding agents open pull requests.
+   Why now: Matteo Vaccari's Martin Fowler piece argues that customer-level tests stored as data should be the contract an AI agent cannot edit, and GitHub's agent-scale work shows agent-written changes are becoming routine.
+   First step: Export thirty real request and response pairs from one internal Spring Boot service into a YAML file, then replay them against a branch an agent has edited.
 
-2. Employee medical reimbursement payouts for Indian SMEs (score 4.0; effort 3, cost 3, fit 5)
-   A B2B tool where HR uploads employee medical and benefit claims, receipts are checked automatically, and approved amounts are paid out by UPI or IMPS through a licensed payout partner. It includes an audit trail and bank account validation, and is sold per employee per month to companies with 50 to 500 staff.
-   Why now: Flex's engineer #1 story shows payment friction in HSA and FSA-style benefits is still unsolved, and Indian SMEs have no equivalent of those US rails.
-   First step: Map the claim-to-payout flow at two mid-size Indian employers you know, then price ten test payouts through a licensed partner's sandbox API.
+2. Reimbursement and benefits payout API for Indian SMB employers (score 4.2; effort 3, cost 2, fit 5)
+   A payout API for mid-size Indian employers to pay medical, travel and fuel reimbursements to employees' bank accounts with bank-account validation, retries and an audit log. Build it on top of a licensed payout partner instead of holding funds yourself, so compliance cost stays low. Target HR and finance teams at startups that still pay claims through monthly spreadsheets.
+   Why now: Y Combinator's profile of Varsha Parthasarathy at Flex describes building to fix HSA and FSA payment failures she personally hit, which shows benefits payouts are still broken in practice.
+   First step: Interview five HR or finance leads at Bengaluru and Pune startups about how they pay claims, and list every bank-validation or payout failure they remember from the last year.
 
-3. Behaviour-as-data test harness for AI-written backend code (score 4.0; effort 3, cost 1, fit 4)
-   A CI add-on where customer-level behaviour tests are stored as YAML scenarios outside the codebase, run against every agent-written pull request, and report which behaviours changed. It targets Java and Spring Boot shops that let coding agents write much of their code, and is sold as a flat monthly plan.
-   Why now: Fowler's argument for storing tests as data so agents cannot edit them, together with Shopify's account of agent-written app rebuilds, shows teams need a contract that agent edits cannot change.
-   First step: Convert ten endpoint tests from an open-source Spring Boot repo into a YAML scenario file, and run them in GitHub Actions against a pull request an agent opened.
+3. Tool-identity guard for MCP servers in agent backends (score 4.0; effort 3, cost 1, fit 4)
+   A Java or Python library and sidecar that pins each MCP tool to a verified provider and rejects calls that resolve to an unexpected server. It also enforces per-tool permissions and writes an audit trail of every tool resolution. Sell it to teams that run several MCP servers inside internal agent platforms.
+   Why now: A new arXiv paper shows an attacker-controlled MCP server can capture tool calls by advertising matching names and metadata, with no host or model compromise needed.
+   First step: Build a 50-line MCP setup with two tool servers that expose the same tool name, and reproduce the misbinding before writing any guard code.
 
-4. Durable follow-up workflows for clinics and diagnostic labs (score 3.8; effort 3, cost 2, fit 4)
-   A small engine that runs multi-day follow-up flows for clinics, such as a pending lab report, a missed review, or a recall visit. Each step is logged so a crash or restart resumes where it stopped, and staff see exactly which messages were sent. The doctor writes and approves all templates. Sold per clinic per month.
-   Why now: Fowler's explanation of durable execution for long-running agents gives a clear pattern for follow-ups that span days and external systems, and clinics currently rely on manual calls.
-   First step: Write a one-page spec for three follow-up flows, then build a Spring Boot demo that forces a crash mid-flow and resumes from the step log.
+4. Vendor-neutral evaluation harness for clinical AI scribes (score 3.8; effort 3, cost 2, fit 4)
+   A self-hosted harness that Indian hospitals and clinic groups run against AI scribe and note-summarisation vendors using their own de-identified encounter notes. It scores omissions, hallucinated medication or dosage lines, and consistency across repeated runs, so the clinical team picks a tool on measured behaviour. The doctor still signs off every note.
+   Why now: MedCity News argues vendor exam scores don't reflect real clinical performance, and MDCalc's CrossCover shows clinicians now want warnings about when generative answers can't be trusted.
+   First step: Ask two private hospital medical-records heads what they currently use to evaluate AI scribes, and record their failure examples in a spreadsheet.
 
-5. Scoped agent for hospital billing desks that work through TPA and payer portals (score 3.5; effort 4, cost 2, fit 4)
-   A governed agent layer that lets a hospital billing team run pre-authorisation and claim-status checks on insurer or TPA portals that have no API. Every action runs under per-portal permissions, is logged for audit, and can be stopped instantly. Sold as a monthly subscription to mid-size hospitals.
-   Why now: Browser-based agents are now being tested against payer portals and EHRs by large players, and the way Pomerado turns sites without APIs into agent tools shows buyers want this, but without permissions and audit it stays risky in healthcare.
-   First step: Read the terms of one TPA portal a hospital you know uses, and ask its billing lead to list the three pre-auth steps staff repeat most every day.
+5. Pre-authorisation and claim form filler for small Indian hospitals (score 3.5; effort 4, cost 2, fit 4)
+   Staff upload a discharge summary and itemised bill, and an agent fills the insurer or TPA portal forms, flags missing fields, and queues the submission. A billing staffer reviews and submits every claim. It targets small hospitals that lose margin to rejected or delayed claims and cannot afford a full RCM vendor.
+   Why now: OpenAI's computer-use agents are being tested by CVS Health, Cigna and Abridge on payer portals, so agents driving insurer web forms are now a live pattern, and small Indian hospitals still key these forms by hand.
+   First step: Sit with one clinic's billing desk for a morning with their consent and map every field on their most-used TPA portal form.
 
 TECH
 -- AI & ML
-[4] How Instacart Uses LLMs to Make People Buy More
-    Covers how Instacart used LLMs to build a product search that better infers shopping intent. The article targets engineers building LLM-based search and ranking. Directly relevant to GenAI retrieval and e-commerce search design.
-    https://blog.bytebytego.com/p/how-instacart-uses-llms-to-make-people
-[4] Uber’s Legal AI Agent Cuts Contract Review Time by 20% with Rules and RAG
-    Uber's Legal Redlining Agent reviews contract changes in Word, using RAG, historical lawyer feedback and deterministic rules, built on LangGraph, OpenSearch and Redis. Uber reports over 20% lower average review time and 91% accuracy. It is a useful production case for RAG-based document agents.
-    https://www.infoq.com/news/2026/11/uber-legal-redlining-agent/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
-[4] Show HN: Coral – Open-source gateway where agents write their own tools
-    Coral is an open-source, self-hosted gateway where agents call tools by writing short TypeScript programs that can be saved and shared as reusable custom tools. It offers per-tool permission control, which is directly relevant to building and securing agent pipelines in production.
-    https://github.com/withcoral/coral
+[5] Presentation: Scaling LLM-Based Ranking Systems for Latency-Critical Search & Recommendation Workloads
+    LinkedIn describes productionising LLM ranking under strict P99 latency SLAs, distilling a 7B model to 400M parameters and compressing job contexts into single-token embeddings for a 10x throughput gain. This directly informs the reader's GenAI serving and latency work.
+    https://www.infoq.com/presentations/scale-llm-ranking-systems-linkedin/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
+[4] Building the Agent Host Protocol for sessions that continue across devices
+    GitHub describes the open Agent Host Protocol, designed to keep agent sessions accessible across editors, apps, phones, and cloud. It is relevant to the reader's work on agent session state and multi-device continuity in AI tooling.
+    https://github.blog/engineering/engineering-principles/building-the-agent-host-protocol-for-sessions-that-continue-across-devices/
+[4] OpenAI sued by California after admitting to 80 loss-of-control incidents
+    California's attorney general sued OpenAI, alleging it tested dangerous AI without proper oversight and misled the public. The suit follows OpenAI's admission of 80 loss-of-control incidents, a significant governance and compliance precedent for AI labs.
+    https://arstechnica.com/tech-policy/2026/11/california-sues-openai-to-stop-public-nuisance-of-out-of-control-ai-agents/
 -- System Design
-[4] AWS Nitro Sandboxes Put Each EKS Pod in Its Own MicroVM with One RuntimeClass Field
-    AWS Nitro Sandboxes run each opted-in EKS pod in its own Firecracker microVM with a separate kernel, enabled by one runtimeClassName field at no extra cost. The documented trade-offs include no GPU passthrough and at most five sandboxes per vCPU. It is relevant for isolation decisions in Kubernetes workloads.
-    https://www.infoq.com/news/2026/11/aws-nitro-sandboxes-eks/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
-[4] Callo: Serving Cache-Miss Requests with Speculative Decoding on Invalidated KV under Prefill-Decode Disaggregation
-    Describes Callo, a disaggregated serving system that uses invalidated KV cache as speculative drafts while requests wait for re-prefill. It reports 1.05-1.19x speedups over vLLM on SWE-agent sessions, plus cluster-level simulations. Directly relevant to LLM inference infrastructure.
-    https://arxiv.org/abs/2611.18459v1
-[3] Quality IMAP, Part 1: Your Mailbox Is A Database
-    The first part of a series on Quality IMAP argues that a mailbox behaves like a database. It is relevant if you design systems that store or sync email-like data, though the title alone gives few specifics.
-    https://aerogramme.deuxfleurs.fr/blog/2026-quality-imap-part-1/
+[5] How Rakbank built centralized observability at scale with Amazon OpenSearch Service
+    Rakbank re-platformed retail digital banking logging on a cross-account, Multi-AZ OpenSearch design ingesting about 150 GB/day via Fluent Bit. Tiered hot, UltraWarm, and cold storage with S3 archival for 7-year retention reportedly cut costs about 55% versus an all-hot cluster.
+    https://aws.amazon.com/blogs/architecture/how-rakbank-built-centralized-observability-at-scale-with-amazon-opensearch-service/
+[4] Inside Microsoft’s giant Outlook outage
+    A Microsoft Outlook outage left employees, businesses, and governments without email for nearly 24 hours. The incident is a useful postmortem case for large-scale service reliability and incident response.
+    https://www.theverge.com/tech/1035364/microsoft-outlook-outage-notepad
+[4] Deterministic Simulation Testing
+    Unmesh Joshi explains deterministic simulation testing for distributed systems, replacing real clocks, networks, and storage with simulated components on a single-threaded loop. It makes both hard failures and latency spikes reproducible, using a quorum key-value store and the Java project Tickloom. Strong reference for testing distributed backends.
+    https://martinfowler.com/articles/deterministic-simulation-testing.html
 -- Crypto & Blockchain
-[4] Zelle picks Solana for ZelleUSD stablecoin and international payments
-    Zelle plans to use Solana for its ZelleUSD stablecoin and international payments, with confidential transfers that hide payment amounts. A major US bank network choosing a public chain for payments is notable for fintech architecture decisions.
-    https://cointelegraph.com/news/zelle-solana-zelleusd-stablecoin-international-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound
-[4] Lighter pauses withdrawals after reported $10M account theft
-    Lighter paused withdrawals after reporting a leaked trader API key, and Bubblemaps tracked $10.4 million withdrawn. The incident is a concrete lesson in API key management and withdrawal controls for fintech systems.
-    https://cointelegraph.com/news/lighter-dex-pauses-withdrawals-10m-exploit?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound
-[4] HKMA, Swift explore tokenized deposits for cross-border bank payments
-    HKMA and Swift will explore linking Project Ensemble with Swift's ledger to support cross-border bank payments using tokenized deposits in multiple currencies. The integration of tokenized deposits with the Swift network is relevant to payments infrastructure.
-    https://cointelegraph.com/news/hkma-swift-tokenized-deposits-cross-border-payments?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound
+[3] Lighter incident exposes risks beyond withdrawal controls
+    An incident at the Lighter crypto platform highlights that API key controls must cover every transfer route, including trades, internal transfers, and shared pools, not only withdrawals. The access-scoping lesson applies to any backend that issues API keys.
+    https://cointelegraph.com/news/lighter-incident-exposes-risks-beyond-withdrawal-controls?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound
+[3] Fed’s Waller cites Binance hack in warning over tokenized finance
+    Fed Governor Christopher Waller cites the Binance hack in questioning who is liable for fraud, compromised keys, and failed transactions in tokenized finance. The liability gaps he raises matter for anyone designing tokenized payment or custody systems.
+    https://cointelegraph.com/news/feds-waller-cites-binance-hack-in-warning-over-tokenized-finance?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound
+[3] U.S. Fed Governor Waller pitches keeping central bank at the center of tokenization
+    Federal Reserve Governor Christopher Waller argues that the central bank should remain central to tokenization of financial assets. The stance bears on how tokenized money and settlement infrastructure may be regulated.
+    https://www.coindesk.com/policy/2026/11/17/u-s-fed-governor-waller-pitches-keeping-central-bank-at-the-center-of-tokenization
 -- Everything else
-[4] Java News Roundup: Lazy Constants, Spring for Apache Pulsar, GlassFish, Hibernate, TomEE, Seed4J
-    InfoQ's Java roundup for 9 November 2026. It covers Lazy Constants proposed for JDK 28, second release candidates of Spring AI and Spring Boot, and first release candidates of Hibernate ORM and Hibernate Reactive. These are directly relevant to your Spring Boot work.
-    https://www.infoq.com/news/2026/11/java-news-roundup-nov09-2026/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
-[4] Alpine Linux Users Urged to Patch OpenSSH Authentication Flaw
-    CVE-2026-123158 (*sshole) lets an unauthenticated attacker log into accounts with no usable password on OpenSSH systems that use musl without PAM. Researchers report active exploitation in the wild, so affected Alpine servers need patching urgently. It is directly actionable for anyone running Alpine in production.
-    https://www.infoq.com/news/2026/11/alpine-linux-openssh-sshhole/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
-[3] FBI says Artex AI open-source hacking tool used to breach networks in ‘under three hours’
-    The FBI says the open-source Artex AI hacking tool was used to breach networks in under three hours. Targets included a U.S. IT giant and South Korea's financial sector. It highlights how quickly open-source offensive tooling can be weaponised against financial institutions.
-    https://techcrunch.com/2026/11/16/fbi-says-artex-ai-open-source-hacking-tool-used-to-breach-networks-in-under-three-hours/
+[4] Critical Red Hat Quay Flaw Lets Attackers Read and Overwrite All Private Container Images in a Registry
+    A critical flaw in Red Hat Quay lets attackers read and overwrite all private container images in a registry. For a backend engineer running container infrastructure, patching and access review are urgent.
+    https://thehackernews.com/2026/11/critical-red-hat-quay-flaw-lets.html
+[4] Optimizely Hack Hijacked Ledger, BBC and 176 Other Sites to Swap Crypto Wallet Addresses
+    Malicious code served through the Optimizely website testing platform swapped wallet addresses on Ledger, BBC and 176 other sites, redirecting crypto to the attacker. It also skimmed card data. This is a third-party script supply-chain compromise with direct lessons for client-side security.
+    https://decrypt.co/383414/optimizely-hack-hijacked-ledger-bbc-and-176-other-sites-to-swap-crypto-wallet-addresses
+[3] Automatic Checking of Compiler Correctness with E-Graphs
+    The article describes using e-graphs to automatically check compiler correctness, per the title. It is a substantive compiler-engineering technique but of limited direct use to the reader.
+    https://stng.substack.com/p/automatic-checking-of-compiler-correctness
 
 FINANCE
-[4] SEBI sets up sub-group to review IPO, fundraising regulations
-    Sebi's sub-group, headed by NSE chief Ashish Chauhan, will examine eligibility, lock-in, pricing and disclosure rules under ICDR. It repeats the earlier panel announcement and is relevant to fintech and regulatory work.
-    https://www.thehindubusinessline.com/markets/sebi-sets-up-sub-group-to-review-ipo-fundraising-regulations/article71708635.ece
-[4] LTCG tax tweaks on cards? Govt considering industry proposals as Budget 2027-28 nears—what CBDT chairman revealed
-    CBDT chairman Ravi Agrawal said the government is consulting stakeholders on possible changes to long-term capital gains tax ahead of Budget 2027-28. Any revision would directly affect how Indian investors are taxed on equity and asset sales.
-    https://www.livemint.com/money/personal-finance/ltcg-tax-tweaks-on-cards-govt-considering-industry-proposals-as-budget-2027-28-nears-what-cbdt-chairman-revealed-11794832278686.html
-[4] Sebi panel to review IPO, FPO and QIP rules, rationalise disclosure norms
-    SEBI has set up a panel to review IPO, FPO and QIP rules and rationalise disclosure norms. The aim is easier capital access for eligible issuers, with fewer duplicative disclosures and clearer requirements.
-    https://www.livemint.com/market/sebi-panel-to-review-ipo-fpo-and-qip-rules-rationalise-disclosure-norms-11794832119010.html
-[4] Sebi sets up sub-group under PMAC to review key IPO norms; NSE's Chauhan to head panel
-    Sebi set up a sub-group under its Primary Market Advisory Committee to review IPO and fundraising norms, chaired by NSE's Ashish Chauhan. Focus areas include promoter lock-in, pricing and due diligence, which matters for fintech and capital-markets work.
-    https://economictimes.indiatimes.com/markets/stocks/news/sebi-sets-up-sub-group-under-pmac-to-review-key-ipo-norms-nses-chauhan-to-head-panel/articleshow/135890467.cms
-[4] Retain capital gains tax on equities, economists tell FM Sitharaman ahead of Budget 2027-28
-    Economists urged Finance Minister Nirmala Sitharaman to retain capital gains tax on equities ahead of Budget 2027-28, opposing industry calls for abolition. The outcome affects returns for salaried equity investors.
-    https://economictimes.indiatimes.com/markets/stocks/news/retain-capital-gains-tax-on-equities-economists-tell-fm-sitharaman-ahead-of-budget-2027-28/articleshow/135890410.cms
+[4] Anthropic IPO: Planning to invest from India? Check why IPO allotment may be difficult and what you can do instead
+    Anthropic's Nasdaq IPO may be hard for Indian retail investors to access, since most brokers may not allow direct applications. The article explains buying after listing and using the LRS route as alternatives, which is relevant given this reader's AI interests.
+    https://www.livemint.com/money/personal-finance/anthropic-ipo-planning-to-invest-from-india-check-why-ipo-allotment-may-be-difficult-and-what-you-can-do-instead-11794931790357.html
+[4] Indian bonds surge after oil slide eases aggressive rate hike concerns
+    Indian government bonds rallied on Tuesday as falling oil prices eased concerns about aggressive rate hikes. The 6.94% 2036 bond's yield dropped to 7.2528% from 7.3169%. Lower oil could relieve inflation and support the rupee, while speculation of an RBI hike persists after fresh inflation data.
+    https://economictimes.indiatimes.com/markets/bonds/indian-bonds-surge-after-oil-slide-eases-aggressive-rate-hike-concerns/articleshow/135924727.cms
+[4] Anthropic IPO windfall: From Sequoia to Amazon, who wins big as Claude maker eyes $1.33 trillion valuation
+    Anthropic is reportedly eyeing an IPO at a $1.33 trillion valuation, after a valuation of $965 billion from recent funding rounds. Investor interest in AI companies is high, with Nvidia developments also in focus. The offering would be a major event for the AI industry.
+    https://www.livemint.com/market/ipo/anthropic-ipo-windfall-from-sequoia-to-amazon-who-wins-big-as-claude-maker-eyes-1-33-trillion-valuation-11794910889109.html
+[4] Sebi may limit leveraged stock bets to curb volatility: Report
+    SEBI is exploring hard limits on leveraged stock purchases, potentially tied to a company's free float, as margin-funded bets hit record levels. Concerns focus on rising retail participation and market volatility. The regulator says it wants to curb risk without disrupting retail positions.
+    https://economictimes.indiatimes.com/markets/stocks/news/sebi-may-limit-leveraged-stock-bets-to-curb-volatility-report/articleshow/135920460.cms
+[3] RBI to conduct Overnight Variable Rate Reverse Repo (VRRR) auction under LAF on November 18, 2026
+    The RBI will conduct an overnight Variable Rate Reverse Repo auction under the LAF on November 18, 2026. The release also notes that the SGB 2020-21 Series VIII tranche becomes eligible for premature redemption on November 18, 2026. Redemption is priced on the three-day average IBJA 999 gold price.
+    https://www.rbi.org.in/scripts/BS_PressReleaseDisplay.aspx?prid=63991
 
 GENERAL KNOWLEDGE
-[4] Jensen Huang Is Gone. Now What?
-    Nvidia CEO Jensen Huang has left the company after a sudden downfall. WIRED examines what this means for Nvidia, the chip supply chain, and the broader AI industry.
-    https://www.wired.com/story/the-big-interview-podcast-lauren-goode-jensen-huang/
-[3] Silicon Valley insiders urge Nvidia to restore Jensen Huang’s CEO role
-    Silicon Valley insiders are urging Nvidia to restore Jensen Huang to its CEO role. Analysts warn of a potential 30 percent loss in company value during the current stock downturn. Nvidia is central to AI infrastructure, so leadership instability matters to the sector.
-    https://www.aljazeera.com/economy/2026/11/16/silicon-valley-insiders-urge-nvidia-to-restore-jensen-huangs-ceo-role?traffic_source=rss
-[3] Iraq deploys army to stronghold of Iran-backed Kataib Hezbollah
-    Iraq has deployed its army to a stronghold of the Iran-backed group Kataib Hezbollah under US pressure to limit Tehran's influence. The move raises the risk of direct confrontation with Iran-linked forces.
-    https://www.aljazeera.com/news/2026/11/16/iran-deploys-army-to-stronghold-of-iran-backed-kataib-hezbollah?traffic_source=rss
-[3] Trump backs return of ex-Nvidia boss after 'Bring Jensen Back' campaign launched
-    Trump backed the return of Jensen Huang to Nvidia after a 'Bring Jensen Back' campaign by tech figures urged the board to reinstate him. The push highlights leadership uncertainty at the leading AI chip firm.
-    https://www.bbc.co.uk/news/articles/cry49plv8v3go?at_medium=RSS&at_campaign=rss
-[3] Five EU countries announce migrant deportation centre in Rwanda
-    Germany, Denmark, Austria, Greece and the Netherlands announced a joint 'return hub' in Rwanda for failed asylum seekers. The plan is a significant shift in European migration policy.
-    https://www.bbc.co.uk/news/articles/cw987343352go?at_medium=RSS&at_campaign=rss
+[4] Israeli settler pogrom kills Palestinian woman, wounds 10 people
+    Al Jazeera reports that Israeli settlers killed 72-year-old Fadda Mohammed Fheidat and wounded 10 people in a settler attack. The Palestinian Health Ministry confirmed the death. The incident adds to a pattern of settler violence in the West Bank.
+    https://www.aljazeera.com/news/2026/11/17/israeli-settler-pogrom-kills-palestinian-woman-wounds-10-people?traffic_source=rss
+[4] Iran launches third round of strikes on Bahrain, host of U.S. Navy's 5th Fleet
+    Iran fired drones at a US radar facility in Bahrain, its third attack in recent days on American military targets in the Gulf kingdom. The strikes follow a roughly two-month lull in fighting. The escalation threatens wider instability in the Gulf and risks US-Iran confrontation.
+    https://www.npr.org/2026/11/17/nx-s1-6044255/us-iran-war-latest-bahrain
+[4] The Nvidia Scandal Could Upend Chip Sales to China. Trump Wants to Keep Them Going
+    Commerce Secretary Howard Lutnick faces criticism for not blacklisting a company tied to the Jensen Huang scandal, which could disrupt Nvidia chip sales to China. Trump backs continuing those sales.
+    https://www.wired.com/story/the-nvidia-scandal-is-about-chip-sales-to-china-trump-wants-to-keep-them-going/
+[4] Trump says US taking 'very seriously' any Iranian plot against Washington
+    Trump says the US is taking seriously any Iranian plot against Washington. Tehran calls suggestions that it planned a so-called dirty bomb attack on the US capital baseless. The claim raises the risk of escalation between the two countries.
+    https://www.bbc.co.uk/news/articles/cq808vzd3nnpo?at_medium=RSS&at_campaign=rss
+[4] US loses measles elimination status after 26 years amid record case numbers
+    US states have reported over 5,400 measles cases and 10 measles-related deaths, the first such deaths since the early 1990s. The country has lost its measles elimination status after 26 years. The loss signals a major public health reversal with implications for vaccination policy.
+    https://www.bbc.co.uk/news/articles/c977p71jx0xxo?at_medium=RSS&at_campaign=rss
 
 ENTREPRENEURSHIP
-[4] Your Deal Didn’t Stall. You Were Pitching the Wrong Person.
-    Argues that bottom-up adoption stalls when purchases require multiple approvers, and that founders relying on one champion lose deals to unmapped buying committees. Practical B2B sales advice relevant to healthtech and fintech selling.
-    https://www.entrepreneur.com/building-a-business/your-deal-didnt-stall-you-were-pitching-the-wrong-person
-[4] Show HN: Coral – Open-source gateway where agents write their own tools
-    Coral is an open-source, self-hosted gateway where agents call tools by writing short TypeScript programs that can be saved and shared as reusable custom tools. It offers per-tool permission control, which is directly relevant to building and securing agent pipelines in production.
-    https://github.com/withcoral/coral
-[4] Credit-led fintech startup Olyv raises $6M
-    Olyv, a credit-led fintech founded in 2016, raised $6 million across personal loans, gold savings and credit health management. Relevant to the fintech domain as a lending and credit-product funding signal.
-    https://yourstory.com/2026/11/credit-led-fintech-startup-olyv-raises-usd-6m
-[4] How I fight token fraud as a solo founder
-    Solo founder walks through six token fraud attack patterns, the defenses built after losing tens of thousands of dollars, and why free trials were discontinued. Directly useful for anyone running usage-based or trial-based products.
-    https://www.lennysnewsletter.com/p/how-i-fight-token-fraud-as-a-solo
-[4] Beyond payments: Where venture capital will flow across Indian fintech over the next 24 months
-    Analysis of where venture capital will flow across Indian fintech over the next 24 months, shifting from distribution toward infrastructure, advice, and intelligence. Directly relevant to fintech infrastructure and funding trends in India.
-    https://yourstory.com/2026/11/where-venture-capital-will-flow-across-indian-fintech-over-next-24-months
+[4] Show HN: TrnRT – An open-source LLM inference engine for AWS Trainium
+    RunAnywhere open-sourced TrnRT, an LLM inference engine for AWS Trainium, serving GLM 5.3 flash in FP8 on a trn2.48xlarge. The team reports 3.57M tokens per minute on SemiAnalysis's AgentX benchmarks. Relevant to inference cost and serving architecture.
+    https://github.com/RunanywhereAI/trnrt
+[4] The 1-Hour Test That Shows Where AI Will Actually Pay Off
+    Entrepreneur.com proposes a one-hour test for spotting where AI will pay off. It argues many AI tools work as designed yet add friction to real workflows instead of removing it, so they deliver little value. This matters for building AI tools that must fit clinician and hospital workflows.
+    https://www.entrepreneur.com/leadership/the-1-hour-test-that-shows-where-ai-will-actually-pay-off/505403
+[4] Malware attack hits Zoom, Salesforce and IKEA-linked websites
+    A malware attack reportedly used Optimizely scripts on 178 organisation websites, including Zoom, Salesforce and IKEA-linked sites. It aimed to harvest card details and crypto wallet addresses. This is a third-party script supply-chain attack relevant to web security and payments.
+    https://yourstory.com/2026/11/malware-attack-zoom-salesforce-ikea-websites
+[4] Sarvam AI Opens Token Factory To Run Global AI Models On Indian Servers
+    Sarvam AI opened Token Factory so developers and enterprises can run its own and global AI models on Indian servers. The service targets data residency and local hosting needs. This is directly relevant to GenAI infrastructure and enterprise deployment in India.
+    https://inc42.com/buzz/sarvam-ai-opens-token-factory-to-run-global-ai-models-on-indian-servers/
+[4] Elastic{ON} Mumbai: Why context, not the model, is the real AI advantage
+    At Elastic{ON} Mumbai, CEO Ash Kulkarni argued that businesses already own the context AI models lack, making context the real advantage. The event explored what putting that context to work requires. This directly bears on RAG and enterprise retrieval design.
+    https://yourstory.com/2026/11/elasticon-mumbai-context-not-model-real-ai-advantage
 
 HEALTH-TECH
-[5] HLTH 2026: CVS Health, Cigna and Abridge collaborating with OpenAI to test computer-use agents
-    OpenAI is expanding computer-use agents for healthcare, with CVS Health, Cigna, and Abridge testing agents that navigate EHRs, payer portals, and other software for repetitive tasks. Directly relevant to clinical workflow automation and agentic AI in hospitals.
-    https://www.fiercehealthcare.com/ai-and-machine-learning/hlth26-cvs-health-cigna-and-ambience-collaborating-openai-test-computer-use
-[4] The Permanente Medical Group Launches Innovation Company To Commercialize Clinicians’ Ideas
-    Kaiser Permanente's Permanente Medical Group is launching an innovation company to commercialise clinicians' ideas into healthcare products. Relevant to clinician-led healthtech and how hospitals build tools.
-    https://medcitynews.com/2026/11/the-permanente-medical-group-launches-innovation-company-to-commercialize-clinicians-ideas/
-[4] A Complete Medical Record Still Won’t Fix Prior Authorization
-    An argument that a complete medical record does not resolve prior-authorisation disputes, because the issue lies in how organisations interpret the same information. Directly relevant to clinical documentation and payer workflows.
-    https://medcitynews.com/2026/11/a-complete-medical-record-still-wont-fix-prior-authorization/
-[4] Safety and Regulation Must Lead the Way in Healthcare AI Innovation
-    A commentary arguing that enforceable guardrails and financial incentives should guide healthcare AI, so that it improves care while keeping trust. Relevant to the reader's work on AI tools for clinics, though it is an opinion piece.
-    https://medcitynews.com/2026/11/safety-and-regulation-must-lead-the-way-in-healthcare-ai-innovation/
-[4] STAT+: Apple and OpenEvidence launch experimental health chat app
-    Apple and OpenEvidence are launching a study around an experimental AI-powered health chat app, hinting at new directions for both companies. The snippet gives no details on scope, timing, or user numbers.
-    https://www.statnews.com/2026/11/15/apple-openevidence-launch-health-chat-app-experiment-ai/?utm_campaign=rss
+[5] Your AI Vendor’s Medical Exam Score Doesn’t Mean What You Think It Does
+    The article argues that AI vendors' medical exam scores can mislead buyers, since health systems need open, reproducible and continuously updated evaluation. Building that is harder in healthcare than in general-purpose AI, for three stated reasons. Directly relevant to validating clinical AI before deployment.
+    https://medcitynews.com/2026/11/your-ai-vendors-medical-exam-score-doesnt-mean-what-you-think-it-does/
+[4] Medicare Pays For the AI Eye Scan — Nobody Pays For What Comes Next
+    Medicare now pays for an AI-based eye screening exam, but nothing pays for the follow-up care that comes after it. The article argues this payment gap shapes adoption more than other barriers. Important for designing AI diagnostics workflows that clinics can reimburse.
+    https://medcitynews.com/2026/11/medicare-pays-for-the-ai-eye-scan-nobody-pays-for-what-comes-next/
+[4] HHS finalizes updates to HIPAA privacy rule to ease patient access to health information
+    HHS finalised updates to the HIPAA Privacy Rule to give patients faster, easier access to their health records and streamline care coordination. The change tightens expectations around record access. Relevant to health data interoperability and patient access features.
+    https://www.fiercehealthcare.com/health-tech/hhs-finalizes-updates-hipaa-privacy-rule-ease-patient-access-health-information
+[4] Doc at HLTH: I Can’t Imagine Seeing Patients Without AI
+    A part-time urgent care doctor at HLTH says he cannot imagine seeing patients without AI, with input from experts including a leader of healthcare projects at Anthropic. The discussion covers AI's role in primary care. A clinician perspective on everyday AI adoption.
+    https://medcitynews.com/2026/11/doc-at-hlth-i-cant-imagine-seeing-patients-without-ai/
+[4] Apple launches new Health AI study app to understand how people use AI for medical advice
+    Apple is recruiting about 200,000 eligible adults for a virtual study using an iOS app, where they ask health questions and get evidence-based answers. Participants can rate responses and optionally share HealthKit data under stated privacy safeguards. It offers a large look at how people actually use AI for medical advice.
+    https://health.economictimes.indiatimes.com/news/health-it/apple-launches-new-health-ai-study-app-to-understand-how-people-use-ai-for-medical-advice/135907463
