@@ -3,30 +3,30 @@ Knowledge Updater · Fri 20 Nov 2026
 Full page (all tabs & filters): https://eth-developer03.github.io/ku-a6244260/
 
 BUSINESS IDEAS
-1. Patch blast-radius scanner for Spring Boot fleets (score 4.5; effort 3, cost 1, fit 5)
-   A GitHub App and CLI that scans Maven and Gradle dependency trees across an Indian SaaS or fintech's repos, flags every service exposed to a new CVE, and opens upgrade PRs with the affected call sites listed. Sold per repo to Spring Boot teams that cannot afford enterprise supply-chain suites.
-   Why now: Java4Shell's base64 decoder flaw came with Cloudflare WAF rules, but a WAF is a stopgap; teams still need to know which of their services pull in the vulnerable artifact.
-   First step: Write a script that runs `mvn dependency:tree` across 10 public Spring Boot repos and matches the output against the Java4Shell advisory's affected versions.
+1. Java patch blast-radius bot for small Spring Boot teams (score 4.5; effort 3, cost 1, fit 5)
+   A GitHub App that reads a library or patch version bump, lists which of the team's repositories call the changed APIs, and flags services still on vulnerable JDK or library versions. It is sold as a flat monthly fee to Indian SaaS teams with five to thirty Java services, who cannot afford enterprise supply-chain tools.
+   Why now: Netflix's Quasar work on cross-repo API blast radius, combined with the Java4Shell Base64 decoder RCE and a critical OpenSSL overflow disclosed in the same week, makes patch triage across many services urgent.
+   First step: Write a script that scans five of your own Maven or Gradle repos and lists every call site of a chosen library's changed methods, then check whether the output is useful to an engineer.
 
-2. Customer-level tests as data for AI-written Spring code (score 4.2; effort 2, cost 1, fit 4)
-   A small library and runner that stores end-to-end API test scenarios as YAML or JSON outside the repo, so AI coding agents cannot edit the tests they are judged against. It targets Spring Boot teams that use coding agents daily and want a locked, human-owned contract.
-   Why now: Martin Fowler's writeup argues that customer-level tests stored as data are the right contract when AI writes the code, and few Java teams have a ready-made way to do that.
-   First step: Convert five existing integration tests from one Spring Boot service into a YAML scenario format and run them through a generic runner.
+2. Lab report digitisation with an extraction-yield dashboard (score 4.2; effort 3, cost 2, fit 5)
+   A per-report API for small diagnostic labs that OCRs printed reports into structured results and flags fields below a confidence threshold for a human to check. It tracks yield (the share of reports fully extracted without manual rework) alongside accuracy, and bills per report. The doctor still reads and signs off every result.
+   Why now: A pathology foundation model paper reports headline AUCs on held-out slides, but labs and hospitals still need to know what share of real documents pass through unattended, which accuracy alone does not answer.
+   First step: Collect 50 anonymised lab reports from a friendly clinic, run them through an open OCR plus LLM extraction pipeline, and measure the percentage that needs no manual fix.
 
-3. Local validation harness for clinical AI vendors (score 3.8; effort 3, cost 2, fit 4)
-   A tool that lets a hospital or diagnostic chain run a vendor's AI on its own de-identified case set, labelled by its own clinicians, and report sensitivity, specificity and subgroup breakdowns per site. It re-runs on a schedule to catch drift. The clinicians set the ground truth and make every clinical call; the tool only measures.
-   Why now: Vendor exam scores are being shown to mislead buyers, and a pathology foundation model reports 98% sensitivity in one study, but hospitals have no easy way to check those numbers against their own slides.
-   First step: Interview the quality or IT heads at three Indian pathology labs about how they currently evaluate any AI vendor they have trialled.
+3. Tests-as-data harness for AI-written Java services (score 4.2; effort 2, cost 1, fit 4)
+   A library and CLI where customer-level test cases live as versioned YAML or JSON files outside the codebase, so coding agents cannot edit them. Each run replays the cases against a Spring Boot service and fails the build on any behavioural change. It is sold as a free core with a paid hosted dashboard to teams using Copilot or Claude Code on Java backends.
+   Why now: Fowler's post on tests as data argues that AI-written code needs an external contract the agent cannot change, and deterministic simulation testing shows how to make such failures reproducible in distributed backends.
+   First step: Take one Spring Boot endpoint, export ten request and response pairs as JSON files in a separate folder, and write a JUnit runner that replays them and fails on any diff.
 
-4. Claims-to-payout API for SMEs (score 3.2; effort 3, cost 4, fit 4)
-   An API for Indian SMEs to pay employee reimbursements (medical, fuel, meal allowances) straight to bank accounts over IMPS or UPI. It validates bank accounts before payout, and large payouts go through a delay and approval step. It runs on a licensed payout partner so the founder avoids a payment-aggregator licence.
-   Why now: Flex's founder built its engineering team to fix HSA and FSA payment failures she had lived through, showing employee benefit payouts are a real, painful problem that payment rails do not solve by default.
-   First step: Get sandbox access to one licensed Indian payout provider and send 20 test payouts with bank-account validation to see the failure modes.
+4. Idle-reservation monitor for LLM agent sessions (score 4.0; effort 3, cost 1, fit 4)
+   A middleware and dashboard that tracks how long each agent session holds a sandbox, container or connection while waiting on the model, and suggests pooling or early release. It targets teams running agents on managed runtimes and charges a monthly fee based on reserved environment-hours saved.
+   Why now: A paper on Bedrock AgentCore shows agents waiting a median of 2.7 seconds per reply while holding full environments, so environment exhaustion arrives before CPU limits; TideCache shows how much serving cost depends on memory placement.
+   First step: Instrument one agent loop you already run so it logs time spent waiting on model calls versus time holding the environment, and compute the idle share over a day.
 
-5. Consent and access log for clinic-to-lab report sharing (score 3.0; effort 3, cost 3, fit 3)
-   A lightweight service that records which patient consented to share which reports with which lab or clinic, and produces a tamper-evident access log for audits. It is sold to small clinics and diagnostic centres that need clear consent records under India's data-protection rules, and avoids the trust failure that sank 23andMe.
-   Why now: 23andMe's collapse was driven by unclear consent and trust around sensitive genetic data, which makes consent records for health data a sales point for any clinic handling patient reports.
-   First step: Draft a one-page consent and access-log schema and ask two clinic owners whether they would pay for it.
+5. Clinical AI eval kit for Indian hospital buyers (score 3.8; effort 3, cost 2, fit 4)
+   A small, reproducible evaluation harness that a hospital's IT or quality team can run on any vendor's AI report summariser or image-triage tool, using their own de-identified cases. It produces a sensitivity, specificity and drift report per site, sold as a yearly subscription to mid-sized private hospital groups and diagnostic chains.
+   Why now: MedCity's piece on misleading vendor exam scores and a pathology-AI paper reporting 98% sensitivity with 81% specificity both show buyers need local, repeatable validation before deployment.
+   First step: Interview two hospital quality or IT heads in your network about how they currently check vendor AI claims, and write down the three checks they run by hand.
 
 TECH
 -- AI & ML
@@ -63,7 +63,7 @@ TECH
 [5] OpenSSL: Buffer overflow in EVP_EncodeBlock() (CVE-2026-121481, CVSS 9.8)
     OpenSSL disclosed CVE-2026-121481, a buffer overflow in EVP_EncodeBlock() with a CVSS score of 9.8. Critical severity in a widely used cryptographic library means any service using affected OpenSSL versions should check and patch promptly.
     https://github.com/openssl/openssl/pull/33652
-[4] A transcription firm used by police, prosecutors and tech giants exposed customer data online
+[4] A transcription firm used by police, prosecutors, and tech giants exposed customer data online
     A transcription firm used by police, prosecutors, and tech giants left transcripts of police interviews and bodycam footage on a cloud server with no password. Relevant to speech-to-text pipelines, since misconfigured storage of sensitive audio and transcripts is a failure to design against.
     https://techcrunch.com/2026/11/20/a-transcription-firm-used-by-police-prosecutors-and-tech-giants-exposed-customer-data-online/
 [4] nginx2root: Five new nginx vulnerabilities, and how Cloudflare protects origins from the worst of them
@@ -91,6 +91,9 @@ GENERAL KNOWLEDGE
 [4] Anthropic mathematician claims AI-assisted proof of the Riemann hypothesis
     An Anthropic mathematician claims an AI-assisted proof of the Riemann hypothesis, a problem open for 167 years. The claim is unverified in the snippet, but if confirmed it would be a major milestone for AI-assisted research.
     https://www.newscientist.com/article/2600134-anthropic-mathematician-claims-ai-assisted-proof-of-the-riemann-hypothesis/?utm_campaign=RSS|NSNS&utm_content=home&utm_medium=RSS&utm_source=NSNS
+[3] An Isolated Group of Amazonian Hunter-Gatherers Made a Rare Request for Help From Outsiders, Raising Concerns About Forest Degradation
+    About 20 members of the isolated Indigenous Awá tribe left the Amazon rainforest and received food from neighbouring villagers. The group has had no outside contact in decades. Experts link the rare request to deforestation leaving them without other options.
+    https://www.smithsonianmag.com/smart-news/an-isolated-group-of-amazonian-hunter-gatherers-made-a-rare-request-for-help-from-outsiders-raising-concerns-about-forest-degradation-180989909/
 [3] Russian missile hits Poland as Ukraine's allies hold military exercise, says Tusk
     A Russian missile hit Poland during a military exercise by Ukraine's allies, with no injuries or damage reported. Tusk and Warsaw called it a 'provocation' from Moscow.
     https://www.bbc.co.uk/news/articles/cqx2x9dklxnro?at_medium=RSS&at_campaign=rss
@@ -100,9 +103,6 @@ GENERAL KNOWLEDGE
 [3] Anthropic shares fall a day after blockbuster opening
     Anthropic shares fell a day after a blockbuster stock market debut, and other tech stocks also dropped as broader markets slumped. The move tests investor appetite following the IPO.
     https://www.bbc.co.uk/news/articles/c6808ym10vzgo?at_medium=RSS&at_campaign=rss
-[3] US Senate passes bill to speed up energy project approvals
-    The US Senate passed a bill to speed up energy project approvals and limit court challenges. Supporters say it will lower energy bills.
-    https://www.aljazeera.com/news/2026/11/20/us-senate-passes-bill-to-speed-up-energy-project-approvals?traffic_source=rss
 
 ENTREPRENEURSHIP
 [4] YourStory launches voice AI hackathon with Rs 8 lakh prize pool in collaboration with Google Cloud India
@@ -117,9 +117,9 @@ ENTREPRENEURSHIP
 [4] Razorpay To File UDRHP By Next Week, Eyes IPO By February 2027: Report
     Razorpay plans to file an updated DRHP as early as next week after SEBI clearance, targeting an IPO by February 2027. The filing is a key milestone for India's fintech listing pipeline.
     https://inc42.com/buzz/razorpay-to-file-udrhp-by-next-week-eyes-ipo-by-february-2027-report/
-[3] Eulogy for the Software Engineer
-    A YC debate video with Jacob Coxon (ex-Anthropic and OpenAI) and Robin Hanson on whether governments should slow frontier AI. The chapters cover superintelligence timelines, liability versus regulation, and technology diffusion. Relevant for AI policy context, though it is a debate, not news.
-    https://www.youtube.com/watch?v=uuKOXGVIP8I
+[3] Anthropic’s Nasdaq Debut Sparks Buying Rush Among Indian Retail Investors
+    Indian retail investors rushed to buy and trade Anthropic shares after its Nasdaq debut. The listing is a notable marker of public-market appetite for AI companies, relevant to anyone tracking AI valuations.
+    https://inc42.com/buzz/anthropics-nasdaq-debut-sparks-buying-rush-among-indian-retail-investors/
 
 HEALTH-TECH
 [4] HLTH 2026: Elsevier upgrades ClinicalKey AI with full patient EHR context
