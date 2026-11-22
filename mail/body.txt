@@ -1,139 +1,130 @@
-Knowledge Updater · Fri 20 Nov 2026
+Knowledge Updater · Sun 22 Nov 2026
 
 Full page (all tabs & filters): https://eth-developer03.github.io/ku-a6244260/
 
 BUSINESS IDEAS
-1. Java patch blast-radius bot for small Spring Boot teams (score 4.5; effort 3, cost 1, fit 5)
-   A GitHub App that reads a library or patch version bump, lists which of the team's repositories call the changed APIs, and flags services still on vulnerable JDK or library versions. It is sold as a flat monthly fee to Indian SaaS teams with five to thirty Java services, who cannot afford enterprise supply-chain tools.
-   Why now: Netflix's Quasar work on cross-repo API blast radius, combined with the Java4Shell Base64 decoder RCE and a critical OpenSSL overflow disclosed in the same week, makes patch triage across many services urgent.
-   First step: Write a script that scans five of your own Maven or Gradle repos and lists every call site of a chosen library's changed methods, then check whether the output is useful to an engineer.
+1. Java library blast-radius checker as a GitHub App (score 4.5; effort 3, cost 1, fit 5)
+   A GitHub App that, on each Maven or Gradle dependency bump or CVE patch PR, scans the other repos in the same org and comments with the consumer call sites that could break. It is sold per organisation and mainly targets Indian product companies running many Spring Boot services.
+   Why now: With Java4Shell now public and Cloudflare shipping WAF rules, teams need to patch fast without knowing which services will break, and Netflix's cross-repo impact tool shows the approach works.
+   First step: Write a script that uses the JavaParser library to find which methods in a sample Spring Boot library are called across five of your own repos, and check how close the output is to a manual audit.
 
-2. Lab report digitisation with an extraction-yield dashboard (score 4.2; effort 3, cost 2, fit 5)
-   A per-report API for small diagnostic labs that OCRs printed reports into structured results and flags fields below a confidence threshold for a human to check. It tracks yield (the share of reports fully extracted without manual rework) alongside accuracy, and bills per report. The doctor still reads and signs off every result.
-   Why now: A pathology foundation model paper reports headline AUCs on held-out slides, but labs and hospitals still need to know what share of real documents pass through unattended, which accuracy alone does not answer.
-   First step: Collect 50 anonymised lab reports from a friendly clinic, run them through an open OCR plus LLM extraction pipeline, and measure the percentage that needs no manual fix.
+2. On-prem clinical note drafting appliance for small clinics and nursing homes (score 3.8; effort 4, cost 3, fit 5)
+   A Docker-packaged, offline-capable tool that drafts visit notes and discharge summaries from the doctor's dictation or structured inputs, runs on a single clinic server, and never sends patient data to a third-party model API. The doctor reviews and signs every draft. Sold as a one-time licence plus support to small clinics.
+   Why now: Reports of data processing incidents at inference providers make clinics wary of sending patient data to hosted model APIs, which creates demand for local deployment.
+   First step: Benchmark a quantised open-weight speech-to-text and small LLM on a single 16 GB GPU or Mac mini with 20 synthetic clinic dictations, and record latency and draft quality.
 
-3. Tests-as-data harness for AI-written Java services (score 4.2; effort 2, cost 1, fit 4)
-   A library and CLI where customer-level test cases live as versioned YAML or JSON files outside the codebase, so coding agents cannot edit them. Each run replays the cases against a Spring Boot service and fails the build on any behavioural change. It is sold as a free core with a paid hosted dashboard to teams using Copilot or Claude Code on Java backends.
-   Why now: Fowler's post on tests as data argues that AI-written code needs an external contract the agent cannot change, and deterministic simulation testing shows how to make such failures reproducible in distributed backends.
-   First step: Take one Spring Boot endpoint, export ten request and response pairs as JSON files in a separate folder, and write a JUnit runner that replays them and fails on any diff.
+3. Clinical AI pre-deployment evaluation kit for Indian hospitals (score 3.8; effort 3, cost 2, fit 4)
+   A self-hosted harness that lets a hospital run a vendor's clinical AI tool against its own de-identified past cases and produce a reproducible scorecard, with sensitivity, specificity and subgroup breakdowns by site. Hospitals pay per evaluation or an annual re-run subscription, and the clinical team decides whether to adopt.
+   Why now: Health systems are being warned that vendor exam scores don't reflect real-world performance, and a multi-institutional grading study shows how much validation depends on the local setting.
+   First step: Interview two hospital IT or quality leads you know from your internship and ask how they currently check vendor AI claims before buying.
 
-4. Idle-reservation monitor for LLM agent sessions (score 4.0; effort 3, cost 1, fit 4)
-   A middleware and dashboard that tracks how long each agent session holds a sandbox, container or connection while waiting on the model, and suggests pooling or early release. It targets teams running agents on managed runtimes and charges a monthly fee based on reserved environment-hours saved.
-   Why now: A paper on Bedrock AgentCore shows agents waiting a median of 2.7 seconds per reply while holding full environments, so environment exhaustion arrives before CPU limits; TideCache shows how much serving cost depends on memory placement.
-   First step: Instrument one agent loop you already run so it logs time spent waiting on model calls versus time holding the environment, and compute the idle share over a day.
+4. Employee medical and meal reimbursement payouts for Indian SMEs (score 3.8; effort 3, cost 2, fit 4)
+   An API and dashboard where a company's HR or finance team uploads or approves claims, validates the employee's bank account, and pays out via IMPS or UPI through a licensed payout partner. It targets 20 to 500-person companies that currently handle these claims through manual payroll runs. You earn a per-payout fee and avoid holding funds yourself.
+   Why now: Flex's engineer #1 story shows that HSA and FSA payment friction is painful enough to justify a company, and that gap persists in India's SME benefits market.
+   First step: Map the fees and turnaround times of two licensed payout APIs in India and draft a per-payout pricing sheet for a 100-employee company.
 
-5. Clinical AI eval kit for Indian hospital buyers (score 3.8; effort 3, cost 2, fit 4)
-   A small, reproducible evaluation harness that a hospital's IT or quality team can run on any vendor's AI report summariser or image-triage tool, using their own de-identified cases. It produces a sensitivity, specificity and drift report per site, sold as a yearly subscription to mid-sized private hospital groups and diagnostic chains.
-   Why now: MedCity's piece on misleading vendor exam scores and a pathology-AI paper reporting 98% sensitivity with 81% specificity both show buyers need local, repeatable validation before deployment.
-   First step: Interview two hospital quality or IT heads in your network about how they currently check vendor AI claims, and write down the three checks they run by hand.
+5. Warm sandbox pool broker for coding-agent sessions (score 3.8; effort 3, cost 2, fit 4)
+   A lightweight broker that keeps a pool of warm, per-team VMs in the customer's own cloud account and assigns them to agent sessions, so environments are not reserved for each full conversation. It is priced per session-hour for small Indian dev agencies running coding agents. The focus is on cutting the environment cost of idle agent time.
+   Why now: Research shows agent sessions hold full environments while waiting on model replies, and an open-source Devin alternative reports that per-team VMs beat per-session sandboxes past about 640 session-hours a month.
+   First step: Measure your own agent runs by logging how long each session holds its environment versus how long it actively calls the model, then compute the idle share.
 
 TECH
 -- AI & ML
-[4] Language Models Can Rewrite Their Own Weights
-    A paper or post titled that language models can rewrite their own weights. If substantiated, self-modifying weights would be a significant research direction for model adaptation and AI engineering.
-    https://arxiv.org/abs/2611.21885
-[4] Google Donates Agent Substrate and gVisor to the CNCF to Secure AI Agents at Scale
-    Google is donating Agent Substrate and gVisor to the CNCF, putting components of its AI agent infrastructure under vendor-neutral open-source governance. The move targets secure AI agents at scale. Relevant to agent infrastructure and sandboxing.
-    https://www.infoq.com/news/2026/11/google-substrate-gvisor-cncf/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
-[4] AI coding agents on Amazon EC2 Mac: How Cognition scales Devin for macOS
-    Cognition runs its Devin AI software engineer on fresh macOS VMs on Amazon EC2 Mac bare-metal hosts, so it can build and test iOS and macOS apps. The post covers disk snapshots, a user-space network gateway, and accessibility-based control. Useful architecture reference for agent sandboxing at scale.
-    https://aws.amazon.com/blogs/architecture/ai-coding-agents-on-amazon-ec2-mac-how-cognition-scales-devin-for-macos/
+[4] Claude Code Has Been Leaking Secrets Through Its "Don't Ask Again" Feature
+    Apiiro found that Claude Code exposed secrets in public repositories through its "Don't Ask Again" feature. It identified 1,122 secrets in settings.local.json files and 1,160 more in git history, shared settings, and transcripts. Directly relevant to securing AI coding agent use in your repos.
+    https://www.infoq.com/news/2026/11/claude-code-leaking-secrets/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
+[4] Google Announces Agent Compute Engine for Secure AI Agent Execution
+    Google announced Agent Compute Engine, a managed service running AI agents in isolated microVMs with checkpoint and resume support. Credentials stay outside the sandbox and are injected by an external Agent Gateway. Relevant to designing secure agent execution.
+    https://www.infoq.com/news/2026/11/google-agent-compute-engine/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
+[4] Data Processing Incidents on Inference Providers
+    A Hacker News post covers data processing incidents at AI inference providers. It bears on data handling and privacy risks when you send user or clinical data through third-party model APIs.
+    https://openrouter.ai/blog/announcements/data-processing-incidents-on-inference-providers/
 -- System Design
-[5] Article: Building Reliability Into the Cloud: Observability as the Control Plane for Multi-Region Failover
-    The article treats observability as a control plane that detects regional degradation, triggers multi-region failover automatically, and confirms recovery without paging a human. It covers active-active setups, DNS TTL pitfalls, composite Prometheus alerts, and Route 53 weighted routing, using a real S3 outage as a case study.
-    https://www.infoq.com/articles/observability-control-plane-failover/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
-[4] Uber Cuts Translation Cache Memory by up to 90% While Keeping P99 Latency Below 1 MS
-    Uber redesigned its Go-based translation cache with a hybrid design that pairs in-memory keys with disk-backed values. Its initial memory footprint fell by over 90%, with a cache hit rate above 99.9% and p99 disk miss latency under 100 microseconds. Useful caching and GC-reduction reference.
-    https://www.infoq.com/news/2026/11/uber-go-translation-cache/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
-[4] The week everything fell apart
-    A week of outages included a days-long Outlook disruption, a nationwide FAA ground stop, banking service failures, and iCloud downtime. The article presents these as a sign of wider technological fragility. The incidents are a useful case study for reliability and dependency risk.
-    https://www.theverge.com/podcast/1038419/outage-outlook-ground-stop-tech-failure-vergecast
+[4] AWS Lambda Now Runs GPU Inference with 48 Concurrent Invocations Sharing One Model per GPU
+    AWS Lambda now runs GPU inference on EC2 G-series instances, with up to 48 concurrent invocations sharing one model per GPU and a 9.75% fee on top of instance pricing. Base images for vLLM and SGLang need no handler code. Relevant to serverless inference cost and architecture decisions.
+    https://www.infoq.com/news/2026/11/aws-lambda-gpu-managed-instances/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
+[4] Microsoft 365 Outage - Post Incident Report
+    Microsoft published a post-incident report on a Microsoft 365 outage. The report covers the root cause and remediation. Useful for reliability engineers studying how large-scale failures are analysed.
+    https://tianyin.github.io/misc/pir_microsoft_365_11-12-2026.pdf
+[4] How Google Traced GKE API Timeouts to a Linux Kernel TCP Bug
+    Google traced intermittent Kubernetes API timeouts on GKE to three interacting bugs spanning GKE, Private Service Connect, and the Linux kernel TCP stack. The issue blocked around 800 developers from deploying to production. A useful debugging case study for distributed systems engineers.
+    https://www.infoq.com/news/2026/11/gke-kernel-network-bug/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
 -- Crypto & Blockchain
-[4] Release-Bound Withdrawal Authorization for Bitcoin Custody
-    RBWA is a withdrawal authorization design for Bitcoin custody that orders permits against pause in a replicated journal and restores exposure after chain reorganizations. It adds an optional delay for large payouts and independent cold recovery. Synthetic tests show reduced permits through compromised leases. Relevant to payout security design in fintech.
-    https://arxiv.org/abs/2611.25231v1
-[3] DBS bets it can lose the deposit and keep the client
-    DBS reported a record $208 million in transaction services fees for Q3 and is helping corporate clients convert deposits into stablecoins they can spend. This shows banks building stablecoin payment rails, a direct fintech infrastructure signal.
-    https://cointelegraph.com/news/dbs-bets-it-can-lose-the-deposit-and-keep-the-client?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound
-[3] Bitcoin bots pounced within seconds when researchers exposed their wallet keys
-    Researchers exposed their Bitcoin wallet keys, and bots reportedly drained funds within seconds. The episode illustrates how fast automated scanners exploit leaked private keys. It is a useful security lesson for key management practices.
-    https://www.coindesk.com/tech/2026/11/20/bitcoin-bots-pounced-within-seconds-when-researchers-exposed-their-keys
+[3] South Korean exchanges halt CYBER transfers amid suspected bridge exploit
+    South Korean exchanges halted CYBER transfers after unexpected token minting on Solana and tokens leaving an Ethereum bridge lockbox. The incident is a live example of cross-chain bridge failure and the operational response it requires.
+    https://cointelegraph.com/news/upbit-bithumb-suspend-cyber-transfers-bridge-exploit?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound
+[3] Chainflip confirms $12M hack, offers attacker 10% bounty
+    Chainflip confirmed a $12 million hack and offered the attacker a 10% bounty to return 90% of the funds by Nov. 23. The response, including the white-hat recovery framing, is a notable example of incident handling for DeFi protocols.
+    https://cointelegraph.com/news/chainflip-12m-crypto-hack-10-percent-bounty?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound
+[3] Fraudsters Used Fake Crypto Exchanges to Steal $37 Million, SEC Alleges
+    The SEC alleges eight Colorado-registered entities, likely run from overseas, posed as legitimate advisers and crypto platforms to defraud US investors of more than $37 million. The case is a useful reference for detecting impersonation and fake-platform fraud.
+    https://decrypt.co/383752/fraudsters-fake-crypto-exchanges-steal-37-million-sec
 -- Everything else
-[5] OpenSSL: Buffer overflow in EVP_EncodeBlock() (CVE-2026-121481, CVSS 9.8)
-    OpenSSL disclosed CVE-2026-121481, a buffer overflow in EVP_EncodeBlock() with a CVSS score of 9.8. Critical severity in a widely used cryptographic library means any service using affected OpenSSL versions should check and patch promptly.
-    https://github.com/openssl/openssl/pull/33652
-[4] A transcription firm used by police, prosecutors, and tech giants exposed customer data online
-    A transcription firm used by police, prosecutors, and tech giants left transcripts of police interviews and bodycam footage on a cloud server with no password. Relevant to speech-to-text pipelines, since misconfigured storage of sensitive audio and transcripts is a failure to design against.
-    https://techcrunch.com/2026/11/20/a-transcription-firm-used-by-police-prosecutors-and-tech-giants-exposed-customer-data-online/
-[4] nginx2root: Five new nginx vulnerabilities, and how Cloudflare protects origins from the worst of them
-    Cloudflare reports five memory corruption bugs in nginx, dubbed nginx2root, that can let an unauthenticated attacker run code on a server. It explains how origins behind Cloudflare's proxy are shielded from the most serious ones. Important for anyone running nginx in production.
-    https://blog.cloudflare.com/nginx2root/
+[4] How Cloudflare WAF protects against ruby2shell (CVE-2026-132825)
+    Cloudflare describes WAF rules that block ruby2shell (CVE-2026-132825), which lets unauthenticated attackers corrupt memory in default Rails and Sinatra apps. Protection covers all plans, but upgrading Ruby is the recommended fix. Relevant if you run Rails services.
+    https://blog.cloudflare.com/ruby2shell-waf-protection/
+[4] How Bee implemented Zero Operator Access for personal AI on AWS
+    Bee, an Amazon company, describes how its personal AI wearable achieves Zero Operator Access using EC2 instance attestation and the AWS Nitro System. Operators cannot reach customer data. A useful reference for privacy-preserving architecture on sensitive data.
+    https://aws.amazon.com/blogs/architecture/how-bee-implemented-zero-operator-access-for-personal-ai-on-aws/
+[3] 87% of the Anthropic power will come from gas and 11% from coal in 2028
+    A report projects that 87% of Anthropic's power will come from gas and 11% from coal in 2028. It shows the energy sourcing behind large AI compute, which matters for infrastructure and cost planning.
+    https://betterdatacenterproject.com/2026/11/16/how-ai-is-powered-a-breakdown-of-byop-and-grid-power/
 
 FINANCE
-[4] SEBI proposes big relief for FPIs: Additional disclosure rules may go - What it means for NSE and BSE
-    SEBI has proposed reviewing its Additional Disclosure Framework for foreign portfolio investors, which requires some funds to disclose ownership and control down to individual beneficiaries. Scrapping these rules would reduce compliance burden for FPIs and affect how NSE and BSE handle FPI data.
-    https://www.livemint.com/market/stock-market-news/gold-prices-near-14-month-low-what-does-sharp-price-crash-mean-for-titan-kalyan-pc-jeweller-other-jewellery-stocksg-11795184261882.html
-[4] Blame it on sales targets, not branch decisions: RBI Dy Governor Murmu explains how financial mis-selling starts
-    RBI Deputy Governor Murmu said financial mis-selling often stems from sales targets and remuneration structures rather than branch-level decisions. He urged institutions to check whether pay rewards suitable solutions over pushing products.
-    https://www.livemint.com/money/personal-finance/blame-it-on-sales-targets-not-branch-decisions-rbi-dy-governor-murmu-explains-how-financial-mis-selling-starts-11795184274656.html
-[4] Best mutual funds: Does switching to last year’s top-performing category help you earn higher long-term SIP returns?
-    A WhiteOak Capital analysis found that staying in the same mutual fund category delivered higher average 10-year rolling SIP returns in mid-caps than switching to last year's top category. This challenges chasing past performance for long-term investors.
-    https://www.livemint.com/money/personal-finance/best-mutual-funds-does-switching-to-last-year-s-top-performing-category-help-you-earn-higher-long-term-sip-returns-11795187795758.html
-[4] Sebi proposes limiting tenure of chief executives, independent directors at exchanges
-    SEBI proposes lowering the age limit for public-interest directors at exchanges from 75 to 70, capping directors at two three-year terms, and limiting managing directors to eight years. Current executives can finish their terms. Public comments are due December 11.
-    https://economictimes.indiatimes.com/markets/stocks/news/sebi-proposes-limiting-tenure-of-chief-executives-independent-directors-at-exchanges/articleshow/136031465.cms
-[4] Sebi plans consultation paper to remove FPI constraints absent in other markets
-    SEBI plans a consultation paper to remove FPI compliance constraints that other markets do not impose. It targets onboarding in five business days and proposes longer KYC review cycles for applicable FPIs. Directly relevant to KYC workflows and fintech compliance.
-    https://economictimes.indiatimes.com/markets/stocks/news/sebi-plans-consultation-paper-to-remove-fpi-constraints-absent-in-other-markets/articleshow/136020808.cms
+[4] Stock market holiday next week: NSE, BSE to remain closed for Guru Nanak Jayanti on this day – Check details
+    NSE and BSE will be closed on Tuesday, November 24, for Guru Nanak Jayanti, pausing equity trading that day. This matters for planning trades and settlement timing next week.
+    https://www.livemint.com/market/stock-market-news/stock-market-holiday-next-week-nse-bse-to-remain-closed-for-guru-nanak-jayanti-on-this-day-november-24-tuesday-11795343116023.html
+[4] New Sebi proposal could flip fates of key men at NSE, BSE
+    SEBI proposes replacing age-based limits with term-based limits for exchange managing directors, which could affect Ashishkumar Chauhan at NSE and Sundararaman Ramamurthy at BSE. It is a governance change at India's major exchanges with direct regulatory relevance.
+    https://www.livemint.com/market/nse-bse-chief-tenure-rules-sebi-proposal-11795333434935.html
+[4] InvIT IPO rush gathers pace; 4-5 private trusts likely to go public by Mar 2027
+    Four to five private InvITs are expected to launch public offerings by March 2027, aiming to raise about Rs 17,000 crore, with Brookfield and Investcorp among those preparing. This is relevant to investors seeking infrastructure-linked income instruments.
+    https://economictimes.indiatimes.com/markets/ipos/fpos/invit-ipo-rush-gathers-pace-4-5-private-trusts-likely-to-go-public-by-mar-2027/articleshow/136069094.cms
+[3] Correction or deeper reckoning? Investors seek signs US stock selling will abate
+    Investors are looking for signs that the recent US stock sell-off is ending, and analysis asks whether it is a correction or a deeper downturn. The answer will shape positioning in global risk assets. Useful context for judging drawdown risk before reacting to portfolio moves.
+    https://www.livemint.com/market/correction-or-deeper-reckoning-investors-seek-signs-us-stock-selling-will-abate-11795348893667.html
+[3] Private Credit’s $100 Billion Saudi Prize Is Proving Hard to Win
+    Private credit firms see an estimated $100 billion opportunity in Saudi Arabia, but deploying capital at the required scale and speed is proving difficult. It shows how hard large private credit deals are to execute, a useful lens on alternative credit.
+    https://www.livemint.com/market/private-credit-s-100-billion-saudi-prize-is-proving-hard-to-win-11795348703055.html
 
 GENERAL KNOWLEDGE
-[4] Anthropic mathematician claims AI-assisted proof of the Riemann hypothesis
-    An Anthropic mathematician claims an AI-assisted proof of the Riemann hypothesis, a problem open for 167 years. The claim is unverified in the snippet, but if confirmed it would be a major milestone for AI-assisted research.
-    https://www.newscientist.com/article/2600134-anthropic-mathematician-claims-ai-assisted-proof-of-the-riemann-hypothesis/?utm_campaign=RSS|NSNS&utm_content=home&utm_medium=RSS&utm_source=NSNS
-[3] An Isolated Group of Amazonian Hunter-Gatherers Made a Rare Request for Help From Outsiders, Raising Concerns About Forest Degradation
-    About 20 members of the isolated Indigenous Awá tribe left the Amazon rainforest and received food from neighbouring villagers. The group has had no outside contact in decades. Experts link the rare request to deforestation leaving them without other options.
-    https://www.smithsonianmag.com/smart-news/an-isolated-group-of-amazonian-hunter-gatherers-made-a-rare-request-for-help-from-outsiders-raising-concerns-about-forest-degradation-180989909/
-[3] Russian missile hits Poland as Ukraine's allies hold military exercise, says Tusk
-    A Russian missile hit Poland during a military exercise by Ukraine's allies, with no injuries or damage reported. Tusk and Warsaw called it a 'provocation' from Moscow.
-    https://www.bbc.co.uk/news/articles/cqx2x9dklxnro?at_medium=RSS&at_campaign=rss
-[3] 10 years after divisive Brexit referendum, UK weighs a ‘Breturn’ to the EU
-    Ten years after the Brexit referendum, PM Andy Burnham returned from a UK-EU summit with a potential new deal. The UK is weighing a 'Breturn' to the EU.
-    https://www.aljazeera.com/news/2026/11/20/10-years-after-divisive-brexit-referendum-uk-weighs-a-breturn-to-the-eu?traffic_source=rss
-[3] Anthropic shares fall a day after blockbuster opening
-    Anthropic shares fell a day after a blockbuster stock market debut, and other tech stocks also dropped as broader markets slumped. The move tests investor appetite following the IPO.
-    https://www.bbc.co.uk/news/articles/c6808ym10vzgo?at_medium=RSS&at_campaign=rss
+[4] Banks Have Had It Up to Here With Your AI Agent
+    Major US banks are blocking third-party AI agents from logging into customer accounts. They also warn that customers bear responsibility for costly agent mistakes.
+    https://www.wired.com/story/banks-are-cracking-down-on-ai-agents/
+[4] In a year of AI solving maths problems, an Anthropic worker says he may have cracked the biggest
+    An Anthropic mathematician says he used AI to prove the Riemann hypothesis, one of mathematics' most famous unsolved problems, though verification will take time. The claim is unconfirmed but, if validated, would be a major milestone for AI-assisted research. Treat it cautiously until peer review.
+    https://www.bbc.co.uk/news/articles/c6pqr2g7w059o?at_medium=RSS&at_campaign=rss
+[4] Mathematicians are amazed by ‘holy grail’ proof of Riemann hypothesis
+    Reports say an Anthropic researcher used AI to find a proof for the Riemann hypothesis, one of mathematics' longest-standing problems. Mathematicians reacted with awe and uncertainty, and at least one team says it has a competing proof.
+    https://www.newscientist.com/article/2600235-mathematicians-are-amazed-by-holy-grail-proof-of-riemann-hypothesis/?utm_campaign=RSS|NSNS&utm_content=home&utm_medium=RSS&utm_source=NSNS
+[3] What’s behind Iran’s escalation of attacks in the Gulf?
+    Iran has escalated attacks in the Gulf as the US naval blockade and sanctions campaign strain its economy. The analysis examines the drivers behind Tehran's rising military pressure. It's a significant regional security and energy-market risk.
+    https://www.aljazeera.com/news/2026/11/22/whats-behind-irans-escalation-of-attacks-in-the-gulf?traffic_source=rss
+[3] Why have UN efforts to regulate ‘killer robots’ stalled?
+    Efforts to regulate lethal autonomous weapons at the UN have stalled, with CWC member countries agreeing only to elaborate on a potential accord within two years. The lack of binding progress has drawn criticism. It matters for AI governance in military applications.
+    https://www.aljazeera.com/news/2026/11/22/why-have-un-efforts-to-regulate-killer-robots-stalled?traffic_source=rss
 
 ENTREPRENEURSHIP
-[4] YourStory launches voice AI hackathon with Rs 8 lakh prize pool in collaboration with Google Cloud India
-    YourStory and Google Cloud India are running a virtual voice AI hackathon with an Rs 8 lakh prize pool. Participants build prototypes using Gemini Enterprise and the Google Cloud AI stack. Directly relevant to the reader's speech-to-text and Vertex AI work.
-    https://yourstory.com/2026/11/hack2skill-yourstory-launches-voice-ai-hackathon-with-rs-8-lakh-prize-pool-in-collaboration-with-google-cloud-india
-[4] Anthropic’s $81 Billion IPO Is the Biggest Ever — Here’s Who’s Getting Rich and Who Missed Out
-    Anthropic's IPO raised a record $81 billion, valuing the company at about $2 trillion. The story covers who gained and who missed out. Significant for the AI industry and for anyone watching Claude's maker as a major player.
-    https://www.entrepreneur.com/business-news/anthropics-81-billion-ipo-is-the-biggest-ever-heres-whos-getting-rich-and-who-missed-out
-[4] AI Startup Disseqt AI Raises $8 Mn To Scale International Operations
-    Disseqt AI, which builds AI agents for AI governance and testing, raised $8 Mn (about Rs 75 Cr) to scale international operations. Its focus on evaluation and governance tooling matches work in GenAI pipelines.
-    https://inc42.com/buzz/ai-startup-disseqt-ai-raises-8-mn-to-scale-international-operations/
-[4] Razorpay To File UDRHP By Next Week, Eyes IPO By February 2027: Report
-    Razorpay plans to file an updated DRHP as early as next week after SEBI clearance, targeting an IPO by February 2027. The filing is a key milestone for India's fintech listing pipeline.
-    https://inc42.com/buzz/razorpay-to-file-udrhp-by-next-week-eyes-ipo-by-february-2027-report/
-[3] Anthropic’s Nasdaq Debut Sparks Buying Rush Among Indian Retail Investors
-    Indian retail investors rushed to buy and trade Anthropic shares after its Nasdaq debut. The listing is a notable marker of public-market appetite for AI companies, relevant to anyone tracking AI valuations.
-    https://inc42.com/buzz/anthropics-nasdaq-debut-sparks-buying-rush-among-indian-retail-investors/
+[4] How Illumine cracked the US SaaS market from India: AI, GTM, Growth playbook
+    Illumine co-founders describe how they recovered from losing nearly 200 customers during COVID and built a childcare SaaS business that competes with US players while selling from India. The episode covers AI, go-to-market, and growth tactics. Useful distribution lessons for an India-based B2B SaaS builder.
+    https://yourstory.com/2026/11/how-illumine-cracked-the-us-saas-market-india-ai-gtm-growth-playbook
+[4] UPI was never free. But is its new merchant fee fair?
+    UPI's new merchant discount rate (MDR) raises questions about how fees will be distributed, whether small merchants and consumers will bear the cost, and whether the framework ensures competition and transparency. Important for anyone building payment products in India.
+    https://yourstory.com/2026/11/upi-was-never-free-but-is-its-new-merchant-fee-fair
+[4] Show HN: OpenComputer – an open source alternative to Devin
+    OpenComputer is an open-source cloud coding agent that runs in your own AWS, GCP, or Azure account. Its founder claims a 24s first commit against 53-72s for alternatives, and per-team VMs beat per-session sandboxes past about 640 session-hours a month.
+    https://github.com/diggerhq/opencomputer
+[4] Why the Startup Playbook Changes When Your Customer Is a Large Institution
+    The piece argues that selling to large institutions in regulated markets such as healthcare requires more than a working product. Founders must work out who pays, how adoption happens, and what proof is needed before scaling. Directly relevant to the reader's hospital-focused internship and healthtech go-to-market.
+    https://www.entrepreneur.com/building-a-business/why-the-startup-playbook-changes-when-your-customer-is-a-large-institution
+[3] CII proposes 15 financial sector reforms to boost long-term growth ambitions
+    Industry body CII has proposed 15 financial sector reforms, including a permanent liquidity window for well-governed NBFCs and higher priority-sector lending limits for renewable energy. Relevant to fintech and lending policy in India.
+    https://yourstory.com/2026/11/cii-15-financial-sector-reforms-boost-long-term-growth-ambitions
 
 HEALTH-TECH
-[4] HLTH 2026: Elsevier upgrades ClinicalKey AI with full patient EHR context
-    Elsevier upgraded ClinicalKey AI to combine evidence-based guidance with full patient EHR context. San Juan Regional Medical Center is using it to speed clinician access to information and ease workforce constraints. Closely matches RAG over EHR plus medical knowledge.
-    https://www.fiercehealthcare.com/health-tech/hlth-2026-elsevier-upgrades-clinicalkey-ai-full-patient-ehr-context
-[4] Govt planning to expand AB-PMJAY packages for public hospitals from 23 to 112: NHA sources
-    The government is reportedly planning to expand AB-PMJAY packages for public hospitals from 23 to 112. The focus is on common conditions treatable at Community Health Centres and Sub-Divisional Hospitals. This directly affects public hospital workflows and claims processing.
-    https://health.economictimes.indiatimes.com/news/policy/govt-planning-to-expand-ab-pmjay-packages-for-public-hospitals-from-23-to-112-nha-sources/135975134
-[4] STAT+: Epic Systems defends competitive practices, promises to let AI access its records
-    Epic executives defended the EHR vendor's competitive practices at an HLTH panel and promised to let AI access its records. Data access for AI is central to the reader's RAG and clinical support work. Highly relevant to integration strategy.
-    https://www.statnews.com/2026/11/18/epic-defends-competitive-practices-promises-ai-access-to-records/?utm_campaign=rss
-[4] STAT+: The emerging winners and losers in the AI scribe market
-    A STAT newsletter examines how the AI scribe market is shaking out, with winners and losers emerging. It also covers HLTH conference news. Directly relevant to the clinical AI scribe market the reader's hospital tools would compete in.
-    https://www.statnews.com/2026/11/18/ai-scribe-market-emerging-winners-losers-ai-prognosis/?utm_campaign=rss
-[4] Abridge Announcements during HLTH Emphasize Growing Healthcare Trend
-    Abridge announcements at HLTH highlight growing AI use in clinical practice. The coverage stresses bringing clinical information into the workflows providers already use. Directly relevant to designing AI tools that fit clinician workflows.
-    https://medcitynews.com/2026/11/abridge-announcements-during-hlth-emphasize-growing-healthcare-trend/
+[4] AI-Powered Diet Plans needs a Clinical Reality Check
+    Experts warn that AI-powered diet platforms making claims on weight loss, diabetes and preventive health lack clinical oversight and evidence. They call for longer follow-ups, independent validation and transparency in health claims. Useful framing for any clinical AI product, since engagement is not outcomes.
+    https://health.economictimes.indiatimes.com/news/industry/ai-powered-diet-plans-needs-a-clinical-reality-check/136026767
+[3] Maha FDA warns of action on misleading claims with Nutraceuticals
+    Maharashtra FDA ordered stricter oversight of nutraceutical marketing, with immediate effect for manufacturers, retailers, pharmacies, hospital suppliers and e-commerce. The order targets misleading claims. Affects compliance for health-adjacent products sold through hospital and pharmacy channels.
+    https://health.economictimes.indiatimes.com/news/policy/maha-fda-warns-of-action-on-misleading-claims-with-nutraceuticals-mandates-license/136043188
