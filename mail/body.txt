@@ -1,133 +1,139 @@
-Knowledge Updater · Tue 24 Nov 2026
+Knowledge Updater · Fri 27 Nov 2026
 
 Full page (all tabs & filters): https://eth-developer03.github.io/ku-a6244260/
 
 BUSINESS IDEAS
-1. Java patch blast-radius checker for Spring Boot services (score 4.8; effort 2, cost 1, fit 5)
-   A CI plugin for Maven and Gradle that, when a CVE like Java4Shell lands, maps which services, call paths and transitive dependencies are affected and produces a ranked patch plan. Indian product and fintech teams running many Spring Boot services would pay a per-repo monthly fee to skip manual audits.
-   Why now: Cloudflare shipped WAF rules for the Java4Shell base64 decoder flaw, which shows teams are scrambling to find where they are exposed and to patch quickly.
-   First step: Pull the public Java4Shell advisory and write a script that lists which of your own Maven projects pull in java.util.Base64-dependent libraries, then time how long the manual audit takes.
+1. Agent test-fixture store for Spring Boot services (score 4.8; effort 2, cost 1, fit 5)
+   A Spring Boot starter where customer-level test cases live as versioned data files outside the code, so AI coding agents cannot edit the expected behaviour. Sold as an open-source starter with a paid CI dashboard for teams.
+   Why now: Matteo Vaccari argues that tests stored as data become the contract with AI-written code, and GitHub's push toward thousands of concurrent agents makes unreviewed agent edits a growing risk.
+   First step: Convert one existing controller test suite into a YAML fixture format and write a JUnit runner that loads it, then publish it as a public repo.
 
-2. Doctor-reviewed OPD note drafting for Indian clinics (score 4.2; effort 3, cost 2, fit 5)
-   A tool that turns a doctor's dictated or typed consultation notes into a structured OPD note and discharge-style summary that the doctor edits and signs. Clinics in tier-2 cities that use a paper or basic EMR workflow would pay a flat monthly fee, and the doctor keeps all clinical decisions.
-   Why now: A Global Digital Health Summit 2026 live test found AI strong on analysis but weaker on context than experienced doctors, so the product has to keep the doctor as the final reviewer, which is a clear design constraint.
-   First step: Sit in on two or three OPD consultations at a clinic you have access to, and log the exact fields and phrasing the doctor repeats in each note.
+2. Payout-rail adapter for Indian employers using UPI and IMPS fallback (score 4.2; effort 3, cost 2, fit 5)
+   A small API that sends employee reimbursements and benefit payouts over the cheapest working bank rail, with bank account validation and a retry-safe ledger. Sold to Indian SMEs and HR-tech tools that currently pay through a single expensive gateway.
+   Why now: Versine's MCP wallet for agent-initiated transfers and group payouts shows the market moving toward programmable money movement, and Indian employers still lack a simple, cheap payout API for claims.
+   First step: Write a one-page spec listing five HR tools or SaaS vendors that need reimbursements paid out, and ask two of them what they pay per transfer today.
 
-3. Bank-rail reimbursement payouts for small Indian employers (score 4.0; effort 3, cost 3, fit 5)
-   A payout layer where small and mid-size companies approve employee expense or benefit claims and the money goes to the employee's bank account over UPI or IMPS, with bank account validation before the first payout. Fintech-style reconciliation and a per-payout fee would be the revenue model, and a licensed payment partner would handle the regulated money movement.
-   Why now: Flex's first engineer joined to fix HSA and FSA payment problems she had personally run into, which confirms that claim and benefit payouts are a painful, recurring workflow worth a focused product.
-   First step: Interview five HR or finance people at small Indian companies about how they reimburse claims today and list the three steps that take the longest.
+3. Cost-budgeted model router library for Indian SaaS teams (score 4.0; effort 3, cost 1, fit 4)
+   A Java or Python library that assigns a fixed monthly token budget across requests and routes each to a cheaper or stronger model, with a dashboard showing spend per feature. Sold as a self-hosted library with a paid support tier.
+   Why now: CoordRoute shows that per-request routers ignore total budget, and a shared-budget allocator is a concrete gap that small teams running several LLM features can fill.
+   First step: Build a 100-line prototype that splits a daily budget across three mock request types and prints the cost per type, then share it with two engineers who run LLM features.
 
-4. Natural-language patient cohort counts for clinic managers (score 4.0; effort 3, cost 1, fit 4)
-   A search box where a clinic or diagnostics chain manager asks questions like how many patients from last quarter had a pending follow-up on a report, and gets an approximate count in seconds. It runs over structured fields and report text, and the admin sees the matching records before any action is taken. Sold as a monthly SaaS to diagnostics labs and multi-clinic groups.
-   Why now: The SignalCount paper shows approximate semantic counts over clinical-style text can return within seconds without a slow LLM call at query time, which makes an interactive dashboard practical.
-   First step: Export a sample of anonymised report records from your internship data and test whether a small embedding index with a keyword filter can answer five realistic manager questions correctly.
+4. Agent memory and handoff store for clinic workflows (score 3.8; effort 3, cost 2, fit 4)
+   A hosted service that keeps per-patient and per-clinic state for AI assistants (open follow-ups, pending lab reviews, who was contacted) with audit logs, so agents can resume work without re-reading whole charts. Sold to small clinic chains and clinic software vendors.
+   Why now: Beacon Health's founders are building agents to catch patient care that slips through gaps, and a TASK Memory paper reports that memory-ignoring hits up to 46% of queries, so clinics need reliable state rather than prompt stuffing.
+   First step: Interview three clinic front-desk or follow-up coordinators about the last missed follow-up they had, and write down what information they wished they had on screen.
 
-5. MCP tool-schema change gate for agent deployments (score 4.0; effort 3, cost 1, fit 4)
-   A CLI and CI check that diffs each MCP tool's input schema between releases and blocks the merge if a compatible-looking change widens what the agent can do. Teams running internal agents get a required approval step, an audit log and a kill switch per tool, sold as a small per-seat SaaS.
-   Why now: A study of 604 releases across 39 public MCP servers found that none of the 8 surveyed clients or scanners re-approve a tool whose schema silently grows its authority, so this gap is real and unfilled.
-   First step: Write a script that snapshots the JSON schema of every tool in one MCP server you use and diffs it across two versions to see how often a parameter gets added or widened.
+5. Radiology report draft reviewer for small imaging centres (score 3.8; effort 3, cost 2, fit 4)
+   A tool that takes a radiologist's dictated or drafted report and checks it against the study's structured fields, flagging missing measurements, laterality mismatches and template gaps, while the radiologist signs off. Sold per report or per seat to diagnostic centres in India.
+   Why now: STAT's coverage of AI drafting radiology reports ahead of RSNA shows the drafting step is arriving, and the review and liability step is the part that needs tooling that keeps the radiologist in charge.
+   First step: Collect five anonymised report templates from a diagnostic centre contact and list the fields a checker would need to validate.
 
 TECH
 -- AI & ML
-[4] China's Z.ai Says Its New AI Model Can Think Like One Four Times Its Size
-    Z.ai says its GLM-5.4 model uses a looping architecture to deliver reasoning comparable to a model four times its size with fewer parameters. This is a notable efficiency claim that challenges the large-parameter approach used by US labs.
-    https://decrypt.co/383851/chinas-zai-new-ai-model-glm-think-like-four-times-size
-[4] Anthropic launches Claude Ship, letting AI agents review, fix, and approve code changes
-    Anthropic launched Claude Ship, a developer tool that lets AI agents review, fix, and approve code changes to reduce review bottlenecks. The launch targets growing volumes of AI-generated code by automating routine approvals. Directly relevant to agent-driven code review workflows.
-    https://techcrunch.com/2026/11/23/anthropic-launches-claude-ship-letting-ai-agents-review-fix-and-approve-code-changes/
-[4] QCon San Francisco 2026: Securing AI Agents in Production
-    At QCon San Francisco, Google's Amanda Walker framed AI agents as an insider-risk problem operating at machine speed. She described identity, credential, and containment patterns for running agents safely in production. Directly relevant to deploying agents in your GenAI pipelines and tooling.
-    https://www.infoq.com/news/2026/11/qcon-ai-agent-security/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
+[5] Presentation: Finetuning Your Embedding Model for Better Search: Learning from Agentic Search at Dell
+    Rachel Shalom presents how Dell fine-tuned open-source embedding models to fix enterprise RAG retrieval failures on internal terminology. The talk covers hard-negative data prep, distributed InfoNCE training on H100 GPUs, hyperparameter tuning, and LLM-as-a-judge evaluation. This directly applies to embedding and RAG pipelines.
+    https://www.infoq.com/presentations/fine-tune-enterprise-rag-embeddings/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
+[4] China's Google Just Released Its Fast New AI Model for Free
+    Baidu released the weights of its new high-speed reasoning model, giving developers a commercially usable open alternative to proprietary models from OpenAI, Google and Anthropic. Relevant if you evaluate open models for GenAI pipelines.
+    https://decrypt.co/384015/china-google-released-fast-new-ai-model-free-baidu-ernie
+[4] How Much Do Coding Agents Over-Edit, and Why? An Empirical Study of Unneeded Edits in Repository-Level Agent Patches
+    An empirical study introduces Delta Residue Attribution to trace which edits in coding-agent patches are actually needed. Applied to 7,660 GitHub Copilot CLI trajectories on SWE-bench Verified and DeepSWE, it finds agent patches are larger than developers' and that most extra edits add tests. This directly informs how to evaluate and tune coding agents.
+    https://arxiv.org/abs/2611.34875v1
 -- System Design
-[4] Which $\Diamond \mathcal{P}$ Algorithm is Suitable for You? An Empirical Benchmark on Real Network Traces
-    The authors systematize 14 Diamond-P and related failure detectors, implement 13, and benchmark them on real network traces using QoS metrics such as detection time and mistake rate. They also frame detector selection as a constrained algorithm-selection problem. Practically useful for choosing failure detection in distributed systems.
-    https://arxiv.org/abs/2611.30815v1
-[4] SignalCount: Approximate Counts with Structured and Semantic Predicates in Seconds
-    SignalCount is a production system that returns approximate counts of records matching semantic criteria judged from clinical-style text, within seconds as users type. It avoids waiting on an LLM oracle at query time, which prior approximate query processing required. Relevant to applying LLM judgments over structured and text records like patient data.
-    https://arxiv.org/abs/2611.30779v1
-[3] DoorDash Dispatch: Building a Lightning-Fast Delivery System
-    A ByteByteGo article explains how DoorDash built its Dispatch delivery system for low-latency order assignment. The title and snippet give no details on architecture or numbers. Worth skimming for real-time dispatch and scaling patterns relevant to backend work.
-    https://blog.bytebytego.com/p/doordash-dispatch-building-a-lightning
+[4] DoorDash Scales Dispatch 10x While Maintaining 99.99% Peak Availability
+    DoorDash redesigned its real-time dispatch platform, replacing a monolithic optimisation engine with a distributed design that separates coordination from computation. The new system reports 10x higher throughput and over 99.99% peak availability, with hybrid ML inference and multi-agent reinforcement learning. This is a strong real-world case study in scaling.
+    https://www.infoq.com/news/2026/11/doordash-dispatch-redesign/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
+[4] CoordRoute: Coordinated Multi-Model Routing for Maximum Compute-Budget Utility
+    CoordRoute allocates a shared compute budget across requests for multi-model LLM routing, using a predict-plan-rectify approach to maximize total utility. It addresses the gap where per-request routers ignore the overall budget. Directly relevant to cost-aware LLM serving decisions.
+    https://arxiv.org/abs/2611.34161v1
+[4] AWS Lambda Doubles Its Timeout to 30 Minutes After Eight Years at 15
+    AWS raised the maximum timeout for on-demand Lambda Event Functions from 15 to 30 minutes in all commercial regions, with no opt-in and no new pricing; the limit had stood since 2018. AWS's post notes doubled concurrency at the same request rate, three-hour SQS visibility timeouts, and Kafka mappings that must be recreated. This matters…
+    https://www.infoq.com/news/2026/11/aws-lambda-30-minute-timeout/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
 -- Crypto & Blockchain
-[3] Cross River Bank Launches Its First Bitcoin-Backed Loans With LendingUSA
-    Cross River Bank has launched bitcoin-backed loans with LendingUSA, offering $10,000 to $250,000 at 30%, 50% or 70% loan-to-value. This is a notable bank entering crypto-collateralized lending. It is relevant to fintech product trends but not to the reader's core work.
-    https://bitcoinmagazine.com/news/cross-river-bank-bitcoin-backed-loans
+[3] Spain moves to grant financial watchdog power to freeze crypto accounts
+    Spain is moving to let its financial intelligence unit suspend crypto accounts, with firms facing fines for noncompliance under a new decree. This overlaps with item 11 and matters for EU crypto compliance.
+    https://cointelegraph.com/news/spain-moves-grant-financial-watchdog-power-freeze-crypto-accounts?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound
+[3] A tiny payment can expose the IP address behind a bitcoin wallet, developer finds
+    A developer found that a small bitcoin payment can reveal the IP address behind a wallet. This is a privacy and security issue that matters if you build wallet-linked or payment-facing systems.
+    https://www.coindesk.com/tech/2026/11/26/a-tiny-payment-can-expose-the-ip-address-behind-a-bitcoin-wallet-developer-finds
+[3] Spain Lets Its Financial Intelligence Unit Freeze Crypto Accounts Without a Court Order
+    Spain's financial intelligence unit, Sepblac, can now suspend crypto, bank and payment accounts for up to five working days without a court order. Courts decide any extension. This is a fintech compliance precedent for account-freeze workflows.
+    https://decrypt.co/384063/spain-lets-its-financial-intelligence-unit-freeze-crypto-accounts-without-a-court-order
 -- Everything else
-[4] Java News Roundup: Java4Shell, Oracle CSPUs, OpenJDK, Azul Payara, BellSoft, Helidon, LangChain4j
-    This week's InfoQ Java roundup covers the Java4Shell remote code execution vulnerability, Oracle CPUs, and Lazy Constants targeted for JDK 28. It also lists releases from Azul Payara, LangChain4j, Micrometer, Helidon, and Hibernate Reactive. The Java4Shell item matters for patching Spring Boot and Java services.
-    https://www.infoq.com/news/2026/11/java-news-roundup-nov16-2026/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
-[4] SchemaCaps: When a Compatible Tool Update Silently Widens an AI Agent's Authority
-    The paper shows that none of 8 surveyed MCP clients and scanners re-approves a tool whose input schema silently widens its authority. A pilot across 604 releases of 39 public MCP servers finds many such changes. Directly relevant to security of tool-using AI agents.
-    https://arxiv.org/abs/2611.30750v1
-[4] Nvidia Reinstates Jensen Huang as CEO
-    NVIDIA's board reinstated Jensen Huang as CEO, per the company's announcement, with CNBC coverage tied to congressional matters. The snippet is truncated, so the reason for the reinstatement is unclear. Leadership stability at the dominant AI chip vendor affects the wider AI infrastructure market.
-    https://www.cnbc.com/2026/11/23/nvidia-jensen-huang-ceo.html
+[4] Tell HN: Happy Thanksgiving
+    Versine, founded by former Stripe, Databricks and Amazon engineers, is building an MCP that wraps a wallet so AI agents can send and request money. Features include passkey-approved transfers, group payments of up to 100 people, and cash-out to bank for non-users. It is directly relevant to your fintech payouts work and agent-based payment design.
+    https://news.ycombinator.com/item?id=50655664
+[4] Rust 1.100 Ships the Never Type After Ten Years and Five Failed Attempts
+    Rust 1.100.0, released 12 November 2026, stabilises the never type (!) after a decade of work and makes Infallible an alias for it. It also stabilises the core allocator API, adds DropGuard, and adds an opt-in Cargo dependency cooldown setting. Critics note the allocator design still lacks inline storage support.
+    https://www.infoq.com/news/2026/11/rust-1-100-never-types/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global
+[3] CTO of 'RansomwareHelp' Indicted for Wire Fraud
+    The CTO of RansomwareHelp, a company tied to ransomware response, has been indicted on wire fraud charges. The snippet has no details on amounts or dates. It is a notable security and enforcement story, though it is not directly about engineering practice.
+    https://krebsonsecurity.com/2026/11/cto-of-ransomwarehelp-indicted-for-wire-fraud/
 
 FINANCE
-[4] SEBI warns investors against fraudsters impersonating registered intermediaries on WhatsApp groups
-    SEBI warned investors against fraudsters who impersonate registered intermediaries in WhatsApp and Telegram groups. The warning covers unknown invitations, administrators using international numbers, and promises of assured returns.
-    https://www.thehindubusinessline.com/markets/sebi-warns-investors-against-fraudsters-impersonating-registered-intermediaries-on-whatsapp-groups/article71737121.ece
-[4] SEBI issues upcoming IPOs GMP advisory - ‘publication of such pre-listing premium figures may be detrimental’
-    SEBI urged intermediaries and market participants to stop publishing grey market premium figures for IPOs, warning that these unregulated estimates are unverified and unreliable for predicting listing prices. Investors are told to avoid GMP-linked transactions. This is a direct regulatory signal for IPO investors.
-    https://www.livemint.com/market/ipo/sebi-issues-upcoming-ipos-gmp-advisory-publication-of-such-pre-listing-premium-figures-may-be-detrimental-11795482712234.html
-[4] India’s rupee has become an accidental carry star
-    The RBI's moves have temporarily made the rupee attractive to carry traders, helped by falling oil prices and foreign money shifting from AI stocks to India. The article warns these incentives may not last, as India's interest rate advantage has shrunk sharply since 2011.
-    https://economictimes.indiatimes.com/markets/stocks/news/indias-rupee-has-become-an-accidental-carry-star/articleshow/136117132.cms
-[4] RBI to conduct Overnight Variable Rate Repo (VRR) auction under LAF on November 25, 2026
-    The RBI will conduct an Overnight Variable Rate Repo auction under the LAF on November 25, 2026. The snippet also describes the Governor's meeting with NBFC, HFC and microfinance CEOs. Liquidity operations matter for banking and NBFC funding, which is relevant to fintech.
-    https://www.rbi.org.in/scripts/BS_PressReleaseDisplay.aspx?prid=64033
-[4] NSEL releases ₹1,950 cr in one-time settlement, ends 14-yr payment default
-    The National Spot Exchange Ltd (NSEL) said it released a Rs 1,950 crore one-time settlement payout, closing a Rs 5,600 crore default after nearly 14 years. The payout went to 63 Moons Technologies as assignee of specified creditors, with payouts scheduled for November 23, 2026.
-    https://www.business-standard.com/markets/news/nsel-releases-1-950-cr-in-one-time-settlement-ends-14-yr-payment-default-126112300903_1.html
+[4] NSE secures RBI approval for corporate bond index futures
+    NSE has secured RBI approval for corporate bond index futures. The product is expected to add risk management, portfolio hedging and price discovery options for investors. This duplicates a story also covered in other items.
+    https://www.thehindubusinessline.com/markets/nse-secures-rbi-approval-for-corporate-bond-index-futures/article71747109.ece
+[4] NSE gets RBI nod to launch corporate bond index futures
+    NSE has received RBI approval to launch corporate bond index futures. The standardised exchange-traded contracts aim to help investors manage corporate bond exposure and deepen India's fixed-income market. This duplicates items 1 and 8.
+    https://www.thehindubusinessline.com/markets/nse-gets-rbi-nod-to-launch-corporate-bond-index-futures/article71746922.ece
+[4] NSE receives RBI's approval to launch corporate bond index futures
+    NSE has received RBI approval to launch exchange-traded corporate bond index futures. The contracts will let investors hedge corporate bond portfolios and take directional views on valuations, interest rates and credit spreads. For you, this adds a new derivatives tool to India's fixed-income market.
+    https://www.business-standard.com/markets/news/nse-receives-rbi-s-approval-to-launch-corporate-bond-index-futures-126112601165_1.html
+[4] India bonds tumble as Brent tops $95 per barrel, RBI flags food inflation risks
+    Indian government bond yields rose as Brent crude moved above $95 per barrel, and the RBI flagged rising food inflation risks. Markets expect rate hikes at the December 4 policy decision, and higher oil could widen the current account deficit.
+    https://economictimes.indiatimes.com/markets/bonds/india-bonds-tumble-as-brent-tops-95-per-barrel-rbi-flags-food-inflation-risks/articleshow/136193320.cms
+[4] Indian banks seek RBI intervention as dollar surplus pushes up rupee forward premiums
+    Indian banks are asking the RBI to intervene as surplus dollar liquidity pushes up rupee forward premiums. Foreign equity inflows and earlier central bank currency swaps have added to the excess. This is causing distortions in the forex market.
+    https://www.thehindubusinessline.com/markets/forex/indian-banks-seek-rbi-intervention-as-dollar-surplus-pushes-up-rupee-forward-premiums/article71746228.ece
 
 GENERAL KNOWLEDGE
-[4] Pennsylvania reports ninth measles death in ongoing state outbreak
-    Pennsylvania has reported its ninth measles death in an ongoing outbreak spanning 46 counties, with CDC and state death counts differing. The escalating outbreak signals serious public health gaps in vaccination coverage.
-    https://www.aljazeera.com/news/2026/11/24/pennsylvania-reports-ninth-measles-death-in-ongoing-state-outbreak?traffic_source=rss
-[4] India’s best known bottled water under scrutiny
-    India is testing samples from every bottled water company after one Bisleri batch was ruled unsafe. The probe affects a major consumer brand and raises wider questions about food and water safety regulation.
-    https://www.aljazeera.com/video/newsfeed/2026/11/24/indias-best-known-bottled-water-under-scrutiny?traffic_source=rss
-[4] UN chief calls for world to agree on AI oversight within a year
-    UN Secretary-General Antonio Guterres has called for the world to agree on AI oversight within a year as his term nears its end. The call adds diplomatic momentum to global AI governance efforts.
-    https://www.aljazeera.com/news/2026/11/24/un-chief-calls-for-world-to-agree-on-ai-oversight-within-a-year?traffic_source=rss
-[4] Qatar PM looks to revive US-Iran talks after meeting Rubio
-    Qatar's Prime Minister is working to de-escalate tensions between Iran and the US and revive talks, following a meeting with Secretary of State Rubio. Progress would have wide implications for regional security.
-    https://www.aljazeera.com/video/newsfeed/2026/11/24/qatar-pm-looks-to-revive-us-iran-talks-after-meeting-rubio?traffic_source=rss
-[4] UK sanctions top Myanmar military leaders after Rohingya genocide ruling
-    The UK has sanctioned top Myanmar military leaders, joined by several other nations, after an ICJ ruling that Myanmar committed genocide against the Rohingya. The move raises diplomatic and economic pressure on the junta's leadership.
-    https://www.bbc.co.uk/news/articles/c6wy4ng1rznxo?at_medium=RSS&at_campaign=rss
+[4] Congo Ebola outbreak reaches 12,000 cases as some responders evacuate
+    The Ebola outbreak in eastern Congo has reached about 12,000 cases and is spreading quickly. Fighting between rebels and the army is disrupting containment, and some responders are being evacuated, which raises concerns for outbreak control and health system capacity.
+    https://www.npr.org/2026/11/26/g-s1-155957/congo-ebola-responders
+[3] Spanish economist to become new European Central Bank chief
+    Spanish economist Pablo Hernández de Cos was announced as the next European Central Bank president after a meeting of eurozone leaders. Significant for European monetary policy and relevant to a finance-minded reader.
+    https://www.aljazeera.com/news/2026/11/26/spanish-economist-to-become-new-european-central-bank-chief?traffic_source=rss
+[3] Two dead after Iranian drone attack on Kuwait
+    Kuwait's army reports that an Iranian drone attack killed two Italian workers and injured four others. The incident adds to regional military tension, with possible implications for expatriate safety and Gulf security.
+    https://www.aljazeera.com/video/newsfeed/2026/11/26/two-dead-after-iranian-drone-attack-on-kuwait?traffic_source=rss
+[3] North Korea's Kim vows to build more nuclear weapons after ignoring Trump's overture
+    North Korean leader Kim Jong Un reportedly visited facilities producing nuclear materials and called for more nuclear weapons, rejecting Trump's outreach. The move signals continued escalation with the US and South Korea.
+    https://www.npr.org/2026/11/26/g-s1-155955/north-korea-kim-nuclear-weapons-trump
+[3] Ultracold atoms could help unravel a major flaw in quantum theory
+    An experiment with ultracold atoms could help test competing interpretations of quantum theory, which currently struggles to predict how long a particle takes to travel between points. It is a foundational physics result with no near-term engineering use.
+    https://www.newscientist.com/article/2600718-ultracold-atoms-could-help-unravel-a-major-flaw-in-quantum-theory/?utm_campaign=RSS|NSNS&utm_content=home&utm_medium=RSS&utm_source=NSNS
 
 ENTREPRENEURSHIP
-[4] RBI Proposes ‘Stop Switch’ To Block Digital Payment Frauds
-    The RBI has proposed safeguards against electronic payment fraud, including an account-wide 'Stop Switch' that would block transactions. The rule would affect how banks and payment platforms handle fraud response, which matters for payouts and fintech products.
-    https://inc42.com/buzz/rbi-proposes-stop-switch-to-block-digital-payment-frauds/
-[4] Nvidia Reinstates Jensen Huang as CEO
-    NVIDIA's board reinstated Jensen Huang as CEO, per the company's announcement, with CNBC coverage tied to congressional matters. The snippet is truncated, so the reason for the reinstatement is unclear. Leadership stability at the dominant AI chip vendor affects the wider AI infrastructure market.
-    https://www.cnbc.com/2026/11/23/nvidia-jensen-huang-ceo.html
-[4] India AI funding nearly doubles to $1.6B in Jan-Sept 2026: Tracxn
-    Tracxn data shows India's AI startup funding nearly doubled to $1.6B in January to September 2026, with early-stage deals leading. Mumbai overtook Bengaluru as the top city for funding in the period, which signals where AI capital is moving.
-    https://yourstory.com/2026/11/india-ai-funding-nearly-doubles-jan-sept-2026-tracxn
-[4] OpenClaw for executives: Automate every 1% annoyance | Ankit Maheshwari (Innovaccer)
-    Ankit Maheshwari, CTO of Innovaccer, walks through the OpenClaw Jarvis setup he runs on a Mac Mini to eliminate small daily frictions. The 31-minute video covers personal AI automation. It is relevant to your AI tooling work and to healthtech through Innovaccer.
-    https://www.lennysnewsletter.com/p/openclaw-for-executives-automate
-[4] [Update] WazirX, ZebPay Among Platforms Impacted By MoEngage Data Breach
-    WazirX and ZebPay disclosed that some user information was exposed in a MoEngage data breach, according to an update dated November 23. The incident shows third-party vendor risk for fintech and crypto platforms.
-    https://inc42.com/buzz/now-moengage-suffers-cybersecurity-attack-due-to-compromised-third-party-vendor/
+[4] Should You Run Your Own AI or Pay a Provider? Here’s How to Decide.
+    The article weighs whether businesses should run open-weight AI models on their own servers or rent them from cloud providers. Open-weight models now make self-hosting a real option. This is a useful build-versus-buy decision frame for an engineer building AI tools for hospitals.
+    https://www.entrepreneur.com/business-news/should-you-run-your-own-ai-or-pay-a-provider-heres-how-to-decide
+[4] Tell HN: Happy Thanksgiving
+    Versine, founded by former Stripe, Databricks and Amazon engineers, is building an MCP that wraps a wallet so AI agents can send and request money. Features include passkey-approved transfers, group payments of up to 100 people, and cash-out to bank for non-users. It is directly relevant to your fintech payouts work and agent-based payment design.
+    https://news.ycombinator.com/item?id=50655664
+[4] IndiaAI Mission-Backed Chariot AI Unveils 11 Bn Parameter LLM, Speech Models
+    Chariot AI, an IndiaAI Mission-backed startup, unveiled its Chariot-1 model suite, including an 11 billion parameter LLM and speech models. It is a significant sovereign foundation model release from India, directly relevant to GenAI and speech-to-text work.
+    https://inc42.com/buzz/indiaai-mission-backed-chariot-ai-unveils-11-bn-parameter-llm-speech-models/
+[4] BharatGen Launches Patram 1.5 To Target Enterprise Document Processing
+    BharatGen launched Patram 1.5, a vision-language model for automating document processing across banking, financial services, and insurance. It is directly relevant to OCR-style document pipelines and BFSI use cases, overlapping with the reader's fintech and GenAI work.
+    https://inc42.com/buzz/bharatgen-launches-patram-1-5-to-target-enterprise-document-processing/
+[4] Vegapay raises $10M in Series A round co-led by Vertex Ventures, Prosus
+    Vegapay raised $10M in a Series A co-led by Vertex Ventures and Prosus to expand its Credit Line on UPI offering, launch secured credit products, and strengthen its banking tech platform. It is a directly relevant Indian fintech funding round in UPI credit and payments infrastructure.
+    https://yourstory.com/2026/11/vegapay-raises-10m-in-series-a-round-co-led-by-vertex-ventures-prosus
 
 HEALTH-TECH
-[5] GDHS 2026 delivers a boardroom wake-up call: Puts AI to a clinical test
-    At the Global Digital Health Summit 2026, AI showed strong clinical analysis, but experienced doctors were more sensitive to context and recommended fewer unnecessary tests and medicines. The live assessment questions how AI can improve medical decisions without harming care quality. This is directly relevant to clinical AI evaluation.
-    https://www.expresshealthcare.in/news/gdhs-2026-delivers-a-boardroom-wake-up-call-puts-ai-to-a-clinical-test/455970/
-[4] The race for leadership talent in India’s hospital and IVF sector
-    EY-IVCA data shows Indian healthcare investment rose 621% YoY in July–September 2026, with 28 deals worth US$3.1 billion, the second-largest sector after infrastructure. Much of the capital is flowing into hospital networks and organised providers. The funding wave points to hiring demand and to where hospital IT buyers may be spending.
-    https://www.expresshealthcare.in/news/the-race-for-leadership-talent-in-indias-hospital-and-ivf-sector/455982/
-[4] Bajaj Integrated Health System launches Nivara
-    Bajaj Integrated Health System has launched Nivara, starting in Pune with an initial investment of Rs 2,000–2,500 crore. It plans to expand across India as a connected healthcare ecosystem. Large new provider networks typically need digital systems and integration, making it a relevant market signal.
-    https://www.expresshealthcare.in/news/bajaj-integrated-health-system-launches-nivara/455979/
-[4] Innovaccer integrates Grok Voice into Gravity Voice AI agents
-    Innovaccer has integrated Grok Voice into its Gravity Voice AI agents, with patient voice interactions growing from about 250,000 to over five million in six months, per executives. The scale is a useful benchmark for voice AI in healthcare. It is directly relevant to speech-based patient-engagement work.
-    https://www.fiercehealthcare.com/ai-and-machine-learning/innovaccer-integrates-grok-voice-gravity-voice-ai-agents
-[3] Anaemia prevalence lower than earlier estimates, severe cases below 2 per cent: ICMR survey
-    The ICMR SAMPADA survey, conducted in 2023-25, covered over two lakh individuals in 183 districts across 35 states and Union territories. It finds anaemia prevalence lower than earlier estimates, with severe cases below 2%, which is useful for population health planning.
-    https://health.economictimes.indiatimes.com/news/industry/anaemia-prevalence-lower-than-earlier-estimates-severe-cases-below-2-per-cent-icmr-survey/136117234
+[5] STAT+: AI can analyze X-rays and CT scans to draft radiology reports. Will it make care better, safer?
+    Ahead of RSNA in Chicago, industry insiders are expected to debate whether AI systems that analyze X-rays and CT scans to draft radiology reports will improve care and safety. Directly relevant to clinical report generation and OCR-adjacent workflows.
+    https://www.statnews.com/2026/11/24/does-radiology-ai-draft-reports-make-care-better-safer-rsna/?utm_campaign=rss
+[4] 4baseCare ties with MSK Cancer Center to tap new clinical database
+    4baseCare will integrate clinical data from a select cohort of cancer patients into its AI oncology platform OncoTwin, in collaboration with MSK Cancer Center. The integration lets oncologists compare treatments and outcomes among clinically similar patients. It is directly relevant to clinical AI and structured oncology data work.
+    https://health.economictimes.indiatimes.com/news/health-it/4basecare-ties-with-msk-cancer-center-to-tap-new-clinical-database/136188870
+[4] IRDAI Moves to Make Health Claims More Transparent, Enable Real-time Tracking
+    IRDAI has constituted groups under its Insurance Advisory Committee to recommend common standards for reporting health claims and grievances. A system is also proposed to keep policyholders updated on claim progress in real time. This could affect claims data integration and transparency for hospitals and insurers.
+    https://health.economictimes.indiatimes.com/news/insurance/irdai-moves-to-make-health-claims-more-transparent-enable-real-time-tracking/136152017
+[4] Houston Methodist’s Rural Remote Monitoring Expansion Shows Why Workflow is Critical
+    Houston Methodist expanded remote patient monitoring to rural Kansas hospitals. The piece argues that staffing and workflow structure, not just the technology, determine whether remote monitoring improves care and access.
+    https://medcitynews.com/2026/11/houston-methodists-rural-remote-monitoring-expansion-shows-why-workflow-is-critical/
+[4] Weekly Rundown: Waystar integrates into Google Cloud’s Gemini for healthcare; Oracle debuts AI agents for clinical trials
+    Weekly roundup noting Waystar integrating into Google Cloud's Gemini for healthcare and Oracle launching AI agents for clinical trials. Both are relevant to healthcare AI platform developments.
+    https://www.fiercehealthcare.com/health-tech/weekly-rundown-waystar-integrates-google-clouds-gemini-healthcare-oracle-debuts-ai
